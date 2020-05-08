@@ -23,9 +23,43 @@ public class FSMLine: SKSpriteNode {
         super.init(texture: nil, color: .clear, size: .zero)
         self.setDraw(start: point1, end: point2, dx: dx, dy: dy)
     }
+    
+    
+    public init(from point1: CGPoint, to point2: CGPoint, dx1: CGFloat, dy1: CGFloat, dx2: CGFloat, dy2: CGFloat, headSize: CGFloat) {
+        super.init(texture: nil, color: .clear, size: .zero)
+        self.setDraw(start: point1, end: point2, dx1: dx1, dy1: dy1, dx2: dx2, dy2: dy2, headSize: headSize)
+    }
 
     public required init?(coder aDecoder: NSCoder) {
        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setDraw(start: CGPoint, end: CGPoint, dx1: CGFloat, dy1: CGFloat, dx2: CGFloat, dy2: CGFloat, headSize: CGFloat) {
+        let arrow = UIBezierPath()
+        
+        let ctrlPoint1 = CGPoint(x: start.x*dx1, y: end.y*dy1)
+        let ctrlPoint2 = CGPoint(x: start.x*dx2, y: end.y*dy2)
+        arrow.addCurve(to: end, controlPoint1: ctrlPoint1, controlPoint2: ctrlPoint2)
+        bodyVertices = [start, end, ctrlPoint1, ctrlPoint2]
+        self.body.path = arrow.cgPath
+        self.body.strokeColor = .clear
+        self.body.fillColor = .clear
+        self.body.lineWidth = 3.0
+        // self.body.isAntialiased = false
+        self.addChild(body)
+
+        let arrowHead = UIBezierPath()
+
+        let vertices = arrowHead.addArrowHead(end: end, controlPoint: ctrlPoint2, pointerLineLength: headSize, arrowAngle: CGFloat.pi/8)
+        self.head.path = arrowHead.cgPath
+        self.head.strokeColor = .clear
+        self.head.lineWidth = 2.0
+        self.head.fillColor = .clear
+        self.headPos = end
+
+        headVertices = [vertices.left, vertices.right, end]
+
+        self.addChild(head)
     }
 
     private func setDraw(start: CGPoint, end: CGPoint, dx: CGFloat, dy: CGFloat) {
@@ -78,16 +112,26 @@ public class FSMLine: SKSpriteNode {
         
         let vertices = self.bodyVertices
         let path = UIBezierPath()
+        let pathFull = UIBezierPath()
         
         let firstPos = view.convert(vertices[0], from: scene)
         let secondPos = view.convert(vertices[1], from: scene)
         let thirdPos = view.convert(vertices[2], from: scene)
         
-        path.addArrowBody(start: firstPos, end: secondPos, controlPoint: thirdPos)
-        
-        let pathFull = UIBezierPath()
-        pathFull.addArrowBody(start: firstPos, end: secondPos, controlPoint: thirdPos)
-        pathFull.addArrowBody(start: secondPos, end: firstPos, controlPoint: thirdPos)
+        if vertices.count == 3 {
+            path.addArrowBody(start: firstPos, end: secondPos, controlPoint: thirdPos)
+            
+            pathFull.addArrowBody(start: firstPos, end: secondPos, controlPoint: thirdPos)
+            pathFull.addArrowBody(start: secondPos, end: firstPos, controlPoint: thirdPos)
+        } else {
+            let fourthPos = view.convert(vertices[3], from: scene)
+            path.addArrowBody(start: firstPos, end: secondPos, controlPoint: fourthPos)
+            
+            pathFull.move(to: firstPos)
+            pathFull.addCurve(to: secondPos, controlPoint1: thirdPos, controlPoint2: fourthPos)
+            pathFull.addCurve(to: firstPos, controlPoint1: fourthPos, controlPoint2: thirdPos)
+            
+        }
         
         return (oneWay: path, full: pathFull)
     }
