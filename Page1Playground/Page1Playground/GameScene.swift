@@ -11,6 +11,7 @@ public class GameScene: SKScene {
         
         self.backgroundColor = UIColor(hexString: "#F6F8E8")
              //UIColor(hexString: "#FFFBF3")
+        setupCamera()
         setupStates()
         setupLines()
     }
@@ -63,6 +64,16 @@ public class GameScene: SKScene {
         
     }
     
+    
+    private func setupCamera() {
+//        let cameraNode = SKCameraNode(fileNamed: "cameraNode")!
+//        cameraNode.position = CGPoint(x: 0,y: 0)
+//       // cameraNode.isUserInteractionEnabled = false
+//        self.addChild(cameraNode)
+//        self.camera = cameraNode
+    }
+    
+    
     @objc static override public var supportsSecureCoding: Bool {
         // SKNode conforms to NSSecureCoding, so any subclass going
         // through the decoding process must support secure coding
@@ -73,8 +84,11 @@ public class GameScene: SKScene {
     
     func touchDown(atPoint pos : CGPoint) {
         print(pos)
+        print(self.nodes(at: pos).count)
         for node in self.nodes(at: pos) {
-            print(node.name)
+            if let state = node as? FSMState {
+                state.gotTouched(scene: self)
+            }
         }
     }
     

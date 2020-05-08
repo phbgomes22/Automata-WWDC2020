@@ -39,12 +39,12 @@ public class FSMLine: SKSpriteNode {
         self.body.strokeColor = .clear
         self.body.fillColor = .clear
         self.body.lineWidth = 3.0
-        self.body.isAntialiased = false
+       // self.body.isAntialiased = false
         self.addChild(body)
         
         let arrowHead = UIBezierPath()
         
-        let vertices = arrowHead.addArrowHead(end: end, controlPoint: ctrlPoint, pointerLineLength: 40, arrowAngle: CGFloat.pi/8)
+        let vertices = arrowHead.addArrowHead(end: end, controlPoint: ctrlPoint, pointerLineLength: 30, arrowAngle: CGFloat.pi/8)
         self.head.path = arrowHead.cgPath
         self.head.strokeColor = .clear
         self.head.lineWidth = 2.0
