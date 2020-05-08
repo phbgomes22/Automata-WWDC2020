@@ -68,7 +68,7 @@ public class GameScene: SKScene {
         line4.addGradient(view: self.view!, scene: self)
         
         
-        let line5 = FSMLine(from: states[2].edgePosition(at: CGFloat.pi*0.6), to: states[2].edgePosition(at: CGFloat.pi*0.3), dx1: 0.8, dy1: 3.2, dx2: 1.6, dy2: 2.0, headSize: 20)
+        let line5 = FSMLine(from: states[2].edgePosition(at: CGFloat.pi*0.6), to: states[2].edgePosition(at: CGFloat.pi*0.1), dx1: 0.9, dy1: 2.8, dx2: 1.8, dy2: 1.8, headSize: 20)
         self.addChild(line5)
         line5.addGradient(view: self.view!, scene: self)
         
