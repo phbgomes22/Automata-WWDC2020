@@ -210,7 +210,7 @@ extension UIBezierPath {
         self.addQuadCurve(to: end, controlPoint: controlPoint)
     }
     
-    func addArrowHead(end: CGPoint, controlPoint: CGPoint, pointerLineLength: CGFloat, arrowAngle: CGFloat) -> (left: CGPoint, right: CGPoint) {
+    func addArrowHead(end: CGPoint, controlPoint: CGPoint, pointerLineLength: CGFloat, arrowAngle: CGFloat) {
         
         self.move(to: end)
         
@@ -224,7 +224,6 @@ extension UIBezierPath {
         self.addLine(to: arrowLine2)
         self.close()
         
-        return (left: arrowLine1, right: arrowLine2)
     }
 
 }

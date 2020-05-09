@@ -12,26 +12,26 @@ import SpriteKit
 // MARK: - FSMLine
 
 public class FSMLine: SKSpriteNode {
-    
-    private var head: SKShapeNode = SKShapeNode()
+
     private var body: SKShapeNode = SKShapeNode()
     private var label: SKLabelNode = SKLabelNode()
-    private var headPos: CGPoint = CGPoint.zero
-    private var headVertices: [CGPoint] = []
     private var bodyVertices: [CGPoint] = []
     
     private var gradientMaskBody: CAShapeLayer = CAShapeLayer()
     private var curveLayerBody: CAShapeLayer = CAShapeLayer()
-    private var shapeMaskHead: CAShapeLayer = CAShapeLayer()
     
-    public init(from point1: CGPoint, to point2: CGPoint, dx: CGFloat, dy: CGFloat) {
+    private var headSize: CGFloat = 0.0
+    
+    public init(from point1: CGPoint, to point2: CGPoint, dx: CGFloat, dy: CGFloat, headSize: CGFloat = 30.0) {
         super.init(texture: nil, color: .clear, size: .zero)
+        self.headSize = headSize
         self.setDraw(start: point1, end: point2, dx: dx, dy: dy)
     }
     
     
     public init(from point1: CGPoint, to point2: CGPoint, dx1: CGFloat, dy1: CGFloat, dx2: CGFloat, dy2: CGFloat, headSize: CGFloat) {
         super.init(texture: nil, color: .clear, size: .zero)
+        self.headSize = headSize
         self.setDraw(start: point1, end: point2, dx1: dx1, dy1: dy1, dx2: dx2, dy2: dy2, headSize: headSize)
     }
 
@@ -65,23 +65,7 @@ public class FSMLine: SKSpriteNode {
         curveLayerBody.add(animation, forKey: "moving")
         gradientMaskBody.add(animation, forKey: "moving")
         
-        
-        
-        let pathUI = createHeadUI(view: scene.view!, scene: scene)
-        
-        let animation2 = CABasicAnimation(keyPath: "path")
-        animation2.duration = 0.2
-        animation2.toValue = pathUI.cgPath
-        //   animation.toValue = pathsUI2.full.cgPath
-        animation2.timingFunction = CAMediaTimingFunction.init(name: .easeIn)
-        
-        // The next two line preserves the final shape of animation,
-        // if you remove it the shape will return to the original shape after the animation finished
-        animation2.fillMode = .forwards
-        animation2.isRemovedOnCompletion = false
-        
-        
-        shapeMaskHead.add(animation2, forKey: "moving")
+    
     }
     
     private func setDraw(start: CGPoint, end: CGPoint, dx1: CGFloat, dy1: CGFloat, dx2: CGFloat, dy2: CGFloat, headSize: CGFloat) {
@@ -89,71 +73,38 @@ public class FSMLine: SKSpriteNode {
         
         let ctrlPoint1 = CGPoint(x: start.x*dx1, y: end.y*dy1)
         let ctrlPoint2 = CGPoint(x: start.x*dx2, y: end.y*dy2)
+        
+        arrow.move(to: start)
         arrow.addCurve(to: end, controlPoint1: ctrlPoint1, controlPoint2: ctrlPoint2)
+        arrow.addArrowHead(end: end, controlPoint: ctrlPoint2, pointerLineLength: self.headSize, arrowAngle: CGFloat.pi/8)
+        arrow.move(to: end)
+        arrow.addCurve(to:start, controlPoint1: ctrlPoint2, controlPoint2: ctrlPoint1)
+        arrow.close()
+        
         bodyVertices = [start, end, ctrlPoint1, ctrlPoint2]
         self.body.path = arrow.cgPath
-        self.body.strokeColor = .clear
-        self.body.fillColor = .clear
+        self.body.strokeColor = UIColor(hexString: "#333333")
+        self.body.fillColor = UIColor(hexString: "#333333")
         self.body.lineWidth = 3.0
         self.addChild(body)
-
-        let arrowHead = UIBezierPath()
-
-        let vertices = arrowHead.addArrowHead(end: end, controlPoint: ctrlPoint2, pointerLineLength: headSize, arrowAngle: CGFloat.pi/8)
-        self.head.path = arrowHead.cgPath
-        self.head.strokeColor = .clear
-        self.head.lineWidth = 2.0
-        self.head.fillColor = .clear
-        self.headPos = end
-
-        headVertices = [vertices.left, vertices.right, end]
-
-        self.addChild(head)
     }
 
     private func setDraw(start: CGPoint, end: CGPoint, dx: CGFloat, dy: CGFloat) {
         
-        let arrow = UIBezierPath()
+        let bodyPath = UIBezierPath()
         
         let ctrlPoint = CGPoint(x: start.x*dx, y: end.y*dy )
-        arrow.addArrowBody(start: start, end: end, controlPoint: ctrlPoint)
+        bodyPath.addArrowBody(start: start, end: end, controlPoint: ctrlPoint)
+        bodyPath.addArrowHead(end: end, controlPoint: ctrlPoint, pointerLineLength: 30, arrowAngle: CGFloat.pi/8)
+        bodyPath.addArrowBody(start: end, end: start, controlPoint: ctrlPoint)
+        bodyPath.close()
         bodyVertices = [start, end, ctrlPoint]
-        self.body.path = arrow.cgPath
-        self.body.strokeColor = .clear
-        self.body.fillColor = .clear
+        self.body.path = bodyPath.cgPath
+        self.body.strokeColor = UIColor(hexString: "#333333")
+        self.body.fillColor = UIColor(hexString: "#333333")
         self.body.lineWidth = 3.0
         self.addChild(body)
         
-        let arrowHead = UIBezierPath()
-        
-        let vertices = arrowHead.addArrowHead(end: end, controlPoint: ctrlPoint, pointerLineLength: 30, arrowAngle: CGFloat.pi/8)
-        self.head.path = arrowHead.cgPath
-        self.head.strokeColor = .clear
-        self.head.lineWidth = 2.0
-        self.head.fillColor = .clear
-        self.headPos = end
-        
-        headVertices = [vertices.left, vertices.right, end]
-        
-        self.addChild(head)
-        
-    }
-    
-    /// geths the cgpath written in spritekit and converts it to uikit
-    private func createHeadUI(view: SKView, scene: SKScene) -> UIBezierPath {
-        
-        let vertices = self.headVertices
-        let path = UIBezierPath()
-        
-        let firstPos = view.convert(vertices[0], from: scene)
-        let secondPos = view.convert(vertices[1], from: scene)
-        let thirdPos = view.convert(vertices[2], from: scene)
-        
-        path.move(to: firstPos)
-        path.addLine(to: secondPos)
-        path.addLine(to: thirdPos)
-        path.close()
-        return path
     }
     
     private func createBodyUI(view: SKView, scene: SKScene) -> (oneWay: UIBezierPath, full: UIBezierPath) {
@@ -168,15 +119,19 @@ public class FSMLine: SKSpriteNode {
         
         if vertices.count == 3 {
             path.addArrowBody(start: firstPos, end: secondPos, controlPoint: thirdPos)
+            path.addArrowHead(end: secondPos, controlPoint: thirdPos, pointerLineLength: self.headSize, arrowAngle: CGFloat.pi/8)
             
             pathFull.addArrowBody(start: firstPos, end: secondPos, controlPoint: thirdPos)
+            pathFull.addArrowHead(end: secondPos, controlPoint: thirdPos, pointerLineLength: self.headSize, arrowAngle: CGFloat.pi/8)
             pathFull.addArrowBody(start: secondPos, end: firstPos, controlPoint: thirdPos)
         } else {
             let fourthPos = view.convert(vertices[3], from: scene)
             path.addArrowBody(start: firstPos, end: secondPos, controlPoint: fourthPos)
+            path.addArrowHead(end: secondPos, controlPoint: fourthPos, pointerLineLength: self.headSize, arrowAngle: CGFloat.pi/8)
             
             pathFull.move(to: firstPos)
             pathFull.addCurve(to: secondPos, controlPoint1: thirdPos, controlPoint2: fourthPos)
+            pathFull.addArrowHead(end: secondPos, controlPoint: fourthPos, pointerLineLength: self.headSize, arrowAngle: CGFloat.pi/8)
             pathFull.addCurve(to: firstPos, controlPoint1: fourthPos, controlPoint2: thirdPos)
             
         }
@@ -191,22 +146,6 @@ public class FSMLine: SKSpriteNode {
         let pathsUI2 = createBodyUI(view: view, scene: scene)
         
         draweCurve(path: pathsUI2.oneWay, fullPath: pathsUI2.full,  view: view)
-        
-        // HEAD --
-        
-        let gradientLayer = CAGradientLayer()
-        
-        let pathUI = createHeadUI(view: view, scene: scene)
-        
-        gradientLayer.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: view.bounds.height)
-        gradientLayer.colors = CAGradientLayer.pg1Colors
-        gradientLayer.startPoint = CAGradientLayer.pg1StartPoint
-        gradientLayer.endPoint = CAGradientLayer.pg1EndPoint
-    
-        shapeMaskHead.path = pathUI.cgPath
-        shapeMaskHead.lineWidth = 2.0
-        gradientLayer.mask = shapeMaskHead
-        view.layer.insertSublayer(gradientLayer, at: 0)
         
     }
     
