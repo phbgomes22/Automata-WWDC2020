@@ -20,6 +20,10 @@ public class FSMLine: SKSpriteNode {
     private var headVertices: [CGPoint] = []
     private var bodyVertices: [CGPoint] = []
     
+    private var gradientMaskBody: CAShapeLayer = CAShapeLayer()
+    private var curveLayerBody: CAShapeLayer = CAShapeLayer()
+    private var shapeMaskHead: CAShapeLayer = CAShapeLayer()
+    
     public init(from point1: CGPoint, to point2: CGPoint, dx: CGFloat, dy: CGFloat) {
         super.init(texture: nil, color: .clear, size: .zero)
         self.setDraw(start: point1, end: point2, dx: dx, dy: dy)
@@ -42,6 +46,44 @@ public class FSMLine: SKSpriteNode {
         self.label.position = pos
     }
     
+    public func gotUsed(scene: SKScene) {
+        
+        let animation = CABasicAnimation(keyPath: "lineWidth")
+        animation.duration = 0.2
+        
+       // let pathsUI2 = createBodyUI(view: scene.view!, scene: scene)
+        animation.toValue = 12
+        animation.autoreverses = true
+     //   animation.toValue = pathsUI2.full.cgPath
+        animation.timingFunction = CAMediaTimingFunction.init(name: .easeIn)
+        
+        // The next two line preserves the final shape of animation,
+        // if you remove it the shape will return to the original shape after the animation finished
+        animation.fillMode = .forwards
+        animation.isRemovedOnCompletion = false
+        
+        curveLayerBody.add(animation, forKey: "moving")
+        gradientMaskBody.add(animation, forKey: "moving")
+        
+        
+        
+        let pathUI = createHeadUI(view: scene.view!, scene: scene)
+        
+        let animation2 = CABasicAnimation(keyPath: "path")
+        animation2.duration = 0.2
+        animation2.toValue = pathUI.cgPath
+        //   animation.toValue = pathsUI2.full.cgPath
+        animation2.timingFunction = CAMediaTimingFunction.init(name: .easeIn)
+        
+        // The next two line preserves the final shape of animation,
+        // if you remove it the shape will return to the original shape after the animation finished
+        animation2.fillMode = .forwards
+        animation2.isRemovedOnCompletion = false
+        
+        
+        shapeMaskHead.add(animation2, forKey: "moving")
+    }
+    
     private func setDraw(start: CGPoint, end: CGPoint, dx1: CGFloat, dy1: CGFloat, dx2: CGFloat, dy2: CGFloat, headSize: CGFloat) {
         let arrow = UIBezierPath()
         
@@ -53,7 +95,6 @@ public class FSMLine: SKSpriteNode {
         self.body.strokeColor = .clear
         self.body.fillColor = .clear
         self.body.lineWidth = 3.0
-        // self.body.isAntialiased = false
         self.addChild(body)
 
         let arrowHead = UIBezierPath()
@@ -81,7 +122,6 @@ public class FSMLine: SKSpriteNode {
         self.body.strokeColor = .clear
         self.body.fillColor = .clear
         self.body.lineWidth = 3.0
-       // self.body.isAntialiased = false
         self.addChild(body)
         
         let arrowHead = UIBezierPath()
@@ -162,44 +202,45 @@ public class FSMLine: SKSpriteNode {
         gradientLayer.colors = CAGradientLayer.pg1Colors
         gradientLayer.startPoint = CAGradientLayer.pg1StartPoint
         gradientLayer.endPoint = CAGradientLayer.pg1EndPoint
-        
-        let shapeMask = CAShapeLayer()
-
-        shapeMask.path = pathUI.cgPath
-        gradientLayer.mask = shapeMask
+    
+        shapeMaskHead.path = pathUI.cgPath
+        shapeMaskHead.lineWidth = 2.0
+        gradientLayer.mask = shapeMaskHead
         view.layer.insertSublayer(gradientLayer, at: 0)
+        
     }
     
     
     private func draweCurve(path: UIBezierPath, fullPath: UIBezierPath, view: SKView) {
         // ------- 1 --------
-        let curveLayer = CAShapeLayer()
-        curveLayer.contentsScale = UIScreen.main.scale
-        curveLayer.frame = CGRect(origin: .zero, size: CGSize(width: view.bounds.width, height: view.bounds.height))
-        curveLayer.fillColor = UIColor.clear.cgColor
-        curveLayer.strokeColor = UIColor.clear.cgColor
-        curveLayer.lineWidth = 4
-        curveLayer.path = fullPath.cgPath
+        curveLayerBody = CAShapeLayer()
+        curveLayerBody.contentsScale = UIScreen.main.scale
+        curveLayerBody.frame = CGRect(origin: .zero, size: CGSize(width: view.bounds.width, height: view.bounds.height))
+        curveLayerBody.fillColor = UIColor.clear.cgColor
+        curveLayerBody.strokeColor = UIColor.clear.cgColor
+        curveLayerBody.lineWidth = 4
+        curveLayerBody.path = fullPath.cgPath
+        
         // ------- 2 --------
         // close the path on its self
-        addGradientLayer(to: curveLayer, path: fullPath)
+        addGradientLayer(to: curveLayerBody, path: fullPath)
         
-        view.layer.addSublayer(curveLayer)
+        view.layer.addSublayer(curveLayerBody)
     }
 
     private func addGradientLayer(to layer: CALayer, path: UIBezierPath) {
         // ------- 3 --------
-        let gradientMask = CAShapeLayer()
-        gradientMask.contentsScale = UIScreen.main.scale
+        gradientMaskBody = CAShapeLayer()
+        gradientMaskBody.contentsScale = UIScreen.main.scale
         // ------- 4 --------
-        gradientMask.strokeColor = UIColor.white.cgColor
-        gradientMask.path = path.cgPath
-        gradientMask.lineWidth = 5
+        gradientMaskBody.strokeColor = UIColor.white.cgColor
+        gradientMaskBody.path = path.cgPath
+        gradientMaskBody.lineWidth = 5
 
         // ------- 5 --------
         let gradientLayer = CAGradientLayer()
         // ------- 6 --------
-        gradientLayer.mask = gradientMask
+        gradientLayer.mask = gradientMaskBody
         gradientLayer.frame = layer.frame
         gradientLayer.contentsScale = UIScreen.main.scale
         
@@ -208,5 +249,6 @@ public class FSMLine: SKSpriteNode {
         gradientLayer.endPoint = CAGradientLayer.pg1EndPoint
         
         layer.addSublayer(gradientLayer)
+        
     }
 }

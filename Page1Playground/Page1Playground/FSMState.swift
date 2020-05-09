@@ -18,6 +18,7 @@ public class FSMState: SKShapeNode {
     private var fillGradient = CAGradientLayer()
     private var strokeGradient = CAGradientLayer()
     private var maskStrokeLayer = CAShapeLayer()
+    private var isAnimating = false
     
     public init(color: UIColor = UIColor.white, side: CGFloat = 50.0, position: CGPoint, name: String) {
         super.init()
@@ -44,12 +45,12 @@ public class FSMState: SKShapeNode {
         self.position = position
         self.strokeColor = UIColor.clear
         self.lineWidth = 3
-        self.widthLine = side/9.0
+        self.widthLine = side/10
         
     }
     
     public func setGradient(view: SKView, scene: SKScene) {
-        strokeGradient = draweCurve(path: self.path!, view: view, scene: scene)
+        strokeGradient = draweCurve(path: UIBezierPath(ovalIn: CGRect(x: -self.radius + 4, y: -self.radius + 4, width: 2*(self.radius - 4), height: 2*(self.radius - 4))).cgPath, view: view, scene: scene)
         
         // HEAD --
         
@@ -70,8 +71,8 @@ public class FSMState: SKShapeNode {
         fillGradient.opacity = 0.0
     }
     
-    public func gotTouched(scene: SKScene) {
-        
+    public func gotTouched(view: SKView) {
+        if(isAnimating) {return}
         //        // fill animation
         let gradientChangeAnimation = CABasicAnimation(keyPath: #keyPath(CAGradientLayer.opacity))
         gradientChangeAnimation.duration = 0.15
@@ -103,6 +104,17 @@ public class FSMState: SKShapeNode {
         strokePath.timingFunction = CAMediaTimingFunction.init(name: .easeOut)
         strokePath.autoreverses = true
         self.maskStrokeLayer.add(strokePath, forKey: "path")
+
+        let originalTransform = view.transform
+        let scaled = originalTransform.scaledBy(x: 1.012, y: 1.012)
+
+        UIView.animate(withDuration: 0.3, delay: 0.0, options: [.curveEaseOut, .autoreverse], animations: {
+            view.transform = scaled
+            self.isAnimating = true
+        }, completion: { (_) in
+            view.transform = originalTransform
+            self.isAnimating = false
+        })
         
     }
     
@@ -110,20 +122,20 @@ public class FSMState: SKShapeNode {
     private func draweCurve(path: CGPath, view: SKView, scene: SKScene) -> CAGradientLayer {
         // ------- 1 --------
         let curveLayer = CAShapeLayer()
-        curveLayer.contentsScale = UIScreen.main.scale
+        curveLayer.contentsScale = CGFloat(view.transform.scale)
         curveLayer.frame = CGRect(origin: .zero, size: CGSize(width: view.bounds.width, height: view.bounds.height))
         // ------- 2 --------
         // close the path on its self
-        let gl = addGradientLayer(to: curveLayer, path: path, at: view.convert(self.position, from: scene))
+        let gl = addGradientLayer(to: curveLayer, path: path, at: view.convert(self.position, from: scene), view: view)
         
         view.layer.addSublayer(curveLayer)
         return gl
     }
     
-    private func addGradientLayer(to layer: CALayer, path: CGPath, at pos: CGPoint) -> CAGradientLayer {
+    private func addGradientLayer(to layer: CALayer, path: CGPath, at pos: CGPoint, view: SKView) -> CAGradientLayer {
         // ------- 3 --------
         maskStrokeLayer = CAShapeLayer()
-        maskStrokeLayer.contentsScale = UIScreen.main.scale
+        maskStrokeLayer.contentsScale = CGFloat(view.transform.scale)
         // ------- 4 --------
         maskStrokeLayer.strokeColor = UIColor.white.cgColor
         maskStrokeLayer.path = path
