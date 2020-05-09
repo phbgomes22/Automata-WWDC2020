@@ -6,14 +6,20 @@ import UIKit
 public class GameScene: SKScene {
     
     private var states : [FSMState] = []
+    private var isFirstTap: Bool = true
     
     override public func didMove(to view: SKView) {
         
         self.backgroundColor = UIColor(hexString: "#F6F8E8")
              //UIColor(hexString: "#FFFBF3")
-        setupCamera()
-        setupStates()
-        setupLines()
+        
+    }
+    
+    private func setupBoard() {
+        DispatchQueue.main.asyncAfter(deadline: .now()) {
+            self.setupStates()
+            self.setupLines()
+        }
     }
     
     private func setupStates() {
@@ -52,37 +58,32 @@ public class GameScene: SKScene {
         let line1 = FSMLine(from: states[0].edgePosition(at: CGFloat.pi/1.3), to: states[1].edgePosition(at: CGFloat.pi), dx: 1.2, dy: 0.5)
         self.addChild(line1)
         line1.addGradient(view: self.view!, scene: self)
+        line1.setLabel(at: CGPoint(x: -210.0, y: 90.0), text: "1️⃣")
         
         let line2 = FSMLine(from: states[0].edgePosition(at: -CGFloat.pi/8), to: states[2].edgePosition(at: CGFloat.pi*1.4), dx: -0.5, dy: -5.5)
         self.addChild(line2)
         line2.addGradient(view: self.view!, scene: self)
+        line2.setLabel(at: CGPoint(x: -40.0, y: 30.0), text: "2️⃣")
         
         
         let line3 = FSMLine(from: states[1].edgePosition(at: -CGFloat.pi/2.3), to: states[0].edgePosition(at: CGFloat.pi/3), dx: 1.2, dy: -0.3)
         self.addChild(line3)
         line3.addGradient(view: self.view!, scene: self)
+        line3.setLabel(at: CGPoint(x: 50.0, y: -100.0), text: "3️⃣")
         
         
         let line4 = FSMLine(from: states[2].edgePosition(at: CGFloat.pi*0.9), to: states[1].edgePosition(at: -CGFloat.pi/8), dx: 0.6, dy: 0.52)
         self.addChild(line4)
         line4.addGradient(view: self.view!, scene: self)
+        line4.setLabel(at: CGPoint(x: 90.0, y: 125.0), text: "4️⃣")
         
         
         let line5 = FSMLine(from: states[2].edgePosition(at: CGFloat.pi*0.6), to: states[2].edgePosition(at: CGFloat.pi*0.1), dx1: 0.9, dy1: 2.8, dx2: 1.8, dy2: 1.8, headSize: 20)
         self.addChild(line5)
         line5.addGradient(view: self.view!, scene: self)
+        line5.setLabel(at: CGPoint(x: 215.0, y: 130.0), text: "5️⃣")
         
     }
-    
-    
-    private func setupCamera() {
-//        let cameraNode = SKCameraNode(fileNamed: "cameraNode")!
-//        cameraNode.position = CGPoint(x: 0,y: 0)
-//       // cameraNode.isUserInteractionEnabled = false
-//        self.addChild(cameraNode)
-//        self.camera = cameraNode
-    }
-    
     
     @objc static override public var supportsSecureCoding: Bool {
         // SKNode conforms to NSSecureCoding, so any subclass going
@@ -93,13 +94,18 @@ public class GameScene: SKScene {
     }
     
     func touchDown(atPoint pos : CGPoint) {
-        print(pos)
-        print(self.nodes(at: pos).count)
+        
+        if isFirstTap {
+            self.setupBoard()
+            isFirstTap = false
+        }
         for node in self.nodes(at: pos) {
             if let state = node as? FSMState {
                 state.gotTouched(scene: self)
+                state.setGradient(view: self.view!, scene: self)
             }
         }
+        
     }
     
     override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -171,4 +177,10 @@ extension CAGradientLayer {
     static let pg1StartPoint = CGPoint(x: 0.6, y: 0.1)
     static let pg1EndPoint = CGPoint(x: 0.3, y: 0.8)
     
+}
+
+extension CGAffineTransform {
+    public var scale: Double {
+        return sqrt(Double(a * a + c * c))
+    }
 }

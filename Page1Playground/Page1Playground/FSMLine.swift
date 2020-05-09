@@ -15,6 +15,7 @@ public class FSMLine: SKSpriteNode {
     
     private var head: SKShapeNode = SKShapeNode()
     private var body: SKShapeNode = SKShapeNode()
+    private var label: SKLabelNode = SKLabelNode()
     private var headPos: CGPoint = CGPoint.zero
     private var headVertices: [CGPoint] = []
     private var bodyVertices: [CGPoint] = []
@@ -32,6 +33,13 @@ public class FSMLine: SKSpriteNode {
 
     public required init?(coder aDecoder: NSCoder) {
        fatalError("init(coder:) has not been implemented")
+    }
+    
+    public func setLabel(at pos: CGPoint, text: String) {
+        self.label.text = text
+        
+        self.addChild(label)
+        self.label.position = pos
     }
     
     private func setDraw(start: CGPoint, end: CGPoint, dx1: CGFloat, dy1: CGFloat, dx2: CGFloat, dy2: CGFloat, headSize: CGFloat) {
@@ -150,7 +158,7 @@ public class FSMLine: SKSpriteNode {
         
         let pathUI = createHeadUI(view: view, scene: scene)
         
-        gradientLayer.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        gradientLayer.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: view.bounds.height)
         gradientLayer.colors = CAGradientLayer.pg1Colors
         gradientLayer.startPoint = CAGradientLayer.pg1StartPoint
         gradientLayer.endPoint = CAGradientLayer.pg1EndPoint
@@ -167,7 +175,7 @@ public class FSMLine: SKSpriteNode {
         // ------- 1 --------
         let curveLayer = CAShapeLayer()
         curveLayer.contentsScale = UIScreen.main.scale
-        curveLayer.frame = CGRect(origin: .zero, size: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
+        curveLayer.frame = CGRect(origin: .zero, size: CGSize(width: view.bounds.width, height: view.bounds.height))
         curveLayer.fillColor = UIColor.clear.cgColor
         curveLayer.strokeColor = UIColor.clear.cgColor
         curveLayer.lineWidth = 4

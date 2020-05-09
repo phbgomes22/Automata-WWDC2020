@@ -52,14 +52,18 @@ public class FSMState: SKShapeNode {
         strokeGradient = draweCurve(path: self.path!, view: view, scene: scene)
         
         // HEAD --
-
-        fillGradient.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        
+        fillGradient.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: view.bounds.height)
         fillGradient.colors = CAGradientLayer.pg1Colors
         fillGradient.startPoint = CAGradientLayer.pg1StartPoint
         fillGradient.endPoint = CAGradientLayer.pg1EndPoint
+        fillGradient.contentsScale = CGFloat(view.contentScaleFactor)
         
         let shapeMask = CAShapeLayer()
-        shapeMask.position = view.convert(self.position, from: scene)
+        let uiPos = scene.convertPoint(toView: self.position)
+        print(uiPos)
+        print(" - - - - -")
+        shapeMask.position = uiPos
         shapeMask.path = self.path!
         fillGradient.mask = shapeMask
         view.layer.insertSublayer(fillGradient, at: 0)
@@ -100,35 +104,6 @@ public class FSMState: SKShapeNode {
         strokePath.autoreverses = true
         self.maskStrokeLayer.add(strokePath, forKey: "path")
         
-        
-        // animate tilt
-        
-        let view = scene.view!
-        print("hun")
-        let random: CGFloat = CGFloat(Int.random(in: -1...1))
-        let random2: CGFloat = CGFloat(Int.random(in: -1...1))
-        
-        let originalTransform = view.transform
-        let scaled = originalTransform.scaledBy(x: 1.02, y: 1.02)
-        let scaledAndTranslated = scaled.translatedBy(x: 2*random, y: 2*random2)
-
-        UIView.animate(withDuration: 0.2, delay: 0.0, options: [.curveEaseOut, .autoreverse], animations: {
-            view.transform = scaledAndTranslated
-        }, completion: { (_) in
-            view.transform = originalTransform
-        })
-        
-        let keyPath = random > 0 ? "transform.rotation.x" : "transform.rotation.y"
-
-        let multiplier: Double = Bool.random() ? 1.0 : -1.0
-        let rotation: CABasicAnimation = CABasicAnimation(keyPath: keyPath)
-        rotation.toValue = multiplier*Double.pi/28
-        rotation.duration = 0.3 // or however long you want ...
-        rotation.isCumulative = false
-        strokePath.fillMode = CAMediaTimingFillMode.forwards
-        strokePath.timingFunction = CAMediaTimingFunction.init(name: .easeInEaseOut)
-        strokePath.autoreverses = true
-        view.layer.add(rotation, forKey: "rotationAnimation")
     }
     
     
@@ -136,7 +111,7 @@ public class FSMState: SKShapeNode {
         // ------- 1 --------
         let curveLayer = CAShapeLayer()
         curveLayer.contentsScale = UIScreen.main.scale
-        curveLayer.frame = CGRect(origin: .zero, size: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
+        curveLayer.frame = CGRect(origin: .zero, size: CGSize(width: view.bounds.width, height: view.bounds.height))
         // ------- 2 --------
         // close the path on its self
         let gl = addGradientLayer(to: curveLayer, path: path, at: view.convert(self.position, from: scene))
@@ -178,5 +153,5 @@ public class FSMState: SKShapeNode {
         
         return CGPoint(x: newX, y: newY)
     }
-    
 }
+
