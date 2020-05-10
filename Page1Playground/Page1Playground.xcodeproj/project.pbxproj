@@ -20,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4220FDC62468715700EE1E95 /* Futura.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; path = Futura.ttc; sourceTree = "<group>"; };
 		42EC4BF02463760E00281D12 /* Page1Playground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Page1Playground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		42EC4BF32463760E00281D12 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		42EC4BF52463760E00281D12 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -64,6 +65,7 @@
 		42EC4BF22463760E00281D12 /* Page1Playground */ = {
 			isa = PBXGroup;
 			children = (
+				4220FDC62468715700EE1E95 /* Futura.ttc */,
 				42EC4BF32463760E00281D12 /* AppDelegate.swift */,
 				42EC4BF52463760E00281D12 /* GameScene.sks */,
 				42EC4BF92463760E00281D12 /* GameScene.swift */,

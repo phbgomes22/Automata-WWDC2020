@@ -59,14 +59,12 @@ public class FSMState: SKShapeNode {
         let holderPath = UIBezierPath()
         
         holderPath.addArc(withCenter: CGPoint(x: 0.0, y: 0.0), radius: self.radius*lambda, startAngle: .pi*1.1, endAngle:  -.pi*0.45, clockwise: false)
-        let pos = self.internalEdge(at: .pi*1.0, lambdaRadius: lambda)
         
         let newCenter = CGPoint(x: -self.radius*1.25, y: -self.radius*1.5)
         self.holderPos = newCenter
         holderPath.addArc(withCenter: newCenter, radius: self.radius*0.7, startAngle: .pi*0.0, endAngle:  .pi/2, clockwise: false)
         
-        
-        
+        holderPath.close()
         holder.path = holderPath.cgPath
         holder.strokeColor = UIColor(hexString: "#DFD8CD")
         holder.lineWidth = 6
@@ -75,12 +73,18 @@ public class FSMState: SKShapeNode {
         holder.zPosition = -1
         
         self.addChild(label)
-        
+    }
+    
+    public func getOutput() -> String {
+        return self.label.text ?? ""
     }
     
     public func setOutput(text: String, labelPos: CGPoint, rotate: CGFloat) {
         self.label.text = text
-        
+        self.label.fontName = "Futura-Bold"
+        self.label.fontColor = UIColor(hexString: "#333333")
+        self.label.fontSize = 30
+                
         let skaction = SKAction.rotate(byAngle: rotate, duration: 0.0)
         holder.run(skaction)
         self.label.position = labelPos
@@ -114,7 +118,7 @@ public class FSMState: SKShapeNode {
       
         var count:CGFloat = 1.0
         for arc in arcs {
-            let scaleAction = SKAction.scale(by: 1.0 + 0.1*count, duration: 0.15)
+            let scaleAction = SKAction.scale(by: 1.0 + 0.15*count, duration: 0.22)
             let seqScale = SKAction.sequence([scaleAction, scaleAction.reversed()])
             arc.run(seqScale)
             count += 1.0

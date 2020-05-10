@@ -12,18 +12,24 @@ public class GameScene: SKScene {
     public var fsmString: String = "🤖🎱🔥🎩🎩🐶"
     public var firstState: FSMLogic.StatesPG1 = FSMLogic.StatesPG1.first
     
-    private var winLabel: UILabel = UILabel()
+    private var wordLabel: SKLabelNode = SKLabelNode()
     
     override public func didMove(to view: SKView) {
         
         //self.backgroundColor = UIColor(hexString: "#F6F8E8")
         self.backgroundColor = UIColor(hexString: "#E4DED3")
         self.setupBoard()
+        self.setWordLabel()
     }
     
-    private func setLabel() {
+    private func setWordLabel() {
+        self.addChild(wordLabel)
         
-        
+        wordLabel.fontSize = 50
+        wordLabel.position = CGPoint(x: 0.0, y: -250.0)
+        wordLabel.fontColor = UIColor(hexString: "#333333")
+        wordLabel.fontName =  "Futura-Bold"
+        wordLabel.color = UIColor(hexString: "#FDFDFD")
     }
     
     private func setupBoard() {
@@ -41,7 +47,7 @@ public class GameScene: SKScene {
                         position: CGPoint(x: -160, y: -50),
                         name: "state1")
         self.addChild(state1)
-        state1.setOutput(text: "1️⃣", labelPos: CGPoint(x: -48, y: -68), rotate: 0.0)
+        state1.setOutput(text: "N", labelPos: CGPoint(x: -48, y: -68), rotate: 0.0)
         states.append(state1)
         
         let state2 = FSMState(
@@ -50,7 +56,7 @@ public class GameScene: SKScene {
                         position: CGPoint(x: -40, y: 210),
                         name: "state2")
         self.addChild(state2)
-        state2.setOutput(text: "2️⃣", labelPos: CGPoint(x: 46, y: 46), rotate: .pi)
+        state2.setOutput(text: "A", labelPos: CGPoint(x: 46, y: 46), rotate: .pi)
         states.append(state2)
         
         let state3 = FSMState(
@@ -60,7 +66,7 @@ public class GameScene: SKScene {
                         name: "state3")
                
         self.addChild(state3)
-        state3.setOutput(text: "3️⃣", labelPos: CGPoint(x: 26, y: -82), rotate: .pi/3)
+        state3.setOutput(text: "B", labelPos: CGPoint(x: 26, y: -82), rotate: .pi/3)
         states.append(state3)
     }
     
@@ -186,6 +192,10 @@ public class GameScene: SKScene {
                 
                 DispatchQueue.main.asyncAfter(deadline: .now()) {
                     currStateNode.gotTouched(view: self.view!)
+                    
+                    let output = currStateNode.getOutput()
+                    
+                    self.wordLabel.text = (self.wordLabel.text ?? "") + output
                 }
                 
                 usleep(1400000)
