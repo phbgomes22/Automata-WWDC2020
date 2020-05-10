@@ -58,18 +58,18 @@ public class FSMState: SKShapeNode {
         
         let holderPath = UIBezierPath()
         
-        holderPath.addArc(withCenter: CGPoint(x: 0.0, y: 0.0), radius: self.radius*lambda, startAngle: .pi*0.9, endAngle:  -.pi*0.45, clockwise: false)
+        holderPath.addArc(withCenter: CGPoint(x: 0.0, y: 0.0), radius: self.radius*lambda, startAngle: .pi*1.1, endAngle:  -.pi*0.45, clockwise: false)
         let pos = self.internalEdge(at: .pi*1.0, lambdaRadius: lambda)
         
         let newCenter = CGPoint(x: -self.radius*1.25, y: -self.radius*1.5)
         self.holderPos = newCenter
         holderPath.addArc(withCenter: newCenter, radius: self.radius*0.7, startAngle: .pi*0.0, endAngle:  .pi/2, clockwise: false)
         
-        holderPath.addLine(to: pos)
+        
         
         holder.path = holderPath.cgPath
-        holder.strokeColor = UIColor.clear
-        holder.lineWidth = 4
+        holder.strokeColor = UIColor(hexString: "#DFD8CD")
+        holder.lineWidth = 6
         holder.fillColor = UIColor.white
         self.addChild(holder)
         holder.zPosition = -1
