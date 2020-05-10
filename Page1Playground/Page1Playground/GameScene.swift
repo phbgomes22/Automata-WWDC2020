@@ -16,27 +16,13 @@ public class GameScene: SKScene {
     
     override public func didMove(to view: SKView) {
         
-        self.backgroundColor = UIColor(hexString: "#F6F8E8")
-        
+        //self.backgroundColor = UIColor(hexString: "#F6F8E8")
+        self.backgroundColor = UIColor(hexString: "#E4DED3")
+        self.setupBoard()
     }
     
     private func setLabel() {
         
-        let pos = self.convertPoint(toView: CGPoint(x: 0, y: -300))
-        
-        winLabel = UILabel(frame: CGRect(x: pos.x, y: pos.y, width: 300.0, height: 100.0))
-        let text = "Great!"
-        winLabel.text = text
-        winLabel.font = UIFont.systemFont(ofSize: 80.0, weight: .bold)
-        if winLabel.applyGradientWith(startColor: UIColor(hexString: "#30D5C8"), endColor: UIColor(hexString: "#2E856E")) {
-            print("Gradient applied!")
-        }
-        else {
-            print("Could not apply gradient")
-            winLabel.textColor = .black
-        }
-        
-        self.view!.addSubview(winLabel)
         
     }
     
@@ -54,8 +40,8 @@ public class GameScene: SKScene {
                         side: 75,
                         position: CGPoint(x: -160, y: -50),
                         name: "state1")
-        //state1.setGradient(view: self.view!, scene: self)
         self.addChild(state1)
+        state1.setOutput(text: "1️⃣", labelPos: CGPoint(x: -48, y: -68), rotate: 0.0)
         states.append(state1)
         
         let state2 = FSMState(
@@ -63,9 +49,8 @@ public class GameScene: SKScene {
                         side: 75,
                         position: CGPoint(x: -40, y: 210),
                         name: "state2")
-       // state2.setGradient(view: self.view!, scene: self)
-               
         self.addChild(state2)
+        state2.setOutput(text: "2️⃣", labelPos: CGPoint(x: 46, y: 46), rotate: .pi)
         states.append(state2)
         
         let state3 = FSMState(
@@ -73,9 +58,9 @@ public class GameScene: SKScene {
                         side: 75,
                         position: CGPoint(x: 160, y: 50),
                         name: "state3")
-       // state3.setGradient(view: self.view!, scene: self)
                
         self.addChild(state3)
+        state3.setOutput(text: "3️⃣", labelPos: CGPoint(x: 26, y: -82), rotate: .pi/3)
         states.append(state3)
     }
     
@@ -86,7 +71,6 @@ public class GameScene: SKScene {
                         dx: 1.2,
                         dy: 0.5, name: "line1")
         self.addChild(line1)
-       // line1.addGradient(view: self.view!, scene: self)
         line1.setLabel(at: CGPoint(x: -210.0, y: 90.0), text: "🤖")
         lines.append(line1)
         
@@ -96,7 +80,6 @@ public class GameScene: SKScene {
                         dx: -0.3,
                         dy: -20.5, name: "line2")
         self.addChild(line2)
-     //   line2.addGradient(view: self.view!, scene: self)
         line2.setLabel(at: CGPoint(x: 40.0, y: -90.0), text: "🔥")
         lines.append(line2)
         
@@ -107,7 +90,6 @@ public class GameScene: SKScene {
                         dx: 1.2,
                         dy: -0.3, name: "line3")
         self.addChild(line3)
-       // line3.addGradient(view: self.view!, scene: self)
         line3.setLabel(at: CGPoint(x: -30.0, y: 40.0), text: "🎱")
         lines.append(line3)
         
@@ -118,7 +100,6 @@ public class GameScene: SKScene {
                         dx: 0.6,
                         dy: 0.52, name: "line4")
         self.addChild(line4)
-       // line4.addGradient(view: self.view!, scene: self)
         line4.setLabel(at: CGPoint(x: 90.0, y: 125.0), text: "🐶")
         lines.append(line4)
         
@@ -130,7 +111,6 @@ public class GameScene: SKScene {
                         dx2: 1.8,  dy2: 1.8,
                         headSize: 15, name: "line5")
         self.addChild(line5)
-     //   line5.addGradient(view: self.view!, scene: self)
         line5.setLabel(at: CGPoint(x: 225.0, y: 130.0), text: "🎩")
         lines.append(line5)
         
@@ -145,16 +125,11 @@ public class GameScene: SKScene {
     }
     
     func touchDown(atPoint pos : CGPoint) {
+       
+        self.automateFSM(delay: 0) { (ended) in
+            print(ended)
+        }
         
-        if isFirstTap {
-            self.setupBoard()
-            isFirstTap = false
-        }
-        else {
-            self.automateFSM(delay: 0) { (ended) in
-                print(ended)
-            }
-        }
         for node in self.nodes(at: pos) {
             if let state = node as? FSMState {
                 state.gotTouched(view: self.view!)
@@ -297,84 +272,4 @@ extension UIColor {
         }
         self.init(red: CGFloat(r) / 255, green: CGFloat(g) / 255, blue: CGFloat(b) / 255, alpha: CGFloat(a) / 255)
     }
-}
-
-
-extension CAGradientLayer {
-    
-    // Page 1
-    static let pg1Colors = [UIColor.blue.cgColor, UIColor.green.cgColor]
-    static let pg1StartPoint = CGPoint(x: 0.6, y: 0.1)
-    static let pg1EndPoint = CGPoint(x: 0.3, y: 0.8)
-    
-}
-
-extension CGAffineTransform {
-    public var scale: Double {
-        return sqrt(Double(a * a + c * c))
-    }
-}
-
-extension UILabel {
-
-    func applyGradientWith(startColor: UIColor, endColor: UIColor) -> Bool {
-
-        var startColorRed:CGFloat = 0
-        var startColorGreen:CGFloat = 0
-        var startColorBlue:CGFloat = 0
-        var startAlpha:CGFloat = 0
-
-        if !startColor.getRed(&startColorRed, green: &startColorGreen, blue: &startColorBlue, alpha: &startAlpha) {
-            return false
-        }
-
-        var endColorRed:CGFloat = 0
-        var endColorGreen:CGFloat = 0
-        var endColorBlue:CGFloat = 0
-        var endAlpha:CGFloat = 0
-
-        if !endColor.getRed(&endColorRed, green: &endColorGreen, blue: &endColorBlue, alpha: &endAlpha) {
-            return false
-        }
-
-        let gradientText = self.text ?? ""
-
-        let textSize: CGSize = gradientText.size(withAttributes: [NSAttributedString.Key.font : self.font ?? UIFont.systemFont(ofSize: 10)])
-        let width:CGFloat = textSize.width
-        let height:CGFloat = textSize.height
-
-        UIGraphicsBeginImageContext(CGSize(width: width, height: height))
-
-        guard let context = UIGraphicsGetCurrentContext() else {
-            UIGraphicsEndImageContext()
-            return false
-        }
-
-        UIGraphicsPushContext(context)
-
-        let glossGradient:CGGradient?
-        let rgbColorspace:CGColorSpace?
-        let num_locations:size_t = 2
-        let locations:[CGFloat] = [ 0.0, 1.0 ]
-        let components:[CGFloat] = [startColorRed, startColorGreen, startColorBlue, startAlpha, endColorRed, endColorGreen, endColorBlue, endAlpha]
-        rgbColorspace = CGColorSpaceCreateDeviceRGB()
-        glossGradient = CGGradient(colorSpace: rgbColorspace!, colorComponents: components, locations: locations, count: num_locations)
-        let topCenter = CGPoint.zero
-        let bottomCenter = CGPoint(x: 0, y: textSize.height)
-        context.drawLinearGradient(glossGradient!, start: topCenter, end: bottomCenter, options: CGGradientDrawingOptions.drawsBeforeStartLocation)
-
-        UIGraphicsPopContext()
-
-        guard let gradientImage = UIGraphicsGetImageFromCurrentImageContext() else {
-            UIGraphicsEndImageContext()
-            return false
-        }
-
-        UIGraphicsEndImageContext()
-
-        self.textColor = UIColor(patternImage: gradientImage)
-
-        return true
-    }
-
 }
