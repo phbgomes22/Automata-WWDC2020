@@ -22,16 +22,18 @@ public class FSMLine: SKSpriteNode {
     
     private var headSize: CGFloat = 0.0
     
-    public init(from point1: CGPoint, to point2: CGPoint, dx: CGFloat, dy: CGFloat, headSize: CGFloat = 30.0) {
+    public init(from point1: CGPoint, to point2: CGPoint, dx: CGFloat, dy: CGFloat, headSize: CGFloat = 20.0, name: String) {
         super.init(texture: nil, color: .clear, size: .zero)
         self.headSize = headSize
+        self.name = name
         self.setDraw(start: point1, end: point2, dx: dx, dy: dy)
     }
     
     
-    public init(from point1: CGPoint, to point2: CGPoint, dx1: CGFloat, dy1: CGFloat, dx2: CGFloat, dy2: CGFloat, headSize: CGFloat) {
+    public init(from point1: CGPoint, to point2: CGPoint, dx1: CGFloat, dy1: CGFloat, dx2: CGFloat, dy2: CGFloat, headSize: CGFloat, name: String) {
         super.init(texture: nil, color: .clear, size: .zero)
         self.headSize = headSize
+        self.name = name
         self.setDraw(start: point1, end: point2, dx1: dx1, dy1: dy1, dx2: dx2, dy2: dy2, headSize: headSize)
     }
 
@@ -49,7 +51,7 @@ public class FSMLine: SKSpriteNode {
     public func gotUsed(scene: SKScene) {
         
         let animation = CABasicAnimation(keyPath: "lineWidth")
-        animation.duration = 0.2
+        animation.duration = 0.15
         
        // let pathsUI2 = createBodyUI(view: scene.view!, scene: scene)
         animation.toValue = 12
@@ -60,11 +62,10 @@ public class FSMLine: SKSpriteNode {
         // The next two line preserves the final shape of animation,
         // if you remove it the shape will return to the original shape after the animation finished
         animation.fillMode = .forwards
-        animation.isRemovedOnCompletion = false
+        animation.isRemovedOnCompletion = true
         
-        curveLayerBody.add(animation, forKey: "moving")
-        gradientMaskBody.add(animation, forKey: "moving")
-        
+        curveLayerBody.add(animation, forKey: "moving\(self.name!)")
+        gradientMaskBody.add(animation, forKey: "moving\(self.name!)")
     
     }
     
@@ -83,8 +84,8 @@ public class FSMLine: SKSpriteNode {
         
         bodyVertices = [start, end, ctrlPoint1, ctrlPoint2]
         self.body.path = arrow.cgPath
-        self.body.strokeColor = UIColor(hexString: "#333333")
-        self.body.fillColor = UIColor(hexString: "#333333")
+        self.body.strokeColor = UIColor(hexString: "#AAAAAA")
+        self.body.fillColor = UIColor(hexString: "#AAAAAA")
         self.body.lineWidth = 3.0
         self.addChild(body)
     }
@@ -95,13 +96,13 @@ public class FSMLine: SKSpriteNode {
         
         let ctrlPoint = CGPoint(x: start.x*dx, y: end.y*dy )
         bodyPath.addArrowBody(start: start, end: end, controlPoint: ctrlPoint)
-        bodyPath.addArrowHead(end: end, controlPoint: ctrlPoint, pointerLineLength: 30, arrowAngle: CGFloat.pi/8)
+        bodyPath.addArrowHead(end: end, controlPoint: ctrlPoint, pointerLineLength: self.headSize + 1, arrowAngle: CGFloat.pi/8)
         bodyPath.addArrowBody(start: end, end: start, controlPoint: ctrlPoint)
         bodyPath.close()
         bodyVertices = [start, end, ctrlPoint]
         self.body.path = bodyPath.cgPath
-        self.body.strokeColor = UIColor(hexString: "#333333")
-        self.body.fillColor = UIColor(hexString: "#333333")
+        self.body.strokeColor = UIColor(hexString: "#AAAAAA")
+        self.body.fillColor = UIColor(hexString: "#AAAAAA")
         self.body.lineWidth = 3.0
         self.addChild(body)
         

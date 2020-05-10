@@ -9,7 +9,8 @@ public class GameScene: SKScene {
     private var lines : [FSMLine] = []
     
     private var isFirstTap: Bool = true
-    public var fsmString: String = "☎️🎱🔥🎩🎩🐶"
+    public var fsmString: String = "🤖🎱🔥🎩🎩🐶"
+    public var firstState: FSMLogic.StatesPG1 = FSMLogic.StatesPG1.first
     
     private var winLabel: UILabel = UILabel()
     
@@ -50,66 +51,87 @@ public class GameScene: SKScene {
         
         let state1 = FSMState(
                         color: UIColor(hexString: "#E3E3F0"),
-                        side: 80,
+                        side: 75,
                         position: CGPoint(x: -160, y: -50),
                         name: "state1")
-        state1.setGradient(view: self.view!, scene: self)
+        //state1.setGradient(view: self.view!, scene: self)
         self.addChild(state1)
         states.append(state1)
         
         let state2 = FSMState(
                         color: UIColor(hexString: "#E3E3F0"),
-                        side: 50,
+                        side: 75,
                         position: CGPoint(x: -40, y: 210),
                         name: "state2")
-        state2.setGradient(view: self.view!, scene: self)
+       // state2.setGradient(view: self.view!, scene: self)
                
         self.addChild(state2)
         states.append(state2)
         
         let state3 = FSMState(
                         color: UIColor(hexString: "#E3E3F0"),
-                        side: 65,
+                        side: 75,
                         position: CGPoint(x: 160, y: 50),
                         name: "state3")
-        state3.setGradient(view: self.view!, scene: self)
+       // state3.setGradient(view: self.view!, scene: self)
                
         self.addChild(state3)
         states.append(state3)
     }
     
     private func setupLines() {
-        let line1 = FSMLine(from: states[0].edgePosition(at: CGFloat.pi/1.3), to: states[1].edgePosition(at: CGFloat.pi), dx: 1.2, dy: 0.5)
+        let line1 = FSMLine(
+                        from: states[0].edgePosition(at: CGFloat.pi/1.3),
+                        to: states[1].edgePosition(at: CGFloat.pi, lambdaRadius: 1.4),
+                        dx: 1.2,
+                        dy: 0.5, name: "line1")
         self.addChild(line1)
-        line1.addGradient(view: self.view!, scene: self)
-        line1.setLabel(at: CGPoint(x: -210.0, y: 90.0), text: "☎️")
+       // line1.addGradient(view: self.view!, scene: self)
+        line1.setLabel(at: CGPoint(x: -210.0, y: 90.0), text: "🤖")
         lines.append(line1)
         
-        let line2 = FSMLine(from: states[0].edgePosition(at: -CGFloat.pi/8), to: states[2].edgePosition(at: CGFloat.pi*1.4), dx: -0.5, dy: -5.5)
+        let line2 = FSMLine(
+                        from: states[0].edgePosition(at: -CGFloat.pi/8),
+                        to: states[2].edgePosition(at: CGFloat.pi*1.35, lambdaRadius: 1.4),
+                        dx: -0.3,
+                        dy: -20.5, name: "line2")
         self.addChild(line2)
-        line2.addGradient(view: self.view!, scene: self)
-        line2.setLabel(at: CGPoint(x: -40.0, y: 30.0), text: "🎱")
+     //   line2.addGradient(view: self.view!, scene: self)
+        line2.setLabel(at: CGPoint(x: 40.0, y: -90.0), text: "🔥")
         lines.append(line2)
         
         
-        let line3 = FSMLine(from: states[1].edgePosition(at: -CGFloat.pi/2.3), to: states[0].edgePosition(at: CGFloat.pi/3), dx: 1.2, dy: -0.3)
+        let line3 = FSMLine(
+                        from: states[1].edgePosition(at: -CGFloat.pi/2.3),
+                        to: states[0].edgePosition(at: CGFloat.pi/4, lambdaRadius: 1.4),
+                        dx: 1.2,
+                        dy: -0.3, name: "line3")
         self.addChild(line3)
-        line3.addGradient(view: self.view!, scene: self)
-        line3.setLabel(at: CGPoint(x: 50.0, y: -100.0), text: "🔥")
+       // line3.addGradient(view: self.view!, scene: self)
+        line3.setLabel(at: CGPoint(x: -30.0, y: 40.0), text: "🎱")
         lines.append(line3)
         
         
-        let line4 = FSMLine(from: states[2].edgePosition(at: CGFloat.pi*0.9), to: states[1].edgePosition(at: -CGFloat.pi/8), dx: 0.6, dy: 0.52)
+        let line4 = FSMLine(
+                        from: states[2].edgePosition(at: CGFloat.pi*0.9),
+                        to: states[1].edgePosition(at: -CGFloat.pi/8, lambdaRadius: 1.4),
+                        dx: 0.6,
+                        dy: 0.52, name: "line4")
         self.addChild(line4)
-        line4.addGradient(view: self.view!, scene: self)
+       // line4.addGradient(view: self.view!, scene: self)
         line4.setLabel(at: CGPoint(x: 90.0, y: 125.0), text: "🐶")
         lines.append(line4)
         
         
-        let line5 = FSMLine(from: states[2].edgePosition(at: CGFloat.pi*0.6), to: states[2].edgePosition(at: CGFloat.pi*0.1), dx1: 0.9, dy1: 2.8, dx2: 1.8, dy2: 1.8, headSize: 20)
+        let line5 = FSMLine(
+                        from: states[2].edgePosition(at: CGFloat.pi*0.6),
+                        to: states[2].edgePosition(at: CGFloat.pi*0.1, lambdaRadius: 1.4),
+                        dx1: 0.9,  dy1: 2.8,
+                        dx2: 1.8,  dy2: 1.8,
+                        headSize: 15, name: "line5")
         self.addChild(line5)
-        line5.addGradient(view: self.view!, scene: self)
-        line5.setLabel(at: CGPoint(x: 215.0, y: 130.0), text: "🎩")
+     //   line5.addGradient(view: self.view!, scene: self)
+        line5.setLabel(at: CGPoint(x: 225.0, y: 130.0), text: "🎩")
         lines.append(line5)
         
     }
@@ -129,13 +151,8 @@ public class GameScene: SKScene {
             isFirstTap = false
         }
         else {
-//            let bool = self.automateFSM(delay: 4) { (ended) in
-//                print(ended)
-//            }
-//            print(bool)
-            
-            DispatchQueue.main.async {
-                self.lines[0].gotUsed(scene: self)
+            self.automateFSM(delay: 0) { (ended) in
+                print(ended)
             }
         }
         for node in self.nodes(at: pos) {
@@ -147,45 +164,79 @@ public class GameScene: SKScene {
     }
     
     
-    private func automateFSM(delay: Int, completion: @escaping (_ ended: Bool) -> ()) -> Bool {
-        
-        var currentState = FSMLogic.StatesPG1.first
-        var bool = true
+    private func automateFSM(delay: Int, completion: @escaping (_ ended: Bool) -> ()) {
         
         DispatchQueue.global(qos: .userInteractive).asyncAfter(deadline: .now() + .seconds(delay)) {
-            for char in self.fsmString {
-                let nextState = FSMLogic.fsm1(from: currentState, text: String(char))
+            var bool = true
+            
+            var currentState = self.firstState
+            let stringToRun = self.fsmString + "X" // "X" marks the final state!
+            for char in stringToRun {
+                let nState = FSMLogic.fsm1(from: currentState, text: String(char))
                 print(char)
-                guard let nState = nextState else {
-                    bool = false
-                    print("ACABOU")
-                    break
-                }
+
+                var currStateNode: FSMState!
+                var nLineNode: FSMLine?
                 
-                usleep(1500000)
-                
-                DispatchQueue.main.asyncAfter(deadline: .now()) {
-                    switch nState {
-                    case .first:
-                        self.states[0].gotTouched(view: self.view!)
-                    case .second:
-                        self.states[1].gotTouched(view: self.view!)
-                    case .third:
-                        self.states[2].gotTouched(view: self.view!)
+                switch currentState {
+                case .first:
+                    currStateNode = self.states[0]
+                    if nState == .first { // if im going from current state to nState !!!! #Attention!
+                        nLineNode = nil
+                    } else if nState == .second {
+                        nLineNode = self.lines[0]
+                    } else if nState == .third {
+                       nLineNode = self.lines[1]
+                    }
+                case .second:
+                    currStateNode = self.states[1]
+                    if nState == .first { // if im going from current state to nState !!!! #Attention!
+                        nLineNode = self.lines[2]
+                    } else if nState == .second {
+                        nLineNode = nil
+                    } else if nState == .third {
+                        nLineNode = nil
+                    }
+                case .third:
+                    currStateNode = self.states[2]
+                    if nState == .first { // if im going from current state to nState !!!! #Attention!
+                        nLineNode = nil
+                    } else if nState == .second {
+                        nLineNode = self.lines[3]
+                    } else if nState == .third {
+                        nLineNode = self.lines[4]
                     }
                 }
                 
                 
-                currentState = nState
+                DispatchQueue.main.asyncAfter(deadline: .now()) {
+                    currStateNode.gotTouched(view: self.view!)
+                }
+                
+                usleep(1400000)
+                
+                // sets next state
+                guard let nextState = nState else { // if there is no next state, the line wont animate
+                    if(char != "X") {
+                        bool = false
+                    }
+                    break
+                }
+                currentState = nextState
+                
+                guard let lNode = nLineNode else { print("WOW, something went very wrong!");break}
+                
+                DispatchQueue.main.async {
+                    print(lNode.name ?? "no name")
+                    lNode.gotUsed(scene: self)
+                }
+                
+                usleep(600000)
                 
             }
             
             completion(bool)
         }
-            
-           
-
-        return bool
     }
     
     override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -247,7 +298,6 @@ extension UIColor {
         self.init(red: CGFloat(r) / 255, green: CGFloat(g) / 255, blue: CGFloat(b) / 255, alpha: CGFloat(a) / 255)
     }
 }
-
 
 
 extension CAGradientLayer {

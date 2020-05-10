@@ -9,9 +9,9 @@
 import SpriteKit
 
 
-class FSMLogic {
+public class FSMLogic {
     
-    enum StatesPG1 {
+    public enum StatesPG1 {
         case first
         case second
         case third
@@ -21,7 +21,7 @@ class FSMLogic {
         // - - - - - - -
         switch st1 {
         case .first:
-            if text == "☎️" {
+            if text == "🤖" {
                 return .second
             } else if text == "🔥" {
                 return .third

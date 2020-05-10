@@ -43,7 +43,7 @@ public class FSMState: SKShapeNode {
         let path = UIBezierPath(ovalIn: CGRect(x: -side/2.0, y: -side/2.0, width: side, height: side))
         self.path = path.cgPath
         self.position = position
-        self.strokeColor = UIColor.clear
+        self.strokeColor = UIColor(hexString: "#AAAAAA")
         self.lineWidth = 3
         self.widthLine = side/10
         
@@ -79,34 +79,20 @@ public class FSMState: SKShapeNode {
         gradientChangeAnimation.toValue = 1.0
         gradientChangeAnimation.fromValue = 0.0
         gradientChangeAnimation.timingFunction = CAMediaTimingFunction.init(name: .easeOut)
-        gradientChangeAnimation.repeatCount = 1
         gradientChangeAnimation.autoreverses = true
         fillGradient.add(gradientChangeAnimation, forKey: "opacityFill")
         
         
-        let gradientColorChange = CABasicAnimation(keyPath: #keyPath(CAGradientLayer.endPoint))
-        gradientColorChange.duration = 0.2
-        gradientColorChange.toValue =  self.fillGradient.endPoint //CGPoint(x: 0.3, y: 0.8)
-        gradientColorChange.fromValue = CGPoint(x: 0.3, y: 1.0)
-        gradientColorChange.fillMode = CAMediaTimingFillMode.forwards
-        gradientColorChange.timingFunction = CAMediaTimingFunction.init(name: .easeOut)
-        gradientColorChange.repeatCount = 1
-        gradientColorChange.isRemovedOnCompletion = false
-        self.fillGradient.add(gradientColorChange, forKey: "colorFill")
-        
-        
-        let strokePath = CABasicAnimation(keyPath: #keyPath(CAShapeLayer.path))
-        strokePath.duration = 0.15
-        strokePath.toValue = UIBezierPath(ovalIn: CGRect(x: -self.radius*0.9, y: -self.radius*0.9, width: self.radius*1.8, height: 1.8*self.radius)).cgPath
-        strokePath.fromValue = self.path!
-        strokePath.repeatCount = 1
-        strokePath.fillMode = CAMediaTimingFillMode.forwards
-        strokePath.timingFunction = CAMediaTimingFunction.init(name: .easeOut)
-        strokePath.autoreverses = true
-        self.maskStrokeLayer.add(strokePath, forKey: "path")
+        let strokeSize = CABasicAnimation(keyPath: #keyPath(CAShapeLayer.lineWidth))
+        strokeSize.duration = 0.15
+        strokeSize.toValue = self.widthLine*0.2
+        strokeSize.fromValue = self.widthLine
+        strokeSize.timingFunction = CAMediaTimingFunction.init(name: .easeOut)
+        strokeSize.autoreverses = true
+        maskStrokeLayer.add(strokeSize, forKey: "opacityFill")
 
         let originalTransform = view.transform
-        let scaled = originalTransform.scaledBy(x: 1.012, y: 1.012)
+        let scaled = originalTransform.scaledBy(x: 1.005, y: 1.01)
 
         UIView.animate(withDuration: 0.3, delay: 0.0, options: [.curveEaseOut, .autoreverse], animations: {
             view.transform = scaled
@@ -115,7 +101,6 @@ public class FSMState: SKShapeNode {
             view.transform = originalTransform
             self.isAnimating = false
         })
-        
     }
     
     
@@ -158,10 +143,10 @@ public class FSMState: SKShapeNode {
         return gradientLayer
     }
     
-    public func edgePosition(at angle: CGFloat) -> CGPoint {
+    public func edgePosition(at angle: CGFloat, lambdaRadius: CGFloat = 1.0) -> CGPoint {
         
-        let newX = self.position.x + radius*cos(angle)
-        let newY = self.position.y + radius*sin(angle)
+        let newX = self.position.x + (radius*lambdaRadius)*cos(angle)
+        let newY = self.position.y + (radius*lambdaRadius)*sin(angle)
         
         return CGPoint(x: newX, y: newY)
     }
