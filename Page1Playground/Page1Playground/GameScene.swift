@@ -12,13 +12,15 @@ public class GameScene: SKScene {
     public var fsmString: String = "🤖🎱🔥🎩🎩🐶"
     public var firstState: FSMLogic.StatesPG1 = FSMLogic.StatesPG1.first
     private var deltaY: CGFloat = -50.0
+    public var expectedOutput = "BANANA"
     
-    private var wordLabel: FSMOutput = FSMOutput()
+    private var wordLabel: FSMOutput = FSMOutput(fontSize: 50)
     
     override public func didMove(to view: SKView) {
         
         //self.backgroundColor = UIColor(hexString: "#F6F8E8")
         self.backgroundColor = UIColor(hexString: "#E4DED3")
+        self.setParticles()
         self.setupBoard()
         self.setWordLabel()
     }
@@ -26,11 +28,11 @@ public class GameScene: SKScene {
     private func setWordLabel() {
         self.addChild(wordLabel)
         
-        wordLabel.fontSize = 50
         wordLabel.position = CGPoint(x: 0.0, y: -280.0)
         wordLabel.fontColor = UIColor(hexString: "#333333")
         wordLabel.fontName =  "Futura-Bold"
         wordLabel.color = UIColor(hexString: "#FDFDFD")
+        wordLabel.restAnimation()
     }
     
     private func setupBoard() {
@@ -123,6 +125,17 @@ public class GameScene: SKScene {
         
     }
     
+    private func setParticles() {
+        if let rp = SKEmitterNode(fileNamed: "ParticlePG1.sks") {
+            rp.position = .zero
+//            rp.particleBirthRate = 20.0
+//            rp.particleAlpha = 0.1
+//            rp.particleAlphaRange = 0.5
+            rp.targetNode = scene
+            scene!.addChild(rp)
+        }
+    }
+    
     @objc static override public var supportsSecureCoding: Bool {
         // SKNode conforms to NSSecureCoding, so any subclass going
         // through the decoding process must support secure coding
@@ -135,6 +148,14 @@ public class GameScene: SKScene {
        
         self.automateFSM(delay: 0) { (ended) in
             print(ended)
+            if(!ended) {
+                self.wordLabel.update(text: (self.wordLabel.text ?? "") + " 🙊?")
+            }
+            else if (self.wordLabel.text != self.expectedOutput) {
+                self.wordLabel.update(text: (self.wordLabel.text ?? "") + " 🙊?")
+            } else {
+                self.wordLabel.update(text: (self.wordLabel.text ?? "") + " 🍌!")
+            }
         }
         
         for node in self.nodes(at: pos) {

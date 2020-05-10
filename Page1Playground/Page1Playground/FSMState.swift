@@ -126,13 +126,17 @@ public class FSMState: SKShapeNode {
         
         
         let originalTransform = view.transform
-        let scaled = originalTransform.scaledBy(x: 1.005, y: 1.01)
+        let scaled = originalTransform.scaledBy(x: 1.01, y: 1.01)
 
-        UIView.animate(withDuration: 0.3, delay: 0.0, options: [.curveEaseOut, .autoreverse], animations: {
+        UIView.animate(withDuration: 0.35, delay: 0.0, options: [.curveEaseOut, .autoreverse], animations: {
             view.transform = scaled
         }, completion: { (_) in
             view.transform = originalTransform
         })
+        
+        let sound = Sound.randomSound()
+        let action = SKAction.playSoundFileNamed(sound, waitForCompletion: true)
+        self.run(action)
     }
     
 
@@ -162,4 +166,25 @@ public func edgeCircle(pos: CGPoint, at angle: CGFloat, radius: CGFloat) -> CGPo
     let newY = pos.y + (radius)*sin(angle)
     
     return CGPoint(x: newX, y: newY)
+}
+
+
+public struct Sound {
+    
+    private static var partialNotes = ["0b-b0", "2b-d1", "3b-e1", "4b-f1", "5b-g1", "6b-a1"]
+    private static var lastRandom: Int = 0
+    private static var allNodes = ["0b-b0", "1b-c1", "2b-d1", "3b-e1", "4b-f1", "5b-g1", "6b-a1", "7b-a1", "8b-b1"]
+    
+    public static func randomSound() -> String {
+        var random = Int.random(in: 0...partialNotes.count - 1)
+        while random == Sound.lastRandom {
+            random = Int.random(in: 0...partialNotes.count - 1)
+        }
+        Sound.lastRandom = random
+        let str = Sound.partialNotes[random] + ".wav"
+        print(str)
+        
+        return str //SKAudioNode(fileNamed: str)
+    }
+    
 }

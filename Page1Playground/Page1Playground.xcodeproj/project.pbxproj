@@ -8,6 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		4220FDCA24688E6C00EE1E95 /* FSMOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4220FDC924688E6B00EE1E95 /* FSMOutput.swift */; };
+		4220FDD02468A33A00EE1E95 /* ParticlePG1.sks in Resources */ = {isa = PBXBuildFile; fileRef = 4220FDCF2468A33A00EE1E95 /* ParticlePG1.sks */; };
+		42439F1F2468B4D5004F076C /* 7b-a1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 42439F162468B4D5004F076C /* 7b-a1.wav */; };
+		42439F202468B4D5004F076C /* 4b-f1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 42439F172468B4D5004F076C /* 4b-f1.wav */; };
+		42439F212468B4D5004F076C /* 5b-g1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 42439F182468B4D5004F076C /* 5b-g1.wav */; };
+		42439F222468B4D5004F076C /* 6b-a1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 42439F192468B4D5004F076C /* 6b-a1.wav */; };
+		42439F232468B4D5004F076C /* 8b-b1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 42439F1A2468B4D5004F076C /* 8b-b1.wav */; };
+		42439F242468B4D5004F076C /* 2b-d1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 42439F1B2468B4D5004F076C /* 2b-d1.wav */; };
+		42439F252468B4D5004F076C /* 3b-e1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 42439F1C2468B4D5004F076C /* 3b-e1.wav */; };
+		42439F262468B4D5004F076C /* 0b-b0.wav in Resources */ = {isa = PBXBuildFile; fileRef = 42439F1D2468B4D5004F076C /* 0b-b0.wav */; };
+		42439F272468B4D5004F076C /* 1b-c1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 42439F1E2468B4D5004F076C /* 1b-c1.wav */; };
 		42EC4BF42463760E00281D12 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EC4BF32463760E00281D12 /* AppDelegate.swift */; };
 		42EC4BF62463760E00281D12 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 42EC4BF52463760E00281D12 /* GameScene.sks */; };
 		42EC4BFA2463760E00281D12 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EC4BF92463760E00281D12 /* GameScene.swift */; };
@@ -23,6 +33,16 @@
 /* Begin PBXFileReference section */
 		4220FDC62468715700EE1E95 /* Futura.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; path = Futura.ttc; sourceTree = "<group>"; };
 		4220FDC924688E6B00EE1E95 /* FSMOutput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FSMOutput.swift; path = ../../../Swift_Playgrounds_Author_Template_for_Xcode_11.1_for_Swift_Playgrounds_3.3/Template/PlaygroundBook/UserModules/UserModule.playgroundmodule/Sources/FSMOutput.swift; sourceTree = "<group>"; };
+		4220FDCF2468A33A00EE1E95 /* ParticlePG1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = ParticlePG1.sks; sourceTree = "<group>"; };
+		42439F162468B4D5004F076C /* 7b-a1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "7b-a1.wav"; sourceTree = "<group>"; };
+		42439F172468B4D5004F076C /* 4b-f1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "4b-f1.wav"; sourceTree = "<group>"; };
+		42439F182468B4D5004F076C /* 5b-g1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "5b-g1.wav"; sourceTree = "<group>"; };
+		42439F192468B4D5004F076C /* 6b-a1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "6b-a1.wav"; sourceTree = "<group>"; };
+		42439F1A2468B4D5004F076C /* 8b-b1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "8b-b1.wav"; sourceTree = "<group>"; };
+		42439F1B2468B4D5004F076C /* 2b-d1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "2b-d1.wav"; sourceTree = "<group>"; };
+		42439F1C2468B4D5004F076C /* 3b-e1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "3b-e1.wav"; sourceTree = "<group>"; };
+		42439F1D2468B4D5004F076C /* 0b-b0.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "0b-b0.wav"; sourceTree = "<group>"; };
+		42439F1E2468B4D5004F076C /* 1b-c1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "1b-c1.wav"; sourceTree = "<group>"; };
 		42EC4BF02463760E00281D12 /* Page1Playground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Page1Playground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		42EC4BF32463760E00281D12 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		42EC4BF52463760E00281D12 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -48,6 +68,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		42439F152468B4D5004F076C /* mixolydianB */ = {
+			isa = PBXGroup;
+			children = (
+				42439F162468B4D5004F076C /* 7b-a1.wav */,
+				42439F172468B4D5004F076C /* 4b-f1.wav */,
+				42439F182468B4D5004F076C /* 5b-g1.wav */,
+				42439F192468B4D5004F076C /* 6b-a1.wav */,
+				42439F1A2468B4D5004F076C /* 8b-b1.wav */,
+				42439F1B2468B4D5004F076C /* 2b-d1.wav */,
+				42439F1C2468B4D5004F076C /* 3b-e1.wav */,
+				42439F1D2468B4D5004F076C /* 0b-b0.wav */,
+				42439F1E2468B4D5004F076C /* 1b-c1.wav */,
+			);
+			path = mixolydianB;
+			sourceTree = "<group>";
+		};
 		42EC4BE72463760E00281D12 = {
 			isa = PBXGroup;
 			children = (
@@ -67,6 +103,7 @@
 		42EC4BF22463760E00281D12 /* Page1Playground */ = {
 			isa = PBXGroup;
 			children = (
+				42439F152468B4D5004F076C /* mixolydianB */,
 				4220FDC62468715700EE1E95 /* Futura.ttc */,
 				42EC4BF32463760E00281D12 /* AppDelegate.swift */,
 				42EC4BF52463760E00281D12 /* GameScene.sks */,
@@ -80,6 +117,7 @@
 				42EC4C0D2464C90C00281D12 /* FSMLine.swift */,
 				4220FDC924688E6B00EE1E95 /* FSMOutput.swift */,
 				42EC4C312466472A00281D12 /* FSMLogic.swift */,
+				4220FDCF2468A33A00EE1E95 /* ParticlePG1.sks */,
 			);
 			path = Page1Playground;
 			sourceTree = "<group>";
@@ -142,8 +180,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42439F222468B4D5004F076C /* 6b-a1.wav in Resources */,
+				42439F252468B4D5004F076C /* 3b-e1.wav in Resources */,
+				42439F232468B4D5004F076C /* 8b-b1.wav in Resources */,
 				42EC4BFF2463760E00281D12 /* Main.storyboard in Resources */,
+				42439F262468B4D5004F076C /* 0b-b0.wav in Resources */,
+				42439F272468B4D5004F076C /* 1b-c1.wav in Resources */,
+				42439F212468B4D5004F076C /* 5b-g1.wav in Resources */,
+				42439F1F2468B4D5004F076C /* 7b-a1.wav in Resources */,
+				4220FDD02468A33A00EE1E95 /* ParticlePG1.sks in Resources */,
 				42EC4BF62463760E00281D12 /* GameScene.sks in Resources */,
+				42439F242468B4D5004F076C /* 2b-d1.wav in Resources */,
+				42439F202468B4D5004F076C /* 4b-f1.wav in Resources */,
 				42EC4C012463761200281D12 /* Assets.xcassets in Resources */,
 				42EC4C042463761200281D12 /* LaunchScreen.storyboard in Resources */,
 			);
