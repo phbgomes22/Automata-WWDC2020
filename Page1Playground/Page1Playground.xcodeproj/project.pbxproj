@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4220FDCA24688E6C00EE1E95 /* FSMOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4220FDC924688E6B00EE1E95 /* FSMOutput.swift */; };
 		42EC4BF42463760E00281D12 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EC4BF32463760E00281D12 /* AppDelegate.swift */; };
 		42EC4BF62463760E00281D12 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 42EC4BF52463760E00281D12 /* GameScene.sks */; };
 		42EC4BFA2463760E00281D12 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EC4BF92463760E00281D12 /* GameScene.swift */; };
@@ -21,6 +22,7 @@
 
 /* Begin PBXFileReference section */
 		4220FDC62468715700EE1E95 /* Futura.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; path = Futura.ttc; sourceTree = "<group>"; };
+		4220FDC924688E6B00EE1E95 /* FSMOutput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FSMOutput.swift; path = ../../../Swift_Playgrounds_Author_Template_for_Xcode_11.1_for_Swift_Playgrounds_3.3/Template/PlaygroundBook/UserModules/UserModule.playgroundmodule/Sources/FSMOutput.swift; sourceTree = "<group>"; };
 		42EC4BF02463760E00281D12 /* Page1Playground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Page1Playground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		42EC4BF32463760E00281D12 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		42EC4BF52463760E00281D12 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -76,6 +78,7 @@
 				42EC4C052463761200281D12 /* Info.plist */,
 				42EC4C0B2464C8D700281D12 /* FSMState.swift */,
 				42EC4C0D2464C90C00281D12 /* FSMLine.swift */,
+				4220FDC924688E6B00EE1E95 /* FSMOutput.swift */,
 				42EC4C312466472A00281D12 /* FSMLogic.swift */,
 			);
 			path = Page1Playground;
@@ -154,6 +157,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				42EC4C0C2464C8D800281D12 /* FSMState.swift in Sources */,
+				4220FDCA24688E6C00EE1E95 /* FSMOutput.swift in Sources */,
 				42EC4BFA2463760E00281D12 /* GameScene.swift in Sources */,
 				42EC4BFC2463760E00281D12 /* GameViewController.swift in Sources */,
 				42EC4C0E2464C90C00281D12 /* FSMLine.swift in Sources */,

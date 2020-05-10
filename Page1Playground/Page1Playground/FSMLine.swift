@@ -49,8 +49,15 @@ public class FSMLine: SKSpriteNode {
     
     public func gotUsed(scene: SKScene) {
         
-    //    let texture = SKTexture(image: <#T##UIImage#>)
-     //   let action = SKAction.animate(with: <#T##[SKTexture]#>, timePerFrame: <#T##TimeInterval#>)
+        let action = SKAction.scaleX(by: 1.02, y: 1.02, duration: 0.2)
+        let seq = SKAction.sequence([action, action.reversed()])
+        
+        let fade = SKAction.fadeAlpha(by: 10.0, duration: 0.2)
+        let group = SKAction.group([seq, .sequence([fade, fade.reversed()])])
+        
+        self.glowBody.run(group)
+        self.body.run(seq)
+        
     }
     
     weak var maskNode: SKNode?
@@ -71,7 +78,7 @@ public class FSMLine: SKSpriteNode {
         self.body.path = arrow.cgPath
         self.body.strokeColor = UIColor(hexString: "#511845")
         self.body.fillColor = UIColor(hexString: "#511845")
-        self.body.lineWidth = 2.0
+        self.body.lineWidth = 3.0
         self.addChild(body)
     }
     

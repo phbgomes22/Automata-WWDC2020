@@ -11,8 +11,9 @@ public class GameScene: SKScene {
     private var isFirstTap: Bool = true
     public var fsmString: String = "🤖🎱🔥🎩🎩🐶"
     public var firstState: FSMLogic.StatesPG1 = FSMLogic.StatesPG1.first
+    private var deltaY: CGFloat = -50.0
     
-    private var wordLabel: SKLabelNode = SKLabelNode()
+    private var wordLabel: FSMOutput = FSMOutput()
     
     override public func didMove(to view: SKView) {
         
@@ -26,7 +27,7 @@ public class GameScene: SKScene {
         self.addChild(wordLabel)
         
         wordLabel.fontSize = 50
-        wordLabel.position = CGPoint(x: 0.0, y: -250.0)
+        wordLabel.position = CGPoint(x: 0.0, y: -280.0)
         wordLabel.fontColor = UIColor(hexString: "#333333")
         wordLabel.fontName =  "Futura-Bold"
         wordLabel.color = UIColor(hexString: "#FDFDFD")
@@ -44,7 +45,7 @@ public class GameScene: SKScene {
         let state1 = FSMState(
                         color: UIColor(hexString: "#E3E3F0"),
                         side: 75,
-                        position: CGPoint(x: -160, y: -50),
+                        position: CGPoint(x: -160, y: -50 + deltaY),
                         name: "state1")
         self.addChild(state1)
         state1.setOutput(text: "N", labelPos: CGPoint(x: -48, y: -68), rotate: 0.0)
@@ -53,7 +54,7 @@ public class GameScene: SKScene {
         let state2 = FSMState(
                         color: UIColor(hexString: "#E3E3F0"),
                         side: 75,
-                        position: CGPoint(x: -40, y: 210),
+                        position: CGPoint(x: -40, y: 210 + deltaY),
                         name: "state2")
         self.addChild(state2)
         state2.setOutput(text: "A", labelPos: CGPoint(x: 46, y: 46), rotate: .pi)
@@ -62,7 +63,7 @@ public class GameScene: SKScene {
         let state3 = FSMState(
                         color: UIColor(hexString: "#E3E3F0"),
                         side: 75,
-                        position: CGPoint(x: 160, y: 50),
+                        position: CGPoint(x: 160, y: 50 + deltaY),
                         name: "state3")
                
         self.addChild(state3)
@@ -77,16 +78,16 @@ public class GameScene: SKScene {
                         dx: 1.2,
                         dy: 0.5, name: "line1")
         self.addChild(line1)
-        line1.setLabel(at: CGPoint(x: -210.0, y: 90.0), text: "🤖")
+        line1.setLabel(at: CGPoint(x: -210.0, y: 90.0 + deltaY), text: "🤖")
         lines.append(line1)
         
         let line2 = FSMLine(
                         from: states[0].edgePosition(at: -CGFloat.pi/8),
                         to: states[2].edgePosition(at: CGFloat.pi*1.35, lambdaRadius: 1.4),
                         dx: -0.3,
-                        dy: -20.5, name: "line2")
+                        dy: 2.5, name: "line2")
         self.addChild(line2)
-        line2.setLabel(at: CGPoint(x: 40.0, y: -90.0), text: "🔥")
+        line2.setLabel(at: CGPoint(x: 40.0, y: -90.0 + deltaY), text: "🔥")
         lines.append(line2)
         
         
@@ -96,7 +97,7 @@ public class GameScene: SKScene {
                         dx: 1.2,
                         dy: -0.3, name: "line3")
         self.addChild(line3)
-        line3.setLabel(at: CGPoint(x: -30.0, y: 40.0), text: "🎱")
+        line3.setLabel(at: CGPoint(x: -30.0, y: 40.0 + deltaY), text: "🎱")
         lines.append(line3)
         
         
@@ -106,18 +107,18 @@ public class GameScene: SKScene {
                         dx: 0.6,
                         dy: 0.52, name: "line4")
         self.addChild(line4)
-        line4.setLabel(at: CGPoint(x: 90.0, y: 125.0), text: "🐶")
+        line4.setLabel(at: CGPoint(x: 90.0, y: 125.0 + deltaY), text: "🐶")
         lines.append(line4)
         
         
         let line5 = FSMLine(
                         from: states[2].edgePosition(at: CGFloat.pi*0.6),
                         to: states[2].edgePosition(at: CGFloat.pi*0.1, lambdaRadius: 1.4),
-                        dx1: 0.9,  dy1: 2.8,
-                        dx2: 1.8,  dy2: 1.8,
+                        dx1: 0.9,  dy1: 7.0,
+                        dx2: 1.8,  dy2: 4.2,
                         headSize: 15, name: "line5")
         self.addChild(line5)
-        line5.setLabel(at: CGPoint(x: 225.0, y: 130.0), text: "🎩")
+        line5.setLabel(at: CGPoint(x: 225.0, y: 130.0 + deltaY), text: "🎩")
         lines.append(line5)
         
     }
@@ -195,7 +196,7 @@ public class GameScene: SKScene {
                     
                     let output = currStateNode.getOutput()
                     
-                    self.wordLabel.text = (self.wordLabel.text ?? "") + output
+                    self.wordLabel.update(text: (self.wordLabel.text ?? "") + output)
                 }
                 
                 usleep(1400000)
@@ -212,7 +213,6 @@ public class GameScene: SKScene {
                 guard let lNode = nLineNode else { print("WOW, something went very wrong!");break}
                 
                 DispatchQueue.main.async {
-                    print(lNode.name ?? "no name")
                     lNode.gotUsed(scene: self)
                 }
                 
