@@ -13,10 +13,17 @@ import SpriteKit
 
 public class FSMState: SKShapeNode {
     
+    public enum Style {
+        case page1
+        case normal
+    }
+    
+    private var style: Style = .normal
+    
     private var label: SKLabelNode = SKLabelNode()
     public var radius: CGFloat = 0.0
     private var glowBody: SKShapeNode = SKShapeNode()
-    private var arrayColors: [UIColor] = [UIColor(hexString: "#511845"),
+    private var arrayColorsPG1: [UIColor] = [UIColor(hexString: "#511845"),
                                           UIColor(hexString: "#900c3f"),
                                           UIColor(hexString: "#c70039"),
                                           UIColor(hexString: "#ff5733")]
@@ -25,13 +32,27 @@ public class FSMState: SKShapeNode {
     
     private var arcs: [SKShapeNode] = []
     
-    public init(color: UIColor = UIColor.white, side: CGFloat = 50.0, position: CGPoint, name: String) {
+    public init(side: CGFloat = 50.0, position: CGPoint, name: String, style: Style) {
         super.init()
         self.name = name
         self.radius = CGFloat(side/2.0)
         self.position = position
         self.path = UIBezierPath(ovalIn: CGRect(x: -side/2.0, y: -side/2.0, width: side, height: side)).cgPath
+        self.style = style
+        
+        setup(side: side)
+    }
+    
+    private func setup(side: CGFloat) {
+        
         var count: CGFloat = 0.0
+        var arrayColors: [UIColor] = []
+        switch self.style {
+        case .page1:
+            arrayColors = arrayColorsPG1
+        case .normal:
+            arrayColors = [UIColor(hexString: "#333333")]
+        }
         for retroColor in arrayColors {
             self.setDraw(color: retroColor, side: side - count, position: position)
             count += side/CGFloat(arrayColors.count)
@@ -66,9 +87,15 @@ public class FSMState: SKShapeNode {
         
         holderPath.close()
         holder.path = holderPath.cgPath
+        switch self.style {
+        case .page1:
+            holder.strokeColor = UIColor(hexString: "#DFD8CD")
+            holder.fillColor = UIColor.white
+        case .normal:
         holder.strokeColor = UIColor(hexString: "#DFD8CD")
-        holder.lineWidth = 6
         holder.fillColor = UIColor.white
+        }
+        holder.lineWidth = 6
         self.addChild(holder)
         holder.zPosition = -1
         

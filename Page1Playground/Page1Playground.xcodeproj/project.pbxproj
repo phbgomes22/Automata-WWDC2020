@@ -21,6 +21,8 @@
 		42439F462468F8CB004F076C /* Firework.sks in Resources */ = {isa = PBXBuildFile; fileRef = 42439F452468F8CB004F076C /* Firework.sks */; };
 		42439F4C2469057D004F076C /* winSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 42439F4B2469057D004F076C /* winSound.wav */; };
 		42439F542469079C004F076C /* loseSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 42439F532469079C004F076C /* loseSound.wav */; };
+		42439F5A246909C0004F076C /* LiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42439F59246909C0004F076C /* LiveView.swift */; };
+		42439F5C24690B75004F076C /* LiveView.sks in Resources */ = {isa = PBXBuildFile; fileRef = 42439F5B24690B75004F076C /* LiveView.sks */; };
 		42EC4BF42463760E00281D12 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EC4BF32463760E00281D12 /* AppDelegate.swift */; };
 		42EC4BF62463760E00281D12 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 42EC4BF52463760E00281D12 /* GameScene.sks */; };
 		42EC4BFA2463760E00281D12 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EC4BF92463760E00281D12 /* GameScene.swift */; };
@@ -49,6 +51,8 @@
 		42439F452468F8CB004F076C /* Firework.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Firework.sks; sourceTree = "<group>"; };
 		42439F4B2469057D004F076C /* winSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = winSound.wav; sourceTree = "<group>"; };
 		42439F532469079C004F076C /* loseSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = loseSound.wav; sourceTree = "<group>"; };
+		42439F59246909C0004F076C /* LiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveView.swift; sourceTree = "<group>"; };
+		42439F5B24690B75004F076C /* LiveView.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = LiveView.sks; sourceTree = "<group>"; };
 		42EC4BF02463760E00281D12 /* Page1Playground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Page1Playground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		42EC4BF32463760E00281D12 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		42EC4BF52463760E00281D12 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -90,6 +94,25 @@
 			path = mixolydianB;
 			sourceTree = "<group>";
 		};
+		42439F5724690996004F076C /* Page1GameScene */ = {
+			isa = PBXGroup;
+			children = (
+				42EC4BF92463760E00281D12 /* GameScene.swift */,
+				4220FDCF2468A33A00EE1E95 /* ParticlePG1.sks */,
+				42EC4BF52463760E00281D12 /* GameScene.sks */,
+			);
+			path = Page1GameScene;
+			sourceTree = "<group>";
+		};
+		42439F58246909B0004F076C /* Page1LiveView */ = {
+			isa = PBXGroup;
+			children = (
+				42439F59246909C0004F076C /* LiveView.swift */,
+				42439F5B24690B75004F076C /* LiveView.sks */,
+			);
+			path = Page1LiveView;
+			sourceTree = "<group>";
+		};
 		42EC4BE72463760E00281D12 = {
 			isa = PBXGroup;
 			children = (
@@ -109,12 +132,12 @@
 		42EC4BF22463760E00281D12 /* Page1Playground */ = {
 			isa = PBXGroup;
 			children = (
+				42439F58246909B0004F076C /* Page1LiveView */,
+				42439F5724690996004F076C /* Page1GameScene */,
 				42439F152468B4D5004F076C /* mixolydianB */,
 				4220FDC62468715700EE1E95 /* Futura.ttc */,
 				42EC4BF32463760E00281D12 /* AppDelegate.swift */,
 				42439F532469079C004F076C /* loseSound.wav */,
-				42EC4BF52463760E00281D12 /* GameScene.sks */,
-				42EC4BF92463760E00281D12 /* GameScene.swift */,
 				42EC4BFB2463760E00281D12 /* GameViewController.swift */,
 				42EC4BFD2463760E00281D12 /* Main.storyboard */,
 				42439F4B2469057D004F076C /* winSound.wav */,
@@ -125,7 +148,6 @@
 				42EC4C0D2464C90C00281D12 /* FSMLine.swift */,
 				4220FDC924688E6B00EE1E95 /* FSMOutput.swift */,
 				42EC4C312466472A00281D12 /* FSMLogic.swift */,
-				4220FDCF2468A33A00EE1E95 /* ParticlePG1.sks */,
 				42439F452468F8CB004F076C /* Firework.sks */,
 			);
 			path = Page1Playground;
@@ -193,6 +215,7 @@
 				42439F252468B4D5004F076C /* 3b-e1.wav in Resources */,
 				42439F232468B4D5004F076C /* 8b-b1.wav in Resources */,
 				42EC4BFF2463760E00281D12 /* Main.storyboard in Resources */,
+				42439F5C24690B75004F076C /* LiveView.sks in Resources */,
 				42439F262468B4D5004F076C /* 0b-b0.wav in Resources */,
 				42439F272468B4D5004F076C /* 1b-c1.wav in Resources */,
 				42439F212468B4D5004F076C /* 5b-g1.wav in Resources */,
@@ -220,6 +243,7 @@
 				4220FDCA24688E6C00EE1E95 /* FSMOutput.swift in Sources */,
 				42EC4BFA2463760E00281D12 /* GameScene.swift in Sources */,
 				42EC4BFC2463760E00281D12 /* GameViewController.swift in Sources */,
+				42439F5A246909C0004F076C /* LiveView.swift in Sources */,
 				42EC4C0E2464C90C00281D12 /* FSMLine.swift in Sources */,
 				42EC4BF42463760E00281D12 /* AppDelegate.swift in Sources */,
 				42EC4C322466472A00281D12 /* FSMLogic.swift in Sources */,

@@ -12,26 +12,34 @@ import SpriteKit
 // MARK: - FSMLine
 
 public class FSMLine: SKSpriteNode {
-
+    
+    public enum Style {
+        case page1
+        case normal
+    }
+    
+    private var style: Style = .normal
     private var body: SKShapeNode = SKShapeNode()
     private var label: SKLabelNode = SKLabelNode()
     private var glowBody: SKShapeNode = SKShapeNode()
     
     private var headSize: CGFloat = 0.0
     
-    public init(from point1: CGPoint, to point2: CGPoint, dx: CGFloat, dy: CGFloat, headSize: CGFloat = 20.0, name: String) {
+    public init(from point1: CGPoint, to point2: CGPoint, dx: CGFloat, dy: CGFloat, headSize: CGFloat = 20.0, name: String, style: Style) {
         super.init(texture: nil, color: .clear, size: .zero)
         self.headSize = headSize
         self.name = name
+        self.style = style
         self.setDraw(start: point1, end: point2, dx: dx, dy: dy)
         self.setGlow()
     }
     
     
-    public init(from point1: CGPoint, to point2: CGPoint, dx1: CGFloat, dy1: CGFloat, dx2: CGFloat, dy2: CGFloat, headSize: CGFloat, name: String) {
+    public init(from point1: CGPoint, to point2: CGPoint, dx1: CGFloat, dy1: CGFloat, dx2: CGFloat, dy2: CGFloat, headSize: CGFloat, name: String, style: Style) {
         super.init(texture: nil, color: .clear, size: .zero)
         self.headSize = headSize
         self.name = name
+        self.style = style
         self.setDraw(start: point1, end: point2, dx1: dx1, dy1: dy1, dx2: dx2, dy2: dy2, headSize: headSize)
         setGlow()
     }
@@ -65,10 +73,8 @@ public class FSMLine: SKSpriteNode {
         let playSound = SKAction.playSoundFileNamed(sound, waitForCompletion: true)
         self.run(playSound)
         
-        
     }
     
-    weak var maskNode: SKNode?
     
     private func setDraw(start: CGPoint, end: CGPoint, dx1: CGFloat, dy1: CGFloat, dx2: CGFloat, dy2: CGFloat, headSize: CGFloat) {
         let arrow = UIBezierPath()
@@ -84,10 +90,23 @@ public class FSMLine: SKSpriteNode {
         arrow.close()
         
         self.body.path = arrow.cgPath
-        self.body.strokeColor = UIColor(hexString: "#511845")
-        self.body.fillColor = UIColor(hexString: "#511845")
         self.body.lineWidth = 3.0
         self.addChild(body)
+        
+        colorNode()
+    }
+    
+    private func colorNode() {
+        
+        switch self.style {
+        case.normal:
+            self.body.strokeColor = UIColor(hexString: "#333333")
+            self.body.fillColor = UIColor(hexString: "#333333")
+        case .page1:
+            self.body.strokeColor = UIColor(hexString: "#511845")
+            self.body.fillColor = UIColor(hexString: "#511845")
+        }
+        
     }
     
     private func setGlow() {
@@ -108,10 +127,10 @@ public class FSMLine: SKSpriteNode {
         bodyPath.addArrowBody(start: end, end: start, controlPoint: ctrlPoint)
         bodyPath.close()
         self.body.path = bodyPath.cgPath
-        self.body.strokeColor = UIColor(hexString: "#511845")
-        self.body.fillColor = UIColor(hexString: "#511845")
         self.body.lineWidth = 3.0
         self.addChild(body)
+        
+        colorNode()
     
     }
     

@@ -94,6 +94,10 @@ public class GameScene: SKScene {
         backgroundSprite.zPosition = -100
         backgroundSprite.name = "background"
         self.addChild(backgroundSprite)
+        
+        let actionScale = SKAction.scale(by: 1.01, duration: 2.0)
+        let repeatAction = SKAction.repeatForever(SKAction.sequence([actionScale, actionScale.reversed()]))
+        backgroundSprite.run(repeatAction)
     }
     
     private func setSound() {
@@ -125,28 +129,28 @@ public class GameScene: SKScene {
     private func setupStates() {
         
         let state1 = FSMState(
-                        color: UIColor(hexString: "#E3E3F0"),
                         side: 75,
                         position: CGPoint(x: -160, y: -50 + deltaY),
-                        name: "state1")
+                        name: "state1",
+                        style: .page1)
         self.addChild(state1)
         state1.setOutput(text: "N", labelPos: CGPoint(x: -48, y: -68), rotate: 0.0)
         states.append(state1)
         
         let state2 = FSMState(
-                        color: UIColor(hexString: "#E3E3F0"),
                         side: 75,
                         position: CGPoint(x: -40, y: 210 + deltaY),
-                        name: "state2")
+                        name: "state2",
+                        style: .page1)
         self.addChild(state2)
         state2.setOutput(text: "A", labelPos: CGPoint(x: 46, y: 46), rotate: .pi)
         states.append(state2)
         
         let state3 = FSMState(
-                        color: UIColor(hexString: "#E3E3F0"),
                         side: 75,
                         position: CGPoint(x: 160, y: 50 + deltaY),
-                        name: "state3")
+                        name: "state3",
+                        style: .page1)
                
         self.addChild(state3)
         state3.setOutput(text: "B", labelPos: CGPoint(x: 26, y: -82), rotate: .pi/3)
@@ -158,7 +162,8 @@ public class GameScene: SKScene {
                         from: states[0].edgePosition(at: CGFloat.pi/1.3),
                         to: states[1].edgePosition(at: CGFloat.pi, lambdaRadius: 1.4),
                         dx: 1.2,
-                        dy: 0.5, name: "line1")
+                        dy: 0.5, name: "line1",
+                        style: .page1)
         self.addChild(line1)
         line1.setLabel(at: CGPoint(x: -210.0, y: 90.0 + deltaY), text: "🤖")
         lines.append(line1)
@@ -167,7 +172,8 @@ public class GameScene: SKScene {
                         from: states[0].edgePosition(at: -CGFloat.pi/8),
                         to: states[2].edgePosition(at: CGFloat.pi*1.35, lambdaRadius: 1.4),
                         dx: -0.3,
-                        dy: 2.5, name: "line2")
+                        dy: 2.5, name: "line2",
+                        style: .page1)
         self.addChild(line2)
         line2.setLabel(at: CGPoint(x: 40.0, y: -90.0 + deltaY), text: "🔥")
         lines.append(line2)
@@ -177,7 +183,8 @@ public class GameScene: SKScene {
                         from: states[1].edgePosition(at: -CGFloat.pi/2.3),
                         to: states[0].edgePosition(at: CGFloat.pi/4, lambdaRadius: 1.4),
                         dx: 1.2,
-                        dy: -0.3, name: "line3")
+                        dy: -0.3, name: "line3",
+                        style: .page1)
         self.addChild(line3)
         line3.setLabel(at: CGPoint(x: -30.0, y: 40.0 + deltaY), text: "🎱")
         lines.append(line3)
@@ -187,7 +194,8 @@ public class GameScene: SKScene {
                         from: states[2].edgePosition(at: CGFloat.pi*0.9),
                         to: states[1].edgePosition(at: -CGFloat.pi/8, lambdaRadius: 1.4),
                         dx: 0.6,
-                        dy: 0.52, name: "line4")
+                        dy: 0.52, name: "line4",
+                        style: .page1)
         self.addChild(line4)
         line4.setLabel(at: CGPoint(x: 90.0, y: 125.0 + deltaY), text: "🐶")
         lines.append(line4)
@@ -198,7 +206,8 @@ public class GameScene: SKScene {
                         to: states[2].edgePosition(at: CGFloat.pi*0.1, lambdaRadius: 1.4),
                         dx1: 0.9,  dy1: 7.0,
                         dx2: 1.8,  dy2: 4.2,
-                        headSize: 15, name: "line5")
+                        headSize: 15, name: "line5",
+                        style: .page1)
         self.addChild(line5)
         line5.setLabel(at: CGPoint(x: 225.0, y: 130.0 + deltaY), text: "🎩")
         lines.append(line5)
