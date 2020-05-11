@@ -51,7 +51,8 @@ public class FSMState: SKShapeNode {
         case .page1:
             arrayColors = arrayColorsPG1
         case .normal:
-            arrayColors = [UIColor(hexString: "#333333")]
+            arrayColors = [UIColor(hexString: "#666666")]
+            self.alpha = 0.7
         }
         for retroColor in arrayColors {
             self.setDraw(color: retroColor, side: side - count, position: position)
@@ -73,7 +74,6 @@ public class FSMState: SKShapeNode {
     
     private func setHolder() {
         
-        //holder.position = self.position
         let lambda: CGFloat = 1.35
         
         
@@ -125,7 +125,13 @@ public class FSMState: SKShapeNode {
         arc.path = path.cgPath
         arc.strokeColor = color
         arc.lineWidth = side/10
-        arc.fillColor = color
+        switch style {
+        case .normal:
+            break
+        default:
+            arc.fillColor = color
+        }
+        
         arcs.append(arc)
         self.addChild(arc)
     }

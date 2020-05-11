@@ -29,7 +29,7 @@ public class LiveView: SKScene {
     private func setupBackground() {
         let backgroundSprite = SKSpriteNode()
         backgroundSprite.texture = SKTexture(imageNamed: "backgroundPG1")
-        backgroundSprite.color = UIColor(hexString: "#AAAAAA")
+        backgroundSprite.color = UIColor(hexString: "#CCCCCC")
         backgroundSprite.colorBlendFactor = 1
         backgroundSprite.size = CGSize(width: 1400*1.5, height: 980*1.5)
         backgroundSprite.position = CGPoint(x: 0.0, y: -100.0)
@@ -37,7 +37,7 @@ public class LiveView: SKScene {
         backgroundSprite.name = "background"
         self.addChild(backgroundSprite)
         
-        let actionScale = SKAction.scale(by: 1.01, duration: 2.0)
+        let actionScale = SKAction.scale(by: 1.015, duration: 2.0)
         let repeatAction = SKAction.repeatForever(SKAction.sequence([actionScale, actionScale.reversed()]))
         backgroundSprite.run(repeatAction)
     }

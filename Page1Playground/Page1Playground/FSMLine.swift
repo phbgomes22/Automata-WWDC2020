@@ -100,8 +100,8 @@ public class FSMLine: SKSpriteNode {
         
         switch self.style {
         case.normal:
-            self.body.strokeColor = UIColor(hexString: "#333333")
-            self.body.fillColor = UIColor(hexString: "#333333")
+            self.body.strokeColor = UIColor(hexString: "#999999")
+            self.body.fillColor = UIColor(hexString: "#999999")
         case .page1:
             self.body.strokeColor = UIColor(hexString: "#511845")
             self.body.fillColor = UIColor(hexString: "#511845")

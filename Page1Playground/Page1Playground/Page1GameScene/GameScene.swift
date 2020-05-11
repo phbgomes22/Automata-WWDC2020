@@ -95,7 +95,7 @@ public class GameScene: SKScene {
         backgroundSprite.name = "background"
         self.addChild(backgroundSprite)
         
-        let actionScale = SKAction.scale(by: 1.01, duration: 2.0)
+        let actionScale = SKAction.scale(by: 1.015, duration: 2.0)
         let repeatAction = SKAction.repeatForever(SKAction.sequence([actionScale, actionScale.reversed()]))
         backgroundSprite.run(repeatAction)
     }
