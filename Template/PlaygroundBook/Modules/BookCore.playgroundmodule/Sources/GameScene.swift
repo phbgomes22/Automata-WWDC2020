@@ -2,6 +2,9 @@
 
 import SpriteKit
 import UIKit
+import PlaygroundSupport
+import GameplayKit
+
 
 public class GameScene: SKScene {
     
@@ -348,56 +351,5 @@ public class GameScene: SKScene {
     }
     override public func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
-    }
-}
-
-//
-//
-// MARK: - Extensions
-
-public extension UIBezierPath {
-    public func addArrowBody(start: CGPoint, end: CGPoint, controlPoint: CGPoint) {
-        self.move(to: start)
-        
-        let controlPoint = controlPoint
-        
-        self.addQuadCurve(to: end, controlPoint: controlPoint)
-    }
-    
-    public func addArrowHead(end: CGPoint, controlPoint: CGPoint, pointerLineLength: CGFloat, arrowAngle: CGFloat) {
-        
-        self.move(to: end)
-        
-        let controlPoint = controlPoint
-        
-        let startEndAngle = atan((end.y - controlPoint.y) / (end.x - controlPoint.x)) + ((end.x - controlPoint.x) < 0 ? CGFloat(Double.pi) : 0)
-        let arrowLine1 = CGPoint(x: end.x + pointerLineLength * cos(CGFloat(Double.pi) - startEndAngle + arrowAngle), y: end.y - pointerLineLength * sin(CGFloat(Double.pi) - startEndAngle + arrowAngle))
-        let arrowLine2 = CGPoint(x: end.x + pointerLineLength * cos(CGFloat(Double.pi) - startEndAngle - arrowAngle), y: end.y - pointerLineLength * sin(CGFloat(Double.pi) - startEndAngle - arrowAngle))
-
-        self.addLine(to: arrowLine1)
-        self.addLine(to: arrowLine2)
-        self.close()
-        
-    }
-
-}
-
-public extension UIColor {
-    public convenience init(hexString: String) {
-        let hex = hexString.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
-        var int = UInt64()
-        Scanner(string: hex).scanHexInt64(&int)
-        let a, r, g, b: UInt64
-        switch hex.count {
-        case 3: // RGB (12-bit)
-            (a, r, g, b) = (255, (int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
-        case 6: // RGB (24-bit)
-            (a, r, g, b) = (255, int >> 16, int >> 8 & 0xFF, int & 0xFF)
-        case 8: // ARGB (32-bit)
-            (a, r, g, b) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
-        default:
-            (a, r, g, b) = (255, 0, 0, 0)
-        }
-        self.init(red: CGFloat(r) / 255, green: CGFloat(g) / 255, blue: CGFloat(b) / 255, alpha: CGFloat(a) / 255)
     }
 }

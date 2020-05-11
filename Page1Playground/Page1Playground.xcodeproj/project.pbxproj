@@ -22,7 +22,7 @@
 		42439F4C2469057D004F076C /* winSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 42439F4B2469057D004F076C /* winSound.wav */; };
 		42439F542469079C004F076C /* loseSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 42439F532469079C004F076C /* loseSound.wav */; };
 		42439F5A246909C0004F076C /* LiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42439F59246909C0004F076C /* LiveView.swift */; };
-		42439F5C24690B75004F076C /* LiveView.sks in Resources */ = {isa = PBXBuildFile; fileRef = 42439F5B24690B75004F076C /* LiveView.sks */; };
+		42439F5C24690B75004F076C /* LiveView1.sks in Resources */ = {isa = PBXBuildFile; fileRef = 42439F5B24690B75004F076C /* LiveView1.sks */; };
 		42EC4BF42463760E00281D12 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EC4BF32463760E00281D12 /* AppDelegate.swift */; };
 		42EC4BF62463760E00281D12 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 42EC4BF52463760E00281D12 /* GameScene.sks */; };
 		42EC4BFA2463760E00281D12 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EC4BF92463760E00281D12 /* GameScene.swift */; };
@@ -52,7 +52,7 @@
 		42439F4B2469057D004F076C /* winSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = winSound.wav; sourceTree = "<group>"; };
 		42439F532469079C004F076C /* loseSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = loseSound.wav; sourceTree = "<group>"; };
 		42439F59246909C0004F076C /* LiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveView.swift; sourceTree = "<group>"; };
-		42439F5B24690B75004F076C /* LiveView.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = LiveView.sks; sourceTree = "<group>"; };
+		42439F5B24690B75004F076C /* LiveView1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = LiveView1.sks; sourceTree = "<group>"; };
 		42EC4BF02463760E00281D12 /* Page1Playground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Page1Playground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		42EC4BF32463760E00281D12 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		42EC4BF52463760E00281D12 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -108,7 +108,7 @@
 			isa = PBXGroup;
 			children = (
 				42439F59246909C0004F076C /* LiveView.swift */,
-				42439F5B24690B75004F076C /* LiveView.sks */,
+				42439F5B24690B75004F076C /* LiveView1.sks */,
 			);
 			path = Page1LiveView;
 			sourceTree = "<group>";
@@ -215,7 +215,7 @@
 				42439F252468B4D5004F076C /* 3b-e1.wav in Resources */,
 				42439F232468B4D5004F076C /* 8b-b1.wav in Resources */,
 				42EC4BFF2463760E00281D12 /* Main.storyboard in Resources */,
-				42439F5C24690B75004F076C /* LiveView.sks in Resources */,
+				42439F5C24690B75004F076C /* LiveView1.sks in Resources */,
 				42439F262468B4D5004F076C /* 0b-b0.wav in Resources */,
 				42439F272468B4D5004F076C /* 1b-c1.wav in Resources */,
 				42439F212468B4D5004F076C /* 5b-g1.wav in Resources */,
