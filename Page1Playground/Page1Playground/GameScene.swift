@@ -9,8 +9,8 @@ public class GameScene: SKScene {
     private var lines : [FSMLine] = []
     
     private var isFirstTap: Bool = true
-    public var fsmString: String = "🔥🎩🐶🎱🤖" //🤖🎱🔥🎩🎩🐶
-    public var firstState: FSMLogic.StatesPG1 = FSMLogic.StatesPG1.first
+    public var fsmString: String = "🐶🎱🤖🎱🤖" //🤖🎱🔥🎩🎩🐶
+    public var firstState: FSMLogic.StatesPG1 = FSMLogic.StatesPG1.third //FSMLogic.StatesPG1.first
     private var deltaY: CGFloat = -50.0
     public var expectedOutput = "BANANA"
     
@@ -18,13 +18,70 @@ public class GameScene: SKScene {
     
     override public func didMove(to view: SKView) {
         
-        //self.backgroundColor = UIColor(hexString: "#F6F8E8")
         self.backgroundColor = UIColor(hexString: "#E4DED3")
         self.setParticles()
         self.setupBoard()
         self.setWordLabel()
-     //   self.setSound()
+        //self.setSound()
         self.setupBackground()
+    }
+    
+    private func fireworks() {
+        
+        let sound = "winSound"
+        let playSound = SKAction.playSoundFileNamed(sound, waitForCompletion: true)
+        DispatchQueue.main.async {
+            self.run(playSound)
+        }
+        DispatchQueue.global(qos: .userInteractive).async {
+            
+            var arrayFireworks = [CGPoint(x: -200.0, y: 300.0),
+                                  CGPoint(x: 180.0, y: 240.0),
+                                  CGPoint(x: 70.0, y: -240.0),
+                                  CGPoint(x: -90.0, y: -10.0)]
+            
+           var arrayColors: [UIColor] = [UIColor(hexString: "#511845"),
+                                                UIColor(hexString: "#900c3f"),
+                                                UIColor(hexString: "#c70039"),
+                                                UIColor(hexString: "#ff5733")]
+            
+            arrayColors += arrayColors.reversed()
+            arrayFireworks += arrayFireworks
+            
+            for i in 0...(arrayFireworks.count/2 - 1) {
+                if let rp = SKEmitterNode(fileNamed: "Firework.sks") {
+                    rp.position = arrayFireworks[i*2]
+                    rp.targetNode = self.scene
+                    rp.particleColor = arrayColors[i*2]
+                    rp.particleColorBlendFactor = 1.0
+                    rp.particleColorSequence = nil
+
+                    DispatchQueue.main.async {
+                        self.scene!.addChild(rp)
+                    }
+                    usleep(150000)
+                    
+                    let aa = rp.copy() as! SKEmitterNode
+                    aa.position = arrayFireworks[i*2 + 1]
+                    aa.particleColor = arrayColors[i*2 + 1]
+                    aa.targetNode = self.scene
+                    DispatchQueue.main.async {
+                        self.scene!.addChild(aa)
+                    }
+                    
+                }
+                   
+                usleep(520000)
+            }
+        }
+    }
+    
+    private func loseSound() {
+        let sound = "loseSound"
+        let playSound = SKAction.playSoundFileNamed(sound, waitForCompletion: true)
+        DispatchQueue.main.async {
+            self.run(playSound)
+        }
     }
     
     private func setupBackground() {
@@ -171,11 +228,16 @@ public class GameScene: SKScene {
                 print(ended)
                 if(!ended) {
                     self.wordLabel.update(text: (self.wordLabel.text ?? "") + " 🙊?")
+                    self.loseSound()
                 }
                 else if (self.wordLabel.text != self.expectedOutput) {
                     self.wordLabel.update(text: (self.wordLabel.text ?? "") + " 🙊?")
+                    self.loseSound()
                 } else {
-                    self.wordLabel.update(text: (self.wordLabel.text ?? "") + " 🍌!")
+                    self.wordLabel.update(text: (self.wordLabel.text ?? "") + " 🐵!")
+                    DispatchQueue.main.async {
+                        self.fireworks()
+                    }
                 }
             }
             isFirstTap = false
