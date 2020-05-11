@@ -9,7 +9,7 @@ public class GameScene: SKScene {
     private var lines : [FSMLine] = []
     
     private var isFirstTap: Bool = true
-    public var fsmString: String = "🤖🎱🔥🎩🎩🐶"
+    public var fsmString: String = "🔥🎩🐶🎱🤖" //🤖🎱🔥🎩🎩🐶
     public var firstState: FSMLogic.StatesPG1 = FSMLogic.StatesPG1.first
     private var deltaY: CGFloat = -50.0
     public var expectedOutput = "BANANA"
@@ -23,6 +23,29 @@ public class GameScene: SKScene {
         self.setParticles()
         self.setupBoard()
         self.setWordLabel()
+     //   self.setSound()
+        self.setupBackground()
+    }
+    
+    private func setupBackground() {
+        let backgroundSprite = SKSpriteNode()
+        backgroundSprite.texture = SKTexture(imageNamed: "backgroundPG1")
+        backgroundSprite.color = UIColor(hexString: "#DCD6CA")
+        backgroundSprite.colorBlendFactor = 1
+        backgroundSprite.size = CGSize(width: 1400*1.5, height: 980*1.5)
+        backgroundSprite.position = CGPoint(x: 0.0, y: -100.0)
+        backgroundSprite.zPosition = -100
+        backgroundSprite.name = "background"
+        self.addChild(backgroundSprite)
+    }
+    
+    private func setSound() {
+        
+        let sound = "backgroundSoung.mp3"
+        let node = SKAudioNode(fileNamed: sound)
+        self.addChild(node)
+        node.run(.play())
+        
     }
     
     private func setWordLabel() {
@@ -128,9 +151,6 @@ public class GameScene: SKScene {
     private func setParticles() {
         if let rp = SKEmitterNode(fileNamed: "ParticlePG1.sks") {
             rp.position = .zero
-//            rp.particleBirthRate = 20.0
-//            rp.particleAlpha = 0.1
-//            rp.particleAlphaRange = 0.5
             rp.targetNode = scene
             scene!.addChild(rp)
         }
@@ -146,22 +166,19 @@ public class GameScene: SKScene {
     
     func touchDown(atPoint pos : CGPoint) {
        
-        self.automateFSM(delay: 0) { (ended) in
-            print(ended)
-            if(!ended) {
-                self.wordLabel.update(text: (self.wordLabel.text ?? "") + " 🙊?")
+        if isFirstTap {
+            self.automateFSM(delay: 0) { (ended) in
+                print(ended)
+                if(!ended) {
+                    self.wordLabel.update(text: (self.wordLabel.text ?? "") + " 🙊?")
+                }
+                else if (self.wordLabel.text != self.expectedOutput) {
+                    self.wordLabel.update(text: (self.wordLabel.text ?? "") + " 🙊?")
+                } else {
+                    self.wordLabel.update(text: (self.wordLabel.text ?? "") + " 🍌!")
+                }
             }
-            else if (self.wordLabel.text != self.expectedOutput) {
-                self.wordLabel.update(text: (self.wordLabel.text ?? "") + " 🙊?")
-            } else {
-                self.wordLabel.update(text: (self.wordLabel.text ?? "") + " 🍌!")
-            }
-        }
-        
-        for node in self.nodes(at: pos) {
-            if let state = node as? FSMState {
-                state.gotTouched(view: self.view!)
-            }
+            isFirstTap = false
         }
         
     }
@@ -211,16 +228,21 @@ public class GameScene: SKScene {
                     }
                 }
                 
+                let semaphore = DispatchGroup()
+                
+                semaphore.enter()
                 
                 DispatchQueue.main.asyncAfter(deadline: .now()) {
-                    currStateNode.gotTouched(view: self.view!)
                     
                     let output = currStateNode.getOutput()
-                    
                     self.wordLabel.update(text: (self.wordLabel.text ?? "") + output)
+                    currStateNode.gotTouched(view: self.view!) { bool in
+                        if(bool) {
+                            semaphore.leave()
+                        }
+                    }
                 }
-                
-                usleep(1400000)
+                semaphore.wait()
                 
                 // sets next state
                 guard let nextState = nState else { // if there is no next state, the line wont animate
@@ -233,11 +255,15 @@ public class GameScene: SKScene {
                 
                 guard let lNode = nLineNode else { print("WOW, something went very wrong!");break}
                 
+                let semaphore2 = DispatchGroup()
+                semaphore2.enter()
                 DispatchQueue.main.async {
-                    lNode.gotUsed(scene: self)
+                    lNode.gotUsed(scene: self) {
+                        semaphore2.leave()
+                    }
                 }
                 
-                usleep(600000)
+                semaphore2.wait()
                 
             }
             

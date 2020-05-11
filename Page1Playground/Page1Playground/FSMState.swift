@@ -114,29 +114,36 @@ public class FSMState: SKShapeNode {
 
     
     
-    public func gotTouched(view: SKView) {
+    public func gotTouched(view: SKView, completion: @escaping(Bool)->() ) {
       
         var count:CGFloat = 1.0
         for arc in arcs {
-            let scaleAction = SKAction.scale(by: 1.0 + 0.15*count, duration: 0.22)
+            let scaleAction = SKAction.scale(by: 1.0 + 0.15*count, duration: 0.3)
             let seqScale = SKAction.sequence([scaleAction, scaleAction.reversed()])
             arc.run(seqScale)
             count += 1.0
         }
         
-        
-        let originalTransform = view.transform
-        let scaled = originalTransform.scaledBy(x: 1.01, y: 1.01)
-
-        UIView.animate(withDuration: 0.35, delay: 0.0, options: [.curveEaseOut, .autoreverse], animations: {
-            view.transform = scaled
-        }, completion: { (_) in
-            view.transform = originalTransform
-        })
-        
         let sound = Sound.randomSound()
-        let action = SKAction.playSoundFileNamed(sound, waitForCompletion: true)
-        self.run(action)
+        let actionSound = SKAction.playSoundFileNamed(sound, waitForCompletion: true)
+        let sequenceSound = SKAction.sequence([actionSound, SKAction.wait(forDuration: 0.75)])
+        self.run(sequenceSound) {
+           completion(true)
+        }
+        
+        // move camera
+        
+        if let camera = self.scene!.camera {
+            let scale = SKAction.scaleX(by: 1.01, y: 1.01, duration: 0.3)
+            let move = SKAction.moveBy(x: 3.0, y: -2.0, duration: 0.3)
+            let scaleAction = SKAction.sequence([scale, scale.reversed()])
+            let moveAction = SKAction.sequence([move, move.reversed()])
+            let groupCamera = SKAction.group([scaleAction, moveAction])
+            
+            camera.run(groupCamera)
+        } else {
+            print("NO CAMERA")
+        }
     }
     
 
@@ -173,7 +180,7 @@ public struct Sound {
     
     private static var partialNotes = ["0b-b0", "2b-d1", "3b-e1", "4b-f1", "5b-g1", "6b-a1"]
     private static var lastRandom: Int = 0
-    private static var allNodes = ["0b-b0", "1b-c1", "2b-d1", "3b-e1", "4b-f1", "5b-g1", "6b-a1", "7b-a1", "8b-b1"]
+    public static var lineNote = "8b-b1"
     
     public static func randomSound() -> String {
         var random = Int.random(in: 0...partialNotes.count - 1)
