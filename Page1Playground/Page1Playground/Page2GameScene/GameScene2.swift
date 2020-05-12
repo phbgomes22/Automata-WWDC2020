@@ -178,7 +178,7 @@ public class GameScene2: SKScene {
                         dy: 12.5, name: "line1",
                         style: .page1)
         self.addChild(line1)
-        line1.setLabel(at: CGPoint(x: -175.0, y: 150.0 + deltaY), text: "🤖")
+        line1.setLabel(at: CGPoint(x: -165.0, y: 150.0 + deltaY), text: "🔴", fontSize: 35)
         lines.append(line1)
         
         let line2 = FSMLine(
@@ -188,7 +188,7 @@ public class GameScene2: SKScene {
                         dy: 0.1, name: "line2",
                         style: .page1)
         self.addChild(line2)
-        line2.setLabel(at: CGPoint(x: -125.0, y: 85.0 + deltaY), text: "🔥")
+        line2.setLabel(at: CGPoint(x: -125.0, y: 85.0 + deltaY), text: "🔵", fontSize: 35)
         lines.append(line2)
         
         
@@ -199,7 +199,7 @@ public class GameScene2: SKScene {
                         dy: 1.2, name: "line3",
                         style: .page1)
         self.addChild(line3)
-        line3.setLabel(at: CGPoint(x: -60.0, y: -85.0 + deltaY), text: "🎱")
+        line3.setLabel(at: CGPoint(x: -60.0, y: -85.0 + deltaY), text: "🔴", fontSize: 35)
         lines.append(line3)
         
         
@@ -210,7 +210,7 @@ public class GameScene2: SKScene {
                         dy: 2.2, name: "line4",
                         style: .page1)
         self.addChild(line4)
-        line4.setLabel(at: CGPoint(x: -20.0, y: -33.0 + deltaY), text: "🐶")
+        line4.setLabel(at: CGPoint(x: -20.0, y: -36.0 + deltaY), text: "🔵", fontSize: 35)
         lines.append(line4)
         
         
@@ -221,7 +221,7 @@ public class GameScene2: SKScene {
                         name: "line5",
                         style: .page1)
         self.addChild(line5)
-        line5.setLabel(at: CGPoint(x: 195.0, y: -25.0 + deltaY), text: "🎩")
+        line5.setLabel(at: CGPoint(x: 195.0, y: -35.0 + deltaY), text: "🔴", fontSize: 35)
         lines.append(line5)
         
         
@@ -233,7 +233,7 @@ public class GameScene2: SKScene {
                         name: "line6",
                         style: .page1)
         self.addChild(line6)
-        line6.setLabel(at: CGPoint(x: 135.0, y: 55.0 + deltaY), text: "🎃")
+        line6.setLabel(at: CGPoint(x: 140.0, y: 55.0 + deltaY), text: "🔵", fontSize: 35)
         lines.append(line6)
         
         
@@ -244,7 +244,7 @@ public class GameScene2: SKScene {
                         name: "line7",
                         style: .page1)
         self.addChild(line7)
-        line7.setLabel(at: CGPoint(x: 98.0, y: 210.0 + deltaY), text: "🧠")
+        line7.setLabel(at: CGPoint(x: 98.0, y: 200.0 + deltaY), text: "🔴", fontSize: 35)
         lines.append(line7)
         
         
@@ -256,7 +256,7 @@ public class GameScene2: SKScene {
                         name: "line7",
                         style: .page1)
         self.addChild(line8)
-        line8.setLabel(at: CGPoint(x: 20.0, y: 104.0 + deltaY), text: "🎾")
+        line8.setLabel(at: CGPoint(x: 10.0, y: 95.0 + deltaY), text: "🔵", fontSize: 35)
         lines.append(line8)
         
     }

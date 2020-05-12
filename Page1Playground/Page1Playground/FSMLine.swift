@@ -50,31 +50,30 @@ public class FSMLine: SKSpriteNode {
        fatalError("init(coder:) has not been implemented")
     }
     
-    public func setLabel(at pos: CGPoint, text: String) {
+    public func setLabel(at pos: CGPoint, text: String, fontSize: CGFloat = 40) {
         
+        self.label.fontSize = fontSize
+        
+        var spriteImage = emojiToImage(text: text, size: fontSize)
         if self.style == .normal {
-            if let image = emojiToImage(text: text, size: 45).noir {
-                self.labelSpriteNode.size = CGSize(width: self.label.fontSize, height: self.label.fontSize)
-                self.labelSpriteNode.texture = SKTexture.init(image: image)
-                self.labelSpriteNode.color = .clear
-                self.addChild(labelSpriteNode)
-                self.labelSpriteNode.position = pos
-                self.labelSpriteNode.zPosition = 10.0
-                return
+            if let image = spriteImage.noir {
+                spriteImage = image
             }// else
         }// else
         
+        self.labelSpriteNode.size = CGSize(width: fontSize, height: fontSize)
+        self.labelSpriteNode.texture = SKTexture.init(image: spriteImage)
+        self.labelSpriteNode.color = .clear
+        self.addChild(labelSpriteNode)
+        self.labelSpriteNode.position = CGPoint(x: pos.x, y:  pos.y + fontSize/2)
+        self.labelSpriteNode.zPosition = 10.0
         
-        self.label.text = text
-        self.addChild(label)
-        self.label.position = pos
-        self.label.zPosition = 10.0
         
-        let shapeNode = SKShapeNode(circleOfRadius: 21.0)
+        let shapeNode = SKShapeNode(circleOfRadius: (fontSize + 5)/2)
         shapeNode.fillColor = .white
-        shapeNode.position = CGPoint(x: pos.x, y:  pos.y + 10.5)
+        shapeNode.position = CGPoint(x: pos.x, y:  pos.y + (fontSize)/2 )
         shapeNode.lineWidth = 3.5
-        shapeNode.strokeColor = self.body.strokeColor.withAlphaComponent(0.3)
+        shapeNode.strokeColor = self.body.strokeColor.withAlphaComponent(0.15)
         self.addChild(shapeNode)
 
     }
