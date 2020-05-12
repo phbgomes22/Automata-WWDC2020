@@ -22,6 +22,7 @@ public class FSMLine: SKSpriteNode {
     private var body: SKShapeNode = SKShapeNode()
     private var label: SKLabelNode = SKLabelNode()
     private var glowBody: SKShapeNode = SKShapeNode()
+    private var labelSpriteNode = SKSpriteNode()
     
     private var headSize: CGFloat = 0.0
     
@@ -49,11 +50,23 @@ public class FSMLine: SKSpriteNode {
     }
     
     public func setLabel(at pos: CGPoint, text: String) {
-        self.label.text = text
+        if self.style == .normal {
+            if let image = emojiToImage(text: text, size: 45).noir {
+                self.labelSpriteNode.size = CGSize(width: self.label.fontSize, height: self.label.fontSize)
+                self.labelSpriteNode.texture = SKTexture.init(image: image)
+                self.labelSpriteNode.color = .clear
+                self.addChild(labelSpriteNode)
+                self.labelSpriteNode.position = pos
+                return
+            }// else
+        }// else
         
+        self.label.text = text
         self.addChild(label)
         self.label.position = pos
+
     }
+    
     
     public func gotUsed(scene: SKScene, completion: @escaping()->()) {
         

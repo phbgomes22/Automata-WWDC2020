@@ -12,7 +12,6 @@ import UIKit
 import GameplayKit
 import PlaygroundSupport
 
-
 public class LiveView1: SKScene {
     
     private var states : [FSMState] = []

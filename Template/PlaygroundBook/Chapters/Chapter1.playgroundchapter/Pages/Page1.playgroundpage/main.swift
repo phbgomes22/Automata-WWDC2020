@@ -83,18 +83,18 @@ if let scene = GameScene(fileNamed: "GameScene") {
     
     // Present the scene
     sceneView.presentScene(scene)
-//
-//    scene.fsmString = answer
-//
-//    scene.firstState = FSMLogic.StatesPG1.second
-//
-//    if chosenState == "A" {
-//        scene.firstState = FSMLogic.StatesPG1.second
-//    } else if chosenState == "B" {
-//        scene.firstState = FSMLogic.StatesPG1.third
-//    } else if chosenState == "N" {
-//       scene.firstState = FSMLogic.StatesPG1.first
-//    }
+
+    scene.fsmString = answer
+
+    scene.firstState = FSMLogic.StatesPG1.second
+
+    if chosenState == "A" {
+        scene.firstState = FSMLogic.StatesPG1.second
+    } else if chosenState == "B" {
+        scene.firstState = FSMLogic.StatesPG1.third
+    } else if chosenState == "N" {
+       scene.firstState = FSMLogic.StatesPG1.first
+    }
    
 }
 

@@ -8,7 +8,7 @@
 import SpriteKit
 import UIKit
 
-public class LiveView: SKScene {
+public class LiveView1: SKScene {
     
     private var states : [FSMState] = []
     private var lines : [FSMLine] = []
@@ -98,7 +98,7 @@ public class LiveView: SKScene {
                         dy: 2.5, name: "line2",
                         style: .normal)
         self.addChild(line2)
-        line2.setLabel(at: CGPoint(x: 40.0, y: -90.0 + deltaY), text: "🔥")
+        line2.setLabel(at: CGPoint(x: 35.0, y: -80.0 + deltaY), text: "🔥")
         lines.append(line2)
         
         
@@ -109,7 +109,7 @@ public class LiveView: SKScene {
                         dy: -0.3, name: "line3",
                         style: .normal)
         self.addChild(line3)
-        line3.setLabel(at: CGPoint(x: -30.0, y: 40.0 + deltaY), text: "🎱")
+        line3.setLabel(at: CGPoint(x: -35.0, y: 45.0 + deltaY), text: "🎱")
         lines.append(line3)
         
         
@@ -120,7 +120,7 @@ public class LiveView: SKScene {
                         dy: 0.52, name: "line4",
                         style: .normal)
         self.addChild(line4)
-        line4.setLabel(at: CGPoint(x: 90.0, y: 125.0 + deltaY), text: "🐶")
+        line4.setLabel(at: CGPoint(x: 100.0, y: 125.0 + deltaY), text: "🐶")
         lines.append(line4)
         
         
@@ -133,6 +133,7 @@ public class LiveView: SKScene {
                         style: .normal)
         self.addChild(line5)
         line5.setLabel(at: CGPoint(x: 225.0, y: 130.0 + deltaY), text: "🎩")
+        
         lines.append(line5)
         
     }
@@ -151,15 +152,5 @@ public class LiveView: SKScene {
         get {
             return true
         }
-    }
-    
-    func touchDown(atPoint pos : CGPoint) {
-       
-        
-    }
-    
-    override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { touchDown(atPoint: t.location(in: self)) }
-        
     }
 }

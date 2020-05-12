@@ -198,33 +198,3 @@ public class FSMState: SKShapeNode {
         return CGPoint(x: newX, y: newY)
     }
 }
-
-
-public func edgeCircle(pos: CGPoint, at angle: CGFloat, radius: CGFloat) -> CGPoint {
-
-    let newX = pos.x + (radius)*cos(angle)
-    let newY = pos.y + (radius)*sin(angle)
-    
-    return CGPoint(x: newX, y: newY)
-}
-
-
-public struct Sound {
-    
-    private static var partialNotes = ["0b-b0", "2b-d1", "3b-e1", "4b-f1", "5b-g1", "6b-a1"]
-    private static var lastRandom: Int = 0
-    public static var lineNote = "8b-b1"
-    
-    public static func randomSound() -> String {
-        var random = Int.random(in: 0...partialNotes.count - 1)
-        while random == Sound.lastRandom {
-            random = Int.random(in: 0...partialNotes.count - 1)
-        }
-        Sound.lastRandom = random
-        let str = Sound.partialNotes[random] + ".wav"
-        print(str)
-        
-        return str //SKAudioNode(fileNamed: str)
-    }
-    
-}

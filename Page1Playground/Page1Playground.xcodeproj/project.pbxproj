@@ -21,8 +21,9 @@
 		42439F462468F8CB004F076C /* Firework.sks in Resources */ = {isa = PBXBuildFile; fileRef = 42439F452468F8CB004F076C /* Firework.sks */; };
 		42439F4C2469057D004F076C /* winSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 42439F4B2469057D004F076C /* winSound.wav */; };
 		42439F542469079C004F076C /* loseSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 42439F532469079C004F076C /* loseSound.wav */; };
-		42439F5A246909C0004F076C /* LiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42439F59246909C0004F076C /* LiveView.swift */; };
+		42439F5A246909C0004F076C /* LiveView1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42439F59246909C0004F076C /* LiveView1.swift */; };
 		42439F5C24690B75004F076C /* LiveView1.sks in Resources */ = {isa = PBXBuildFile; fileRef = 42439F5B24690B75004F076C /* LiveView1.sks */; };
+		4247AF2B246A15B2004F7A1E /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247AF2A246A15B2004F7A1E /* Extensions.swift */; };
 		42EC4BF42463760E00281D12 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EC4BF32463760E00281D12 /* AppDelegate.swift */; };
 		42EC4BF62463760E00281D12 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 42EC4BF52463760E00281D12 /* GameScene.sks */; };
 		42EC4BFA2463760E00281D12 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EC4BF92463760E00281D12 /* GameScene.swift */; };
@@ -51,8 +52,9 @@
 		42439F452468F8CB004F076C /* Firework.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Firework.sks; sourceTree = "<group>"; };
 		42439F4B2469057D004F076C /* winSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = winSound.wav; sourceTree = "<group>"; };
 		42439F532469079C004F076C /* loseSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = loseSound.wav; sourceTree = "<group>"; };
-		42439F59246909C0004F076C /* LiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveView.swift; sourceTree = "<group>"; };
+		42439F59246909C0004F076C /* LiveView1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveView1.swift; sourceTree = "<group>"; };
 		42439F5B24690B75004F076C /* LiveView1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = LiveView1.sks; sourceTree = "<group>"; };
+		4247AF2A246A15B2004F7A1E /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		42EC4BF02463760E00281D12 /* Page1Playground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Page1Playground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		42EC4BF32463760E00281D12 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		42EC4BF52463760E00281D12 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -107,7 +109,7 @@
 		42439F58246909B0004F076C /* Page1LiveView */ = {
 			isa = PBXGroup;
 			children = (
-				42439F59246909C0004F076C /* LiveView.swift */,
+				42439F59246909C0004F076C /* LiveView1.swift */,
 				42439F5B24690B75004F076C /* LiveView1.sks */,
 			);
 			path = Page1LiveView;
@@ -149,6 +151,7 @@
 				4220FDC924688E6B00EE1E95 /* FSMOutput.swift */,
 				42EC4C312466472A00281D12 /* FSMLogic.swift */,
 				42439F452468F8CB004F076C /* Firework.sks */,
+				4247AF2A246A15B2004F7A1E /* Extensions.swift */,
 			);
 			path = Page1Playground;
 			sourceTree = "<group>";
@@ -240,10 +243,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				42EC4C0C2464C8D800281D12 /* FSMState.swift in Sources */,
+				4247AF2B246A15B2004F7A1E /* Extensions.swift in Sources */,
 				4220FDCA24688E6C00EE1E95 /* FSMOutput.swift in Sources */,
 				42EC4BFA2463760E00281D12 /* GameScene.swift in Sources */,
 				42EC4BFC2463760E00281D12 /* GameViewController.swift in Sources */,
-				42439F5A246909C0004F076C /* LiveView.swift in Sources */,
+				42439F5A246909C0004F076C /* LiveView1.swift in Sources */,
 				42EC4C0E2464C90C00281D12 /* FSMLine.swift in Sources */,
 				42EC4BF42463760E00281D12 /* AppDelegate.swift in Sources */,
 				42EC4C322466472A00281D12 /* FSMLogic.swift in Sources */,
