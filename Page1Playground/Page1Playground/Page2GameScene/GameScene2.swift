@@ -1,11 +1,14 @@
-//: A SpriteKit based Playground
-
+//
+//  GameScene2.swift
+//  Page1Playground
+//
+//  Created by Pedro Gomes on 11/05/20.
+//  Copyright © 2020 Pedro Gomes. All rights reserved.
+//
 import SpriteKit
 import UIKit
-import GameplayKit
 
-
-public class GameScene: SKScene {
+public class GameScene2: SKScene {
     
     public var states : [FSMState] = []
     public var lines : [FSMLine] = []
@@ -26,10 +29,6 @@ public class GameScene: SKScene {
         self.setWordLabel()
         //self.setSound()
         self.setupBackground()
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
-            self.startFSM()
-        }
     }
     
     public func fireworks() {
@@ -236,121 +235,12 @@ public class GameScene: SKScene {
         }
     }
     
-    func startFSM() {
-        self.automateFSM(delay: 0) { (ended) in
-            print(ended)
-            if(!ended) {
-                self.wordLabel.update(text: (self.wordLabel.text ?? "") + " 🙊?")
-                self.loseSound()
-            }
-            else if (self.wordLabel.text != self.expectedOutput) {
-                self.wordLabel.update(text: (self.wordLabel.text ?? "") + " 🙊?")
-                self.loseSound()
-            } else {
-                self.wordLabel.update(text: (self.wordLabel.text ?? "") + " 🐵!")
-                DispatchQueue.main.async {
-                    self.fireworks()
-                }
-            }
-        }
-    }
-    
     public func touchDown(atPoint pos : CGPoint) {
        
-        if isFirstTap {
-            
-            isFirstTap = false
-        }
         
     }
     
     
-    public func automateFSM(delay: Int, completion: @escaping (_ ended: Bool) -> ()) {
-        
-        DispatchQueue.global(qos: .userInteractive).asyncAfter(deadline: .now() + .seconds(delay)) {
-            var bool = true
-            
-            var currentState = self.firstState
-            let stringToRun = self.fsmString + "X" // "X" marks the final state!
-            for char in stringToRun {
-                let nState = FSMLogic.fsm1(from: currentState, text: String(char))
-                print(char)
-
-                var currStateNode: FSMState!
-                var nLineNode: FSMLine?
-                
-                switch currentState {
-                case .first:
-                    currStateNode = self.states[0]
-                    if nState == .first { // if im going from current state to nState !!!! #Attention!
-                        nLineNode = nil
-                    } else if nState == .second {
-                        nLineNode = self.lines[0]
-                    } else if nState == .third {
-                       nLineNode = self.lines[1]
-                    }
-                case .second:
-                    currStateNode = self.states[1]
-                    if nState == .first { // if im going from current state to nState !!!! #Attention!
-                        nLineNode = self.lines[2]
-                    } else if nState == .second {
-                        nLineNode = nil
-                    } else if nState == .third {
-                        nLineNode = nil
-                    }
-                case .third:
-                    currStateNode = self.states[2]
-                    if nState == .first { // if im going from current state to nState !!!! #Attention!
-                        nLineNode = nil
-                    } else if nState == .second {
-                        nLineNode = self.lines[3]
-                    } else if nState == .third {
-                        nLineNode = self.lines[4]
-                    }
-                }
-                
-                let semaphore = DispatchGroup()
-                
-                semaphore.enter()
-                
-                DispatchQueue.main.asyncAfter(deadline: .now()) {
-                    
-                    let output = currStateNode.getOutput()
-                    self.wordLabel.update(text: (self.wordLabel.text ?? "") + output)
-                    currStateNode.gotTouched(view: self.view!) { bool in
-                        if(bool) {
-                            semaphore.leave()
-                        }
-                    }
-                }
-                semaphore.wait()
-                
-                // sets next state
-                guard let nextState = nState else { // if there is no next state, the line wont animate
-                    if(char != "X") {
-                        bool = false
-                    }
-                    break
-                }
-                currentState = nextState
-                
-                guard let lNode = nLineNode else { print("WOW, something went very wrong!");break}
-                
-                let semaphore2 = DispatchGroup()
-                semaphore2.enter()
-                DispatchQueue.main.async {
-                    lNode.gotUsed(scene: self) {
-                        semaphore2.leave()
-                    }
-                }
-                
-                semaphore2.wait()
-                
-            }
-            
-            completion(bool)
-        }
-    }
     
     override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches { touchDown(atPoint: t.location(in: self)) }
@@ -360,3 +250,4 @@ public class GameScene: SKScene {
         // Called before each frame is rendered
     }
 }
+

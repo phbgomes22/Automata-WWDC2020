@@ -27,6 +27,10 @@ public class GameScene: SKScene {
         self.setWordLabel()
         //self.setSound()
         self.setupBackground()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
+            self.startFSM()
+        }
     }
     
     public func fireworks() {
@@ -233,25 +237,29 @@ public class GameScene: SKScene {
         }
     }
     
+    func startFSM() {
+        self.automateFSM(delay: 0) { (ended) in
+            print(ended)
+            if(!ended) {
+                self.wordLabel.update(text: (self.wordLabel.text ?? "") + " 🙊?")
+                self.loseSound()
+            }
+            else if (self.wordLabel.text != self.expectedOutput) {
+                self.wordLabel.update(text: (self.wordLabel.text ?? "") + " 🙊?")
+                self.loseSound()
+            } else {
+                self.wordLabel.update(text: (self.wordLabel.text ?? "") + " 🐵!")
+                DispatchQueue.main.async {
+                    self.fireworks()
+                }
+            }
+        }
+    }
+    
     public func touchDown(atPoint pos : CGPoint) {
        
         if isFirstTap {
-            self.automateFSM(delay: 0) { (ended) in
-                print(ended)
-                if(!ended) {
-                    self.wordLabel.update(text: (self.wordLabel.text ?? "") + " 🙊?")
-                    self.loseSound()
-                }
-                else if (self.wordLabel.text != self.expectedOutput) {
-                    self.wordLabel.update(text: (self.wordLabel.text ?? "") + " 🙊?")
-                    self.loseSound()
-                } else {
-                    self.wordLabel.update(text: (self.wordLabel.text ?? "") + " 🐵!")
-                    DispatchQueue.main.async {
-                        self.fireworks()
-                    }
-                }
-            }
+            
             isFirstTap = false
         }
         

@@ -24,6 +24,8 @@
 		42439F5A246909C0004F076C /* LiveView1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42439F59246909C0004F076C /* LiveView1.swift */; };
 		42439F5C24690B75004F076C /* LiveView1.sks in Resources */ = {isa = PBXBuildFile; fileRef = 42439F5B24690B75004F076C /* LiveView1.sks */; };
 		4247AF2B246A15B2004F7A1E /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247AF2A246A15B2004F7A1E /* Extensions.swift */; };
+		4247AF2E246A247A004F7A1E /* GameScene2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247AF2D246A247A004F7A1E /* GameScene2.swift */; };
+		4247AF30246A249E004F7A1E /* GameScene2.sks in Resources */ = {isa = PBXBuildFile; fileRef = 4247AF2F246A249E004F7A1E /* GameScene2.sks */; };
 		42EC4BF42463760E00281D12 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EC4BF32463760E00281D12 /* AppDelegate.swift */; };
 		42EC4BF62463760E00281D12 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 42EC4BF52463760E00281D12 /* GameScene.sks */; };
 		42EC4BFA2463760E00281D12 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EC4BF92463760E00281D12 /* GameScene.swift */; };
@@ -55,6 +57,8 @@
 		42439F59246909C0004F076C /* LiveView1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveView1.swift; sourceTree = "<group>"; };
 		42439F5B24690B75004F076C /* LiveView1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = LiveView1.sks; sourceTree = "<group>"; };
 		4247AF2A246A15B2004F7A1E /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		4247AF2D246A247A004F7A1E /* GameScene2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene2.swift; sourceTree = "<group>"; };
+		4247AF2F246A249E004F7A1E /* GameScene2.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene2.sks; sourceTree = "<group>"; };
 		42EC4BF02463760E00281D12 /* Page1Playground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Page1Playground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		42EC4BF32463760E00281D12 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		42EC4BF52463760E00281D12 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -115,6 +119,15 @@
 			path = Page1LiveView;
 			sourceTree = "<group>";
 		};
+		4247AF2C246A245E004F7A1E /* Page2GameScene */ = {
+			isa = PBXGroup;
+			children = (
+				4247AF2D246A247A004F7A1E /* GameScene2.swift */,
+				4247AF2F246A249E004F7A1E /* GameScene2.sks */,
+			);
+			path = Page2GameScene;
+			sourceTree = "<group>";
+		};
 		42EC4BE72463760E00281D12 = {
 			isa = PBXGroup;
 			children = (
@@ -134,6 +147,7 @@
 		42EC4BF22463760E00281D12 /* Page1Playground */ = {
 			isa = PBXGroup;
 			children = (
+				4247AF2C246A245E004F7A1E /* Page2GameScene */,
 				42439F58246909B0004F076C /* Page1LiveView */,
 				42439F5724690996004F076C /* Page1GameScene */,
 				42439F152468B4D5004F076C /* mixolydianB */,
@@ -215,6 +229,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				42439F222468B4D5004F076C /* 6b-a1.wav in Resources */,
+				4247AF30246A249E004F7A1E /* GameScene2.sks in Resources */,
 				42439F252468B4D5004F076C /* 3b-e1.wav in Resources */,
 				42439F232468B4D5004F076C /* 8b-b1.wav in Resources */,
 				42EC4BFF2463760E00281D12 /* Main.storyboard in Resources */,
@@ -245,6 +260,7 @@
 				42EC4C0C2464C8D800281D12 /* FSMState.swift in Sources */,
 				4247AF2B246A15B2004F7A1E /* Extensions.swift in Sources */,
 				4220FDCA24688E6C00EE1E95 /* FSMOutput.swift in Sources */,
+				4247AF2E246A247A004F7A1E /* GameScene2.swift in Sources */,
 				42EC4BFA2463760E00281D12 /* GameScene.swift in Sources */,
 				42EC4BFC2463760E00281D12 /* GameViewController.swift in Sources */,
 				42439F5A246909C0004F076C /* LiveView1.swift in Sources */,
