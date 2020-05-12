@@ -1,12 +1,15 @@
 //
 //  GameScene2.swift
-//  Page1Playground
+//  BookCore
 //
-//  Created by Pedro Gomes on 11/05/20.
-//  Copyright © 2020 Pedro Gomes. All rights reserved.
+//  Created by Pedro Gomes on 12/05/20.
 //
+
 import SpriteKit
+import GameplayKit
 import UIKit
+import PlaygroundSupport
+
 
 public class GameScene2: SKScene {
     
@@ -135,7 +138,7 @@ public class GameScene2: SKScene {
         
         let state1 = FSMState(
                         side: 75,
-                        position: CGPoint(x: -70, y: 240 + deltaY),
+                        position: CGPoint(x: -40, y: 240 + deltaY),
                         name: "state1",
                         style: .page1)
         self.addChild(state1)
@@ -144,7 +147,7 @@ public class GameScene2: SKScene {
         
         let state2 = FSMState(
                         side: 75,
-                        position: CGPoint(x: -180, y: 10 + deltaY),
+                        position: CGPoint(x: -150, y: 10 + deltaY),
                         name: "state2",
                         style: .page1)
         self.addChild(state2)
@@ -178,7 +181,7 @@ public class GameScene2: SKScene {
                         dy: 15.5, name: "line1",
                         style: .page1)
         self.addChild(line1)
-        line1.setLabel(at: CGPoint(x: -200.0, y: 150.0 + deltaY), text: "🤖")
+        line1.setLabel(at: CGPoint(x: -180.0, y: 150.0 + deltaY), text: "🤖")
         lines.append(line1)
         
         let line2 = FSMLine(
@@ -188,7 +191,7 @@ public class GameScene2: SKScene {
                         dy: 0.1, name: "line2",
                         style: .page1)
         self.addChild(line2)
-        line2.setLabel(at: CGPoint(x: -90.0, y: 80.0 + deltaY), text: "🔥")
+        line2.setLabel(at: CGPoint(x: -70.0, y: 80.0 + deltaY), text: "🔥")
         lines.append(line2)
         
         
@@ -210,54 +213,19 @@ public class GameScene2: SKScene {
                         dy: 0.52, name: "line4",
                         style: .page1)
         self.addChild(line4)
-        line4.setLabel(at: CGPoint(x: 10.0, y: 70.0 + deltaY), text: "🐶")
+        line4.setLabel(at: CGPoint(x: 60.0, y: 70.0 + deltaY), text: "🐶")
         lines.append(line4)
         
         
         let line5 = FSMLine(
-                        from: states[2].edgePosition(at: CGFloat.pi*0.05),
-                        to: states[3].edgePosition(at: -CGFloat.pi*0.35, lambdaRadius: 1.4),
-                        dx: 1.6,  dy: -1.2,
+                        from: states[2].edgePosition(at: CGFloat.pi*0.0),
+                        to: states[3].edgePosition(at: -CGFloat.pi*0.3, lambdaRadius: 1.4),
+                        dx: 1.8,  dy: -0.5,
                         name: "line5",
                         style: .page1)
         self.addChild(line5)
-        line5.setLabel(at: CGPoint(x: 235.0, y: -35.0 + deltaY), text: "🎩")
+        line5.setLabel(at: CGPoint(x: 225.0, y: 110.0 + deltaY), text: "🎩")
         lines.append(line5)
-        
-        
-        
-        let line6 = FSMLine(
-                        from: states[3].edgePosition(at: CGFloat.pi*1.2),
-                        to: states[2].edgePosition(at: CGFloat.pi*0.45, lambdaRadius: 1.4),
-                        dx: 1.0,  dy: -1.0,
-                        name: "line6",
-                        style: .page1)
-        self.addChild(line6)
-        line6.setLabel(at: CGPoint(x: 100.0, y: 55.0 + deltaY), text: "🎃")
-        lines.append(line6)
-        
-        
-        let line7 = FSMLine(
-                        from: states[3].edgePosition(at: CGFloat.pi*0.6),
-                        to: states[0].edgePosition(at: CGFloat.pi*0.2, lambdaRadius: 1.4),
-                        dx: 0.6,  dy: 1.2,
-                        name: "line7",
-                        style: .page1)
-        self.addChild(line7)
-        line7.setLabel(at: CGPoint(x: 95.0, y: 250.0 + deltaY), text: "🧠")
-        lines.append(line7)
-        
-        
-        
-        let line8 = FSMLine(
-                        from: states[0].edgePosition(at: CGFloat.pi*0.0),
-                        to: states[3].edgePosition(at: CGFloat.pi*0.9, lambdaRadius: 1.4),
-                        dx: 0.6,  dy: 1.5,
-                        name: "line7",
-                        style: .page1)
-        self.addChild(line8)
-        line8.setLabel(at: CGPoint(x: 45.0, y: 189.0 + deltaY), text: "🎾")
-        lines.append(line8)
         
     }
     

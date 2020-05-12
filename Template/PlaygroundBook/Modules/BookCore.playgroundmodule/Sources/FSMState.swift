@@ -13,7 +13,6 @@ import PlaygroundSupport
 
 // MARK: - FSMState
 
-
 public class FSMState: SKShapeNode {
     
     public enum Style {
@@ -63,7 +62,6 @@ public class FSMState: SKShapeNode {
         }
         
         self.setGlow()
-        self.setHolder()
     }
     
     public override init() {
@@ -78,8 +76,6 @@ public class FSMState: SKShapeNode {
     private func setHolder() {
         
         let lambda: CGFloat = 1.35
-        
-        
         let holderPath = UIBezierPath()
         
         holderPath.addArc(withCenter: CGPoint(x: 0.0, y: 0.0), radius: self.radius*lambda, startAngle: .pi*1.1, endAngle:  -.pi*0.45, clockwise: false)
@@ -110,6 +106,9 @@ public class FSMState: SKShapeNode {
     }
     
     public func setOutput(text: String, labelPos: CGPoint, rotate: CGFloat) {
+        
+        self.setHolder()
+        
         self.label.text = text
         self.label.fontName = "Futura-Bold"
         self.label.fontColor = UIColor(hexString: "#333333")
@@ -183,8 +182,6 @@ public class FSMState: SKShapeNode {
     }
     
 
-  
-    
     public func edgePosition(at angle: CGFloat, lambdaRadius: CGFloat = 1.0) -> CGPoint {
         
         let newX = self.position.x + (radius*lambdaRadius)*cos(angle)

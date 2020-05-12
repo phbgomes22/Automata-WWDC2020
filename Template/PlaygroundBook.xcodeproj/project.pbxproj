@@ -29,6 +29,8 @@
 		42B019CB2469C29300A46158 /* FSMOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42B019C62469C29300A46158 /* FSMOutput.swift */; };
 		42B019CC2469C29300A46158 /* FSMLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42B019C72469C29300A46158 /* FSMLogic.swift */; };
 		42B019CD2469C29300A46158 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42B019C82469C29300A46158 /* GameScene.swift */; };
+		42DCB34F246A519C006B830E /* GameScene2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DCB34E246A519C006B830E /* GameScene2.swift */; };
+		42DCB351246A51B4006B830E /* GameScene2.sks in Resources */ = {isa = PBXBuildFile; fileRef = 42DCB350246A51B4006B830E /* GameScene2.sks */; };
 		5E086DCA2051DDAE004D8D25 /* LiveView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5E086DCC2051DDAE004D8D25 /* LiveView.storyboard */; };
 		5E086DD32051E3A3004D8D25 /* Manifest.plist in Copy Book Contents */ = {isa = PBXBuildFile; fileRef = 5E086DCF2051DF0F004D8D25 /* Manifest.plist */; };
 		5E3196F32061DEA40077BBD7 /* LiveViewSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E3196F22061DEA40077BBD7 /* LiveViewSupport.swift */; };
@@ -176,6 +178,8 @@
 		42B019C62469C29300A46158 /* FSMOutput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMOutput.swift; sourceTree = "<group>"; };
 		42B019C72469C29300A46158 /* FSMLogic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMLogic.swift; sourceTree = "<group>"; };
 		42B019C82469C29300A46158 /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		42DCB34E246A519C006B830E /* GameScene2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene2.swift; sourceTree = "<group>"; };
+		42DCB350246A51B4006B830E /* GameScene2.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = GameScene2.sks; path = ../../../Page1Playground/Page1Playground/Page2GameScene/GameScene2.sks; sourceTree = "<group>"; };
 		5E086DC02051C5A7004D8D25 /* Teste.playgroundbook */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Teste.playgroundbook; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E086DC72051DD03004D8D25 /* BookOverridingBuildSettings.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = BookOverridingBuildSettings.xcconfig; sourceTree = "<group>"; };
 		5E086DCD2051DDB8004D8D25 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LiveView.storyboard; sourceTree = "<group>"; };
@@ -375,6 +379,7 @@
 				5E3196F22061DEA40077BBD7 /* LiveViewSupport.swift */,
 				42B019C22469BD5D00A46158 /* Extensions.swift */,
 				4247AF28246A13D1004F7A1E /* LiveView1.swift */,
+				42DCB34E246A519C006B830E /* GameScene2.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -449,6 +454,7 @@
 				4247AF102469D4A5004F7A1E /* mixolydianB */,
 				4247AF1B2469D4A5004F7A1E /* winSound.wav */,
 				42B019BC2469B2D500A46158 /* LiveView1.sks */,
+				42DCB350246A51B4006B830E /* GameScene2.sks */,
 				4247AF0C2469D461004F7A1E /* GameScene.sks */,
 				4247AF0B2469D461004F7A1E /* ParticlePG1.sks */,
 				5E086DCC2051DDAE004D8D25 /* LiveView.storyboard */,
@@ -617,6 +623,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4247AF222469D4A5004F7A1E /* 2b-d1.wav in Resources */,
+				42DCB351246A51B4006B830E /* GameScene2.sks in Resources */,
 				4247AF232469D4A5004F7A1E /* 3b-e1.wav in Resources */,
 				42B019BD2469B2D500A46158 /* LiveView1.sks in Resources */,
 				4247AF1C2469D4A5004F7A1E /* Firework.sks in Resources */,
@@ -698,6 +705,7 @@
 				42B019CD2469C29300A46158 /* GameScene.swift in Sources */,
 				42B019C92469C29300A46158 /* FSMLine.swift in Sources */,
 				4247AF29246A13D1004F7A1E /* LiveView1.swift in Sources */,
+				42DCB34F246A519C006B830E /* GameScene2.swift in Sources */,
 				42B019CB2469C29300A46158 /* FSMOutput.swift in Sources */,
 				42B019CC2469C29300A46158 /* FSMLogic.swift in Sources */,
 				42B019C32469BD5D00A46158 /* Extensions.swift in Sources */,
