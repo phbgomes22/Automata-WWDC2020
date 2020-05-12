@@ -6,43 +6,91 @@
 //
 
 
-import BookCore
 import SpriteKit
 import GameplayKit
 import UIKit
 import PlaygroundSupport
 
-public func edgeCircle(pos: CGPoint, at angle: CGFloat, radius: CGFloat) -> CGPoint {
 
-    let newX = pos.x + (radius)*cos(angle)
-    let newY = pos.y + (radius)*sin(angle)
-    
-    return CGPoint(x: newX, y: newY)
+public extension String {
+    public func image() -> UIImage? {
+        let size = CGSize(width: 40, height: 40)
+        UIGraphicsBeginImageContextWithOptions(size, false, 0)
+        UIColor.white.set()
+        let rect = CGRect(origin: .zero, size: size)
+        UIRectFill(CGRect(origin: .zero, size: size))
+        (self as AnyObject).draw(in: rect, withAttributes: [.font: UIFont.systemFont(ofSize: 40)])
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image
+    }
 }
 
+public func emojiToImage(text: String, size: CGFloat) -> UIImage {
 
-public struct Sound {
-    
-    public static var partialNotes = ["0b-b0", "2b-d1", "3b-e1", "4b-f1", "5b-g1", "6b-a1"]
-    public static var lastRandom: Int = 0
-    public static var lineNote = "8b-b1"
-    
-    public static func randomSound() -> String {
-        var random = Int.random(in: 0...partialNotes.count - 1)
-        while random == Sound.lastRandom {
-            random = Int.random(in: 0...partialNotes.count - 1)
-        }
-        Sound.lastRandom = random
-        let str = Sound.partialNotes[random] + ".wav"
-        print(str)
+    let outputImageSize = CGSize.init(width: size, height: size)
+    let baseSize = text.boundingRect(with: CGSize(width: 2048, height: 2048),
+                                     options: .usesLineFragmentOrigin,
+                                     attributes: [.font: UIFont.systemFont(ofSize: size / 2)], context: nil).size
+    let fontSize = outputImageSize.width / max(baseSize.width, baseSize.height) * (outputImageSize.width / 2)
+    let font = UIFont.systemFont(ofSize: fontSize)
+    let textSize = text.boundingRect(with: CGSize(width: outputImageSize.width, height: outputImageSize.height),
+                                     options: .usesLineFragmentOrigin,
+                                     attributes: [.font: font], context: nil).size
+
+    let style = NSMutableParagraphStyle()
+    style.alignment = NSTextAlignment.center
+    style.lineBreakMode = NSLineBreakMode.byClipping
+
+    let attr : [NSAttributedString.Key : Any] = [NSAttributedString.Key.font : font,
+                                                 NSAttributedString.Key.paragraphStyle: style,
+                                                 NSAttributedString.Key.backgroundColor: UIColor.clear ]
+
+    UIGraphicsBeginImageContextWithOptions(outputImageSize, false, 0)
+    text.draw(in: CGRect(x: (size - textSize.width) / 2,
+                         y: (size - textSize.height) / 2,
+                         width: textSize.width,
+                         height: textSize.height),
+                         withAttributes: attr)
+    let image = UIGraphicsGetImageFromCurrentImageContext()!
+    UIGraphicsEndImageContext()
+    return image
+}
+
+public extension UIImage {
+    func convertImageToBW() -> UIImage {
+
+        let filter = CIFilter(name: "CIPhotoEffectMono")
         
-        return str //SKAudioNode(fileNamed: str)
+        let ciInput = CIImage(image: self)
+        filter?.setValue(ciInput, forKey: "inputImage")
+
+        let ciOutput = filter?.outputImage
+        let ciContext = CIContext()
+        let cgImage = ciContext.createCGImage(ciOutput!, from: (ciOutput?.extent)!)
+
+        return UIImage(cgImage: cgImage!)
     }
     
+    
+    var noir: UIImage? {
+        let context = CIContext(options: nil)
+        guard let currentFilter = CIFilter(name: "CIPhotoEffectNoir") else { return nil }
+        currentFilter.setValue(CIImage(image: self), forKey: kCIInputImageKey)
+        if let output = currentFilter.outputImage,
+            let cgImage = context.createCGImage(output, from: output.extent) {
+            return UIImage(cgImage: cgImage, scale: scale, orientation: imageOrientation)
+        }
+        return nil
+    }
 }
 
+//
+//
+// MARK: - Extensions
+
 public extension UIBezierPath {
-    func addArrowBody(start: CGPoint, end: CGPoint, controlPoint: CGPoint) {
+    public func addArrowBody(start: CGPoint, end: CGPoint, controlPoint: CGPoint) {
         self.move(to: start)
         
         let controlPoint = controlPoint
@@ -50,7 +98,7 @@ public extension UIBezierPath {
         self.addQuadCurve(to: end, controlPoint: controlPoint)
     }
     
-    func addArrowHead(end: CGPoint, controlPoint: CGPoint, pointerLineLength: CGFloat, arrowAngle: CGFloat) {
+    public func addArrowHead(end: CGPoint, controlPoint: CGPoint, pointerLineLength: CGFloat, arrowAngle: CGFloat) {
         
         self.move(to: end)
         
@@ -65,10 +113,11 @@ public extension UIBezierPath {
         self.close()
         
     }
+
 }
 
 public extension UIColor {
-    convenience init(hexString: String) {
+    public convenience init(hexString: String) {
         let hex = hexString.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
         var int = UInt64()
         Scanner(string: hex).scanHexInt64(&int)
@@ -88,4 +137,33 @@ public extension UIColor {
 }
 
 
+
+public func edgeCircle(pos: CGPoint, at angle: CGFloat, radius: CGFloat) -> CGPoint {
+
+    let newX = pos.x + (radius)*cos(angle)
+    let newY = pos.y + (radius)*sin(angle)
+    
+    return CGPoint(x: newX, y: newY)
+}
+
+
+public struct Sound {
+    
+    private static var partialNotes = ["0b-b0", "2b-d1", "3b-e1", "4b-f1", "5b-g1", "6b-a1"]
+    private static var lastRandom: Int = 0
+    public static var lineNote = "8b-b1"
+    
+    public static func randomSound() -> String {
+        var random = Int.random(in: 0...partialNotes.count - 1)
+        while random == Sound.lastRandom {
+            random = Int.random(in: 0...partialNotes.count - 1)
+        }
+        Sound.lastRandom = random
+        let str = Sound.partialNotes[random] + ".wav"
+        print(str)
+        
+        return str //SKAudioNode(fileNamed: str)
+    }
+    
+}
 

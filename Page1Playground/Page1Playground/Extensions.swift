@@ -134,8 +134,6 @@ public extension UIColor {
     }
 }
 
-
-
 public func edgeCircle(pos: CGPoint, at angle: CGFloat, radius: CGFloat) -> CGPoint {
 
     let newX = pos.x + (radius)*cos(angle)

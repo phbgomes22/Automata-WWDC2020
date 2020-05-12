@@ -22,8 +22,8 @@ class GameViewController: UIViewController {
             
             // Present the scene
             sceneView.presentScene(scene)
-            
         }
+        
         self.view = sceneView
     }
 
