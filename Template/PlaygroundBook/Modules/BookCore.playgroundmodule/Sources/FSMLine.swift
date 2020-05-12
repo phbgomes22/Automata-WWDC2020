@@ -25,6 +25,7 @@ public class FSMLine: SKSpriteNode {
     private var label: SKLabelNode = SKLabelNode()
     private var glowBody: SKShapeNode = SKShapeNode()
     private var labelSpriteNode = SKSpriteNode()
+    private var controlPos = CGPoint()
     
     private var headSize: CGFloat = 0.0
     
@@ -52,6 +53,14 @@ public class FSMLine: SKSpriteNode {
     }
     
     public func setLabel(at pos: CGPoint, text: String) {
+        
+        let shapeNode = SKShapeNode(circleOfRadius: 21.0)
+        shapeNode.fillColor = .white
+        shapeNode.position = CGPoint(x: pos.x, y:  pos.y + 10.5)
+        shapeNode.lineWidth = 3.5
+        shapeNode.strokeColor = self.body.strokeColor.withAlphaComponent(0.3)
+        self.addChild(shapeNode)
+        
         if self.style == .normal {
             if let image = emojiToImage(text: text, size: 45).noir {
                 self.labelSpriteNode.size = CGSize(width: self.label.fontSize, height: self.label.fontSize)
@@ -59,14 +68,17 @@ public class FSMLine: SKSpriteNode {
                 self.labelSpriteNode.color = .clear
                 self.addChild(labelSpriteNode)
                 self.labelSpriteNode.position = pos
+                self.labelSpriteNode.zPosition = 10.0
                 return
             }// else
         }// else
         
+        
         self.label.text = text
         self.addChild(label)
         self.label.position = pos
-
+        self.label.zPosition = 10.0
+        
     }
     
     
@@ -96,6 +108,7 @@ public class FSMLine: SKSpriteNode {
         
         let ctrlPoint1 = CGPoint(x: start.x*dx1, y: end.y*dy1)
         let ctrlPoint2 = CGPoint(x: start.x*dx2, y: end.y*dy2)
+        self.controlPos = ctrlPoint1
         
         arrow.move(to: start)
         arrow.addCurve(to: end, controlPoint1: ctrlPoint1, controlPoint2: ctrlPoint2)
@@ -137,6 +150,7 @@ public class FSMLine: SKSpriteNode {
         let bodyPath = UIBezierPath()
         
         let ctrlPoint = CGPoint(x: start.x*dx, y: end.y*dy )
+        self.controlPos = ctrlPoint
         bodyPath.addArrowBody(start: start, end: end, controlPoint: ctrlPoint)
         bodyPath.addArrowHead(end: end, controlPoint: ctrlPoint, pointerLineLength: self.headSize + 1, arrowAngle: CGFloat.pi/8)
         bodyPath.addArrowBody(start: end, end: start, controlPoint: ctrlPoint)
@@ -146,9 +160,9 @@ public class FSMLine: SKSpriteNode {
         self.addChild(body)
         
         colorNode()
-    
     }
     
+    
+    
 }
-
 

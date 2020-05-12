@@ -172,13 +172,13 @@ public class GameScene2: SKScene {
     
     public func setupLines() {
         let line1 = FSMLine(
-                        from: states[0].edgePosition(at: CGFloat.pi*1),
+            from: states[0].edgePosition(at: CGFloat.pi*1.1),
                         to: states[1].edgePosition(at: CGFloat.pi/1.7, lambdaRadius: 1.4),
-                        dx: 2.2,
-                        dy: 15.5, name: "line1",
+                        dx: 1.8,
+                        dy: 12.5, name: "line1",
                         style: .page1)
         self.addChild(line1)
-        line1.setLabel(at: CGPoint(x: -200.0, y: 150.0 + deltaY), text: "🤖")
+        line1.setLabel(at: CGPoint(x: -175.0, y: 150.0 + deltaY), text: "🤖")
         lines.append(line1)
         
         let line2 = FSMLine(
@@ -188,29 +188,29 @@ public class GameScene2: SKScene {
                         dy: 0.1, name: "line2",
                         style: .page1)
         self.addChild(line2)
-        line2.setLabel(at: CGPoint(x: -90.0, y: 80.0 + deltaY), text: "🔥")
+        line2.setLabel(at: CGPoint(x: -125.0, y: 85.0 + deltaY), text: "🔥")
         lines.append(line2)
         
         
         let line3 = FSMLine(
                         from: states[1].edgePosition(at: -CGFloat.pi/3),
-                        to: states[2].edgePosition(at: CGFloat.pi*1.0, lambdaRadius: 1.4),
+                        to: states[2].edgePosition(at: CGFloat.pi*1.1, lambdaRadius: 1.4),
                         dx: 0.5,
                         dy: 1.2, name: "line3",
                         style: .page1)
         self.addChild(line3)
-        line3.setLabel(at: CGPoint(x: -35.0, y: -40.0 + deltaY), text: "🎱")
+        line3.setLabel(at: CGPoint(x: -60.0, y: -85.0 + deltaY), text: "🎱")
         lines.append(line3)
         
         
         let line4 = FSMLine(
-                        from: states[2].edgePosition(at: CGFloat.pi*0.7),
-                        to: states[0].edgePosition(at: -CGFloat.pi/3, lambdaRadius: 1.4),
-                        dx: 0.2,
-                        dy: 0.52, name: "line4",
+                        from: states[2].edgePosition(at: CGFloat.pi*0.9),
+                        to: states[1].edgePosition(at: CGFloat.pi*0.0, lambdaRadius: 1.4),
+                        dx: 0.50,
+                        dy: 2.2, name: "line4",
                         style: .page1)
         self.addChild(line4)
-        line4.setLabel(at: CGPoint(x: 10.0, y: 70.0 + deltaY), text: "🐶")
+        line4.setLabel(at: CGPoint(x: -20.0, y: -33.0 + deltaY), text: "🐶")
         lines.append(line4)
         
         
@@ -221,7 +221,7 @@ public class GameScene2: SKScene {
                         name: "line5",
                         style: .page1)
         self.addChild(line5)
-        line5.setLabel(at: CGPoint(x: 235.0, y: -35.0 + deltaY), text: "🎩")
+        line5.setLabel(at: CGPoint(x: 195.0, y: -25.0 + deltaY), text: "🎩")
         lines.append(line5)
         
         
@@ -233,30 +233,30 @@ public class GameScene2: SKScene {
                         name: "line6",
                         style: .page1)
         self.addChild(line6)
-        line6.setLabel(at: CGPoint(x: 100.0, y: 55.0 + deltaY), text: "🎃")
+        line6.setLabel(at: CGPoint(x: 135.0, y: 55.0 + deltaY), text: "🎃")
         lines.append(line6)
         
         
         let line7 = FSMLine(
-                        from: states[3].edgePosition(at: CGFloat.pi*0.6),
-                        to: states[0].edgePosition(at: CGFloat.pi*0.2, lambdaRadius: 1.4),
-                        dx: 0.6,  dy: 1.2,
+                        from: states[3].edgePosition(at: CGFloat.pi*0.7),
+                        to: states[0].edgePosition(at: CGFloat.pi*0.0, lambdaRadius: 1.4),
+                        dx: 0.6,  dy: 1.0,
                         name: "line7",
                         style: .page1)
         self.addChild(line7)
-        line7.setLabel(at: CGPoint(x: 95.0, y: 250.0 + deltaY), text: "🧠")
+        line7.setLabel(at: CGPoint(x: 98.0, y: 210.0 + deltaY), text: "🧠")
         lines.append(line7)
         
         
         
         let line8 = FSMLine(
-                        from: states[0].edgePosition(at: CGFloat.pi*0.0),
-                        to: states[3].edgePosition(at: CGFloat.pi*0.9, lambdaRadius: 1.4),
-                        dx: 0.6,  dy: 1.5,
+                        from: states[0].edgePosition(at: -CGFloat.pi*0.3),
+                        to: states[2].edgePosition(at: CGFloat.pi*0.65, lambdaRadius: 1.4),
+                        dx: -0.9,  dy: 0.0,
                         name: "line7",
                         style: .page1)
         self.addChild(line8)
-        line8.setLabel(at: CGPoint(x: 45.0, y: 189.0 + deltaY), text: "🎾")
+        line8.setLabel(at: CGPoint(x: 20.0, y: 104.0 + deltaY), text: "🎾")
         lines.append(line8)
         
     }
@@ -279,6 +279,13 @@ public class GameScene2: SKScene {
     
     public func touchDown(atPoint pos : CGPoint) {
        
+        for node in self.nodes(at: pos) {
+            if let state = node as? FSMState {
+                state.gotTouched(view: self.view!) { (bool) in
+                    print(bool)
+                }
+            }
+        }
         
     }
     
