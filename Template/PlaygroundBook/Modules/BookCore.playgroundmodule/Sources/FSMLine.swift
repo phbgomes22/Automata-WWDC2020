@@ -8,8 +8,8 @@
 
 import SpriteKit
 import UIKit
-import GameplayKit
 import PlaygroundSupport
+import GameplayKit
 
 // MARK: - FSMLine
 
@@ -18,6 +18,7 @@ public class FSMLine: SKSpriteNode {
     public enum Style {
         case page1
         case normal
+        case page2
     }
     
     private var style: Style = .normal
@@ -135,13 +136,16 @@ public class FSMLine: SKSpriteNode {
         case .page1:
             self.body.strokeColor = UIColor(hexString: "#511845")
             self.body.fillColor = UIColor(hexString: "#511845")
+        case .page2:
+            self.body.strokeColor = UIColor(hexString: "#512c96")
+            self.body.fillColor = UIColor(hexString: "#512c96")
         }
         
     }
     
     private func setGlow() {
         self.glowBody.path = self.body.path
-        self.glowBody.strokeColor = UIColor(hexString: "#511845").withAlphaComponent(0.06)
+        self.glowBody.strokeColor = UIColor(hexString: "#511845").withAlphaComponent(0.08)
         self.glowBody.glowWidth = 7.0
         self.glowBody.zPosition = -1
         self.addChild(glowBody)

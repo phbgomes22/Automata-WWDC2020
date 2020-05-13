@@ -28,7 +28,7 @@ public class FSMLogic {
         case forth
     }
     
-    static func fsm1(from st1: StatesPG1, text: String) -> StatesPG1? {
+    static public func fsm1(from st1: StatesPG1, text: String) -> StatesPG1? {
         // - - - - - - -
         switch st1 {
         case .first:
@@ -52,7 +52,7 @@ public class FSMLogic {
     }
     
     
-    static func fsm2(from st1: StatesPG2, bool: Bool) -> StatesPG2? {
+    static public func fsm2(from st1: StatesPG2, bool: Bool) -> StatesPG2? {
         // - - - - - - -
         switch st1 {
         case .first:

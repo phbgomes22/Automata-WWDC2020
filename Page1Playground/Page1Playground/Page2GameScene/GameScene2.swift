@@ -27,9 +27,7 @@ public class GameScene2: SKScene {
     // THIS WILL CHANGE
     public var numberOfMoves: Int = 3
     
-    
     public var deltaY: CGFloat = -50.0
-    public var instructionNode = SKSpriteNode()
 
     
     override public func didMove(to view: SKView) {
@@ -84,25 +82,11 @@ public class GameScene2: SKScene {
         
         drawDrafter()
         
-        let radius: CGFloat = 40.0
-        instructionNode = SKSpriteNode(color: .clear, size: CGSize(width: radius + 10, height: radius + 10))
-        let shapeNode2 = SKShapeNode(circleOfRadius: radius)
-        shapeNode2.lineWidth = 5.0
-        shapeNode2.fillColor = .clear
-        shapeNode2.zPosition = 1
-        shapeNode2.strokeColor = UIColor(hexString: "#512c96").withAlphaComponent(0.15)
-        instructionNode.addChild(shapeNode2)
-        
-        self.addChild(instructionNode)
-        
-        instructionNode.alpha = 0.0
-        
         let alphaHigher = SKAction.fadeAlpha(to: 1.0, duration: 0.1)
         let alphaLower = SKAction.fadeAlpha(to: 0.3, duration: 0.1)
         let scaleAction = SKAction.sequence([alphaHigher, .wait(forDuration: 0.8), alphaLower, .wait(forDuration: 0.3)])
         
         let playSound = SKAction.playSoundFileNamed(Sound.memorize, waitForCompletion: true)
-        let playSound2 = SKAction.playSoundFileNamed(Sound.lastMemorize, waitForCompletion: true)
         
         DispatchQueue.global(qos: .userInteractive).async() {
             sleep(UInt32(delay))
@@ -139,20 +123,13 @@ public class GameScene2: SKScene {
             let array = [("1️⃣", FSMLogic.StatesPG2.first), ("2️⃣", FSMLogic.StatesPG2.second), ("3️⃣", FSMLogic.StatesPG2.third), ("4️⃣", FSMLogic.StatesPG2.forth)]
             let random = Int.random(in: 0...3)
             
-            
-
-            let scale = SKAction.scale(by: 0.9, duration: 0.5)
-            let action2 = SKAction.sequence([scale, scale.reversed(), .wait(forDuration: 0.8) ])
-            
             // sets first state
             self.currentState = array[random].1
             
-            let spriteImage = emojiToImage(text: array[random].0, size: radius*2.0)
-            self.instructionNode.texture = SKTexture(image: spriteImage)
+            let state = self.states[self.currentState]
+            
             DispatchQueue.main.async {
-                shapeNode2.fillColor = UIColor(hexString: "#F8F8F8")
-                shapeNode2.zPosition = -1
-                self.run(playSound2)
+                state?.gotTouched(view: self.view!, completion: { (_) in })
             }
            
         }
@@ -383,7 +360,6 @@ public class GameScene2: SKScene {
         coloredLines.append(line7)
         
         
-        
         let line8 = FSMLine(
             from: states[FSMLogic.StatesPG2.first]!.edgePosition(at: -CGFloat.pi*0.3),
             to: states[FSMLogic.StatesPG2.third]!.edgePosition(at: CGFloat.pi*0.65, lambdaRadius: 1.4),
@@ -426,15 +402,15 @@ public class GameScene2: SKScene {
                 
                 var nextState: FSMState?
                 var rightMove: FSMLogic.StatesPG2?
-                if isFirstTap {
-                    rightMove = currentState
-                    isFirstTap = false
-                }
-                else {
+//                if isFirstTap {
+//                    rightMove = currentState
+//                    isFirstTap = false
+//                }
+//                else {
                     // checks the state that should be touched
-                    rightMove = FSMLogic.fsm2(from: self.currentState, bool: self.randomArrays[currentMove])
-                    currentMove += 1
-                }
+                rightMove = FSMLogic.fsm2(from: self.currentState, bool: self.randomArrays[currentMove])
+                currentMove += 1
+              //  }
                 
                 guard let rm = rightMove else {
                     isGameLost = true
@@ -483,9 +459,6 @@ public class GameScene2: SKScene {
     override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches { touchDown(atPoint: t.location(in: self)) }
         
-    }
-    override public func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
     }
 }
 
