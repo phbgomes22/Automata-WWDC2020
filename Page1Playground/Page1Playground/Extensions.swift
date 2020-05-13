@@ -136,14 +136,14 @@ public struct Sound {
     
     private static var lastRandom: Int = 0
     public static var lineNote = "8b-b1"
-    
-    public static var memorize: String {
-        get {
-            let random = Int.random(in: 0...memorizeNotes.count - 1)
-            print(random, memorizeNotes[random])
-            return memorizeNotes[random]
-        }
-    }
+    public static var memorize: String = "6b-a1"
+//    public static var memorize: String {
+//        get {
+//            let random = Int.random(in: 0...memorizeNotes.count - 1)
+//            print(random, memorizeNotes[random])
+//            return memorizeNotes[random]
+//        }
+//    }
     public static var lastMemorize: String = "8b-b1"
     
     public static func randomSound() -> String {

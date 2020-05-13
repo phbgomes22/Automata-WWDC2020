@@ -15,6 +15,7 @@ public class FSMState: SKShapeNode {
     
     public enum Style {
         case page1
+        case page2
         case normal
     }
     
@@ -27,6 +28,12 @@ public class FSMState: SKShapeNode {
                                           UIColor(hexString: "#900c3f"),
                                           UIColor(hexString: "#c70039"),
                                           UIColor(hexString: "#ff5733")]
+    
+    private var arrayColorsPG2: [UIColor] = [UIColor(hexString: "#512c96"),
+                                          UIColor(hexString: "#3c6f9c"),
+                                          UIColor(hexString: "#dd6892"),
+                                          UIColor(hexString: "#f9c6ba")]
+    
     private var holder: SKShapeNode = SKShapeNode()
     private var holderPos: CGPoint = .zero
     
@@ -53,6 +60,8 @@ public class FSMState: SKShapeNode {
         case .normal:
             arrayColors = [UIColor(hexString: "#666666")]
             self.alpha = 0.7
+        case .page2:
+            arrayColors = arrayColorsPG2
         }
         for retroColor in arrayColors {
             self.setDraw(color: retroColor, side: side - count, position: position)
@@ -85,12 +94,12 @@ public class FSMState: SKShapeNode {
         holderPath.close()
         holder.path = holderPath.cgPath
         switch self.style {
-        case .page1:
+        case .page1, .page2:
             holder.strokeColor = UIColor(hexString: "#DFD8CD")
             holder.fillColor = UIColor.white
         case .normal:
-        holder.strokeColor = UIColor(hexString: "#DFD8CD")
-        holder.fillColor = UIColor.white
+            holder.strokeColor = UIColor(hexString: "#DFD8CD")
+            holder.fillColor = UIColor.white
         }
         holder.lineWidth = 6
         self.addChild(holder)

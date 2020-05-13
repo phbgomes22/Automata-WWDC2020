@@ -16,6 +16,7 @@ public class FSMLine: SKSpriteNode {
     public enum Style {
         case page1
         case normal
+        case page2
     }
     
     private var style: Style = .normal
@@ -133,6 +134,9 @@ public class FSMLine: SKSpriteNode {
         case .page1:
             self.body.strokeColor = UIColor(hexString: "#511845")
             self.body.fillColor = UIColor(hexString: "#511845")
+        case .page2:
+            self.body.strokeColor = UIColor(hexString: "#512c96")
+            self.body.fillColor = UIColor(hexString: "#512c96")
         }
         
     }

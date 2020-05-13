@@ -88,22 +88,24 @@ public class GameScene2: SKScene {
                 
                 DispatchQueue.main.async() {
                     let playSound = SKAction.playSoundFileNamed(Sound.memorize, waitForCompletion: true)
-                    self.run(playSound)
-                    cropNode.run(groupAction) {
+                    self.run(playSound) {
                         group.leave()
                     }
+//                    cropNode.run(groupAction) {
+//
+//                    }
                     shapeNode2.fillColor = rand ? UIColor(hexString: "#511845") : UIColor(hexString: "#F8F8F8")
                     self.backgroundSprite.color = shapeNode2.fillColor
                     
-                    if rand {
-                        for line in self.coloredLines {
-                            line.animateLabel()
-                        }
-                    } else {
-                        for line in self.whiteLines {
-                            line.animateLabel()
-                        }
-                    }
+//                    if rand {
+//                        for line in self.coloredLines {
+//                            line.animateLabel()
+//                        }
+//                    } else {
+//                        for line in self.whiteLines {
+//                            line.animateLabel()
+//                        }
+//                    }
                 }
                 
                 group.wait()
@@ -410,6 +412,7 @@ public class GameScene2: SKScene {
                 
                 guard let rm = rightMove else {
                     isGameLost = true
+                    endGame()
                     print("SHOULD NOT ENTER HERE PAGE2")
                     return
                 }
@@ -417,7 +420,9 @@ public class GameScene2: SKScene {
                 print(rm)
                 // check if the touched state is the right state
                 if(nextState?.name != state.name) {
+                    endGame()
                     isGameLost = true
+                    return
                 }
                 
                 currentState = rm
@@ -431,6 +436,7 @@ public class GameScene2: SKScene {
     }
     
     public func endGame() {
+        currentMove == numberOfMoves
         if !isGameLost {
             fireworks()
         } else {
