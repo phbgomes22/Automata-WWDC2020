@@ -53,7 +53,7 @@ public class GameScene2: SKScene {
         let fullPad = UIBezierPath(roundedRect: CGRect(x: 0.0, y: 0.0, width: 4*radius, height: height), cornerRadius: 10.0)
         let shapeNodeFull = SKShapeNode(path: fullPad.cgPath)
         shapeNodeFull.position = CGPoint(x: center.x - 2*radius, y: center.y - height)
-        shapeNodeFull.fillColor = UIColor(hexString: "#222222")
+        shapeNodeFull.fillColor = UIColor(hexString: "#1f1f1f")
         shapeNodeFull.lineWidth = 0
         self.addChild(shapeNodeFull)
         
@@ -61,11 +61,10 @@ public class GameScene2: SKScene {
         
         shapeNodeLeft = SKShapeNode(path: leftPad.cgPath)
         shapeNodeLeft.position = CGPoint(x: center.x - 2*radius, y: center.y - height)
-        shapeNodeLeft.fillColor = UIColor(hexString: "#713cB6")
+        shapeNodeLeft.fillColor = UIColor(hexString: "#814cC6")
         shapeNodeLeft.lineWidth = 7
         shapeNodeLeft.alpha = 0.3
-        shapeNodeLeft.strokeColor = UIColor(hexString: "#713cB6").withAlphaComponent(0.3)
-        
+        shapeNodeLeft.strokeColor = UIColor(hexString: "#814cC6").withAlphaComponent(0.3)
         self.addChild(shapeNodeLeft)
         
         
@@ -423,7 +422,6 @@ public class GameScene2: SKScene {
                 
                 state.gotTouched(view: self.view!) { (bool) in }
                 
-                
                 if currentMove == numberOfMoves  {return}
                 
                 var nextState: FSMState?
@@ -448,8 +446,8 @@ public class GameScene2: SKScene {
                 print(rm)
                 // check if the touched state is the right state
                 if(nextState?.name != state.name) {
-                    endGame()
                     isGameLost = true
+                    endGame()
                     return
                 }
                 
