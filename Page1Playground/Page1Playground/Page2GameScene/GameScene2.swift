@@ -21,6 +21,8 @@ public class GameScene2: SKScene {
     public var currentMove: Int = 0
     public var isGameLost: Bool = false
     public var backgroundSprite = SKSpriteNode()
+    public var shapeNodeLeft = SKShapeNode()
+    public var shapeNodeRight = SKShapeNode()
     
     // THIS WILL CHANGE
     public var numberOfMoves: Int = 3
@@ -41,7 +43,47 @@ public class GameScene2: SKScene {
         self.draftArray(delay: 2)
     }
     
+    public func drawDrafter() {
+        
+        let center = CGPoint(x: 0.0, y:  -250.0)
+        let radius: CGFloat = 45.0
+        let height: CGFloat = 70.0
+        
+        
+        let fullPad = UIBezierPath(roundedRect: CGRect(x: 0.0, y: 0.0, width: 4*radius, height: height), cornerRadius: 10.0)
+        let shapeNodeFull = SKShapeNode(path: fullPad.cgPath)
+        shapeNodeFull.position = CGPoint(x: center.x - 2*radius, y: center.y - height)
+        shapeNodeFull.fillColor = UIColor(hexString: "#222222")
+        shapeNodeFull.lineWidth = 0
+        self.addChild(shapeNodeFull)
+        
+        let leftPad = UIBezierPath(roundedRect: CGRect(x: 0.0, y: 0.0, width: 2*radius, height: height), byRoundingCorners: [.bottomLeft, .topLeft], cornerRadii: CGSize(width: 10.0, height: 10.0))
+        
+        shapeNodeLeft = SKShapeNode(path: leftPad.cgPath)
+        shapeNodeLeft.position = CGPoint(x: center.x - 2*radius, y: center.y - height)
+        shapeNodeLeft.fillColor = UIColor(hexString: "#713cB6")
+        shapeNodeLeft.lineWidth = 7
+        shapeNodeLeft.alpha = 0.3
+        shapeNodeLeft.strokeColor = UIColor(hexString: "#713cB6").withAlphaComponent(0.3)
+        
+        self.addChild(shapeNodeLeft)
+        
+        
+        let rightPad = UIBezierPath(roundedRect: CGRect(x: 0.0, y: 0.0, width: 2*radius, height: height), byRoundingCorners: [.bottomRight, .topRight], cornerRadii: CGSize(width: 10.0, height: 10.0))
+     
+        shapeNodeRight = SKShapeNode(path: rightPad.cgPath)
+        shapeNodeRight.position = CGPoint(x: center.x, y: center.y - height)
+        shapeNodeRight.fillColor = UIColor(hexString: "#F8F8F8")
+        shapeNodeRight.lineWidth = 7
+        shapeNodeRight.alpha = 0.3
+        shapeNodeRight.strokeColor = UIColor(hexString: "#E4DED3").withAlphaComponent(0.3)
+        self.addChild(shapeNodeRight)
+        
+    }
+    
     public func draftArray(delay: Int) {
+        
+        drawDrafter()
         
         let radius: CGFloat = 40.0
         instructionNode = SKSpriteNode(color: .clear, size: CGSize(width: radius + 10, height: radius + 10))
@@ -52,25 +94,14 @@ public class GameScene2: SKScene {
         shapeNode2.strokeColor = UIColor(hexString: "#512c96").withAlphaComponent(0.15)
         instructionNode.addChild(shapeNode2)
         
-        // crop to make a circle
-        let shapeNode = SKShapeNode(circleOfRadius: radius + 1)
-        let cropNode = SKCropNode()
-        cropNode.maskNode = shapeNode
-        cropNode.addChild(instructionNode)
+        self.addChild(instructionNode)
         
+        instructionNode.alpha = 0.0
         
-        cropNode.position = CGPoint(x: 0.0, y:  -250.0 )
-        shapeNode.fillColor = .white
-        self.addChild(cropNode)
+        let alphaHigher = SKAction.fadeAlpha(to: 1.0, duration: 0.1)
+        let alphaLower = SKAction.fadeAlpha(to: 0.3, duration: 0.1)
+        let scaleAction = SKAction.sequence([alphaHigher, .wait(forDuration: 0.8), alphaLower, .wait(forDuration: 0.3)])
         
-        cropNode.alpha = 0.0
-        let fadeIn = SKAction.fadeIn(withDuration: 0.2)
-        let fadeOut = SKAction.fadeAlpha(to: 0.0, duration: 1.0)
-        
-        let scale = SKAction.scale(by: 0.9, duration: 0.5)
-        let seqScale = SKAction.sequence([scale, scale.reversed()])
-        
-        let groupAction = SKAction.sequence([fadeIn, seqScale, .wait(forDuration: 0.1) , fadeOut])
         let playSound = SKAction.playSoundFileNamed(Sound.memorize, waitForCompletion: true)
         let playSound2 = SKAction.playSoundFileNamed(Sound.lastMemorize, waitForCompletion: true)
         
@@ -84,23 +115,23 @@ public class GameScene2: SKScene {
                 group.enter()
                 
                 DispatchQueue.main.async() {
-                    self.run(playSound) {
-                        group.leave()
-                    }
-//                    cropNode.run(groupAction) {
-//
-//                    }
-                    shapeNode2.fillColor = rand ? UIColor(hexString: "#512c96") : UIColor(hexString: "#F8F8F8")
+                    self.run(playSound)
                     
-//                    if rand {
-//                        for line in self.coloredLines {
-//                            line.animateLabel()
-//                        }
-//                    } else {
-//                        for line in self.whiteLines {
-//                            line.animateLabel()
-//                        }
-//                    }
+                    if rand {
+                        self.shapeNodeLeft.run(scaleAction) {
+                            group.leave()
+                        }
+                        for line in self.coloredLines {
+                            line.animateLabel()
+                        }
+                    } else {
+                        self.shapeNodeRight.run(scaleAction) {
+                            group.leave()
+                        }
+                        for line in self.whiteLines {
+                            line.animateLabel()
+                        }
+                    }
                 }
                 
                 group.wait()
@@ -112,7 +143,7 @@ public class GameScene2: SKScene {
             
 
             let scale = SKAction.scale(by: 0.9, duration: 0.5)
-            let action2 = SKAction.sequence([fadeIn, scale, scale.reversed(), .wait(forDuration: 0.8) , fadeOut])
+            let action2 = SKAction.sequence([scale, scale.reversed(), .wait(forDuration: 0.8) ])
             
             // sets first state
             self.currentState = array[random].1
@@ -123,7 +154,6 @@ public class GameScene2: SKScene {
                 shapeNode2.fillColor = UIColor(hexString: "#F8F8F8")
                 shapeNode2.zPosition = -1
                 self.run(playSound2)
-                cropNode.run(action2)
             }
            
         }
@@ -189,12 +219,13 @@ public class GameScene2: SKScene {
     
     public func setupBackground() {
        
-        backgroundSprite.texture = SKTexture(imageNamed: "04")
-        backgroundSprite.color = UIColor(hexString: "#DCD6CA").withAlphaComponent(0.25)
+        backgroundSprite.texture = SKTexture(imageNamed: "t.jpg")
+        backgroundSprite.color = UIColor(hexString: "#DCD6CA").withAlphaComponent(0.28)
         backgroundSprite.colorBlendFactor = 1
-        backgroundSprite.size = CGSize(width: 1400*1.5, height: 980*1.5)
-        backgroundSprite.position = CGPoint(x: 0.0, y: -100.0)
+        backgroundSprite.size = CGSize(width: 1400, height: 980)
+        backgroundSprite.position = CGPoint(x: 0.0, y: 0)
         backgroundSprite.zPosition = -100
+        backgroundSprite.zRotation = .pi
         backgroundSprite.name = "background"
         self.addChild(backgroundSprite)
         
@@ -227,8 +258,7 @@ public class GameScene2: SKScene {
                         name: "state1",
                         style: .page2)
         self.addChild(state1)
-        state1.zPosition = 5
-        state1.setOutput(text: "1", labelPos: CGPoint.zero, rotate: 0.0)
+        state1.setOutput(text: "1️⃣", labelPos: CGPoint(x: -40, y: 50), rotate: -.pi*0.6)
         states[.first] = state1
         
         
@@ -237,7 +267,7 @@ public class GameScene2: SKScene {
                         position: CGPoint(x: -180, y: 10 + deltaY),
                         name: "state2",
                         style: .page2)
-        state2.zPosition = 5
+        state2.setOutput(text: "2️⃣", labelPos: CGPoint(x: -48, y: -68), rotate: 0.0)
         self.addChild(state2)
         states[.second] = state2
         
@@ -246,8 +276,8 @@ public class GameScene2: SKScene {
                         position: CGPoint(x: 110, y: -60 + deltaY),
                         name: "state3",
                         style: .page2)
-
-        state3.zPosition = 5
+        
+        state3.setOutput(text: "3️⃣", labelPos: CGPoint(x: 38, y: -75), rotate: .pi*0.4)
         self.addChild(state3)
         states[.third] = state3
         
@@ -257,8 +287,8 @@ public class GameScene2: SKScene {
                         position: CGPoint(x: 180, y: 150 + deltaY),
                         name: "state4",
                         style: .page2)
-
-        state4.zPosition = 5
+        
+        state4.setOutput(text: "4️⃣", labelPos: CGPoint(x: 62, y: 28), rotate: .pi*0.9)
         self.addChild(state4)
         states[.forth] = state4
     }
@@ -284,7 +314,7 @@ public class GameScene2: SKScene {
             style: .page2)
         
         self.addChild(line2)
-        line2.setColor(at: CGPoint(x: -125.0, y: 85.0 + deltaY), color: UIColor(hexString: "#DDDDDD"))
+        line2.setColor(at: CGPoint(x: -125.0, y: 85.0 + deltaY), color: UIColor(hexString: "#F2F2F2"))
         lines.append(line2)
         whiteLines.append(line2)
         
@@ -309,7 +339,7 @@ public class GameScene2: SKScene {
             style: .page2)
         
         self.addChild(line4)
-        line4.setColor(at: CGPoint(x: -20.0, y: -36.0 + deltaY), color: UIColor(hexString: "#DDDDDD"))
+        line4.setColor(at: CGPoint(x: -20.0, y: -36.0 + deltaY), color: UIColor(hexString: "#F2F2F2"))
         lines.append(line4)
         whiteLines.append(line4)
         
@@ -336,7 +366,7 @@ public class GameScene2: SKScene {
             style: .page2)
         
         self.addChild(line6)
-        line6.setColor(at: CGPoint(x: 140.0, y: 55.0 + deltaY), color: UIColor(hexString: "#DDDDDD"))
+        line6.setColor(at: CGPoint(x: 140.0, y: 55.0 + deltaY), color: UIColor(hexString: "#F2F2F2"))
         lines.append(line6)
         whiteLines.append(line6)
         
@@ -363,7 +393,7 @@ public class GameScene2: SKScene {
             style: .page2)
         
         self.addChild(line8)
-        line8.setColor(at: CGPoint(x: 10.0, y: 95.0 + deltaY), color: UIColor(hexString: "#DDDDDD"))
+        line8.setColor(at: CGPoint(x: 10.0, y: 95.0 + deltaY), color: UIColor(hexString: "#F2F2F2"))
         lines.append(line8)
         whiteLines.append(line8)
         
@@ -388,12 +418,13 @@ public class GameScene2: SKScene {
     
     public func touchDown(atPoint pos : CGPoint) {
        
-        
         for node in self.nodes(at: pos) {
             if let state = node as? FSMState {
+                
                 state.gotTouched(view: self.view!) { (bool) in }
                 
-                if currentMove == numberOfMoves {return}
+                
+                if currentMove == numberOfMoves  {return}
                 
                 var nextState: FSMState?
                 var rightMove: FSMLogic.StatesPG2?
@@ -433,7 +464,7 @@ public class GameScene2: SKScene {
     }
     
     public func endGame() {
-        currentMove == numberOfMoves
+        currentMove = numberOfMoves
         if !isGameLost {
             fireworks()
         } else {

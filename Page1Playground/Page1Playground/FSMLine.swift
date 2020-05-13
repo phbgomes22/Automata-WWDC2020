@@ -143,7 +143,7 @@ public class FSMLine: SKSpriteNode {
     
     private func setGlow() {
         self.glowBody.path = self.body.path
-        self.glowBody.strokeColor = UIColor(hexString: "#511845").withAlphaComponent(0.06)
+        self.glowBody.strokeColor = UIColor(hexString: "#511845").withAlphaComponent(0.08)
         self.glowBody.glowWidth = 7.0
         self.glowBody.zPosition = -1
         self.addChild(glowBody)
