@@ -17,6 +17,14 @@ public class FSMLogic {
         case third
     }
     
+    
+    public enum StatesPG2 {
+        case first
+        case second
+        case third
+        case forth
+    }
+    
     static func fsm1(from st1: StatesPG1, text: String) -> StatesPG1? {
         // - - - - - - -
         switch st1 {
@@ -36,10 +44,38 @@ public class FSMLogic {
             } else if text == "🐶" {
                 return .second
             }
-        default:
-            return nil
         }
         return nil
     }
     
+    
+    static func fsm2(from st1: StatesPG2, bool: Bool) -> StatesPG2? {
+        // - - - - - - -
+        switch st1 {
+        case .first:
+            if bool {
+                return .second
+            } else {
+                return .third
+            }
+        case .second:
+            if bool {
+                return .third
+            } else {
+                return .first
+            }
+        case .third:
+            if bool {
+                return .forth
+            } else {
+                return .second
+            }
+        case .forth:
+            if bool {
+                return .first
+            } else {
+                return .third
+            }
+        }
+    }
 }

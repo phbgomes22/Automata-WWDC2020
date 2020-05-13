@@ -3,7 +3,7 @@
 //  Page1Playground
 //
 //  Created by Pedro Gomes on 11/05/20.
-//  Copyright © 2020 Pedro Gomes. All rights reserved.
+//  Copyright © 2020 Pedro Gomes. All rights reserved. == CHECK IF DIDNT REMOVE LIVEVIEWCONTROLLER
 //
 import SpriteKit
 import UIKit
@@ -43,7 +43,7 @@ public class LiveView1: SKScene {
     }
     
     private func setupBoard() {
-        DispatchQueue.main.asyncAfter(deadline: .now()) {
+        DispatchQueue.main.async() {
             self.setupStates()
             self.setupLines()
         }

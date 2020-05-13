@@ -26,6 +26,7 @@ public class FSMLine: SKSpriteNode {
     private var glowBody: SKShapeNode = SKShapeNode()
     private var labelSpriteNode = SKSpriteNode()
     private var controlPos = CGPoint()
+    private var colorLabel: SKShapeNode!
     
     private var headSize: CGFloat = 0.0
     
@@ -52,33 +53,34 @@ public class FSMLine: SKSpriteNode {
        fatalError("init(coder:) has not been implemented")
     }
     
-    public func setLabel(at pos: CGPoint, text: String) {
+    public func setLabel(at pos: CGPoint, text: String, fontSize: CGFloat = 40) {
         
-        let shapeNode = SKShapeNode(circleOfRadius: 21.0)
-        shapeNode.fillColor = .white
-        shapeNode.position = CGPoint(x: pos.x, y:  pos.y + 10.5)
-        shapeNode.lineWidth = 3.5
-        shapeNode.strokeColor = self.body.strokeColor.withAlphaComponent(0.3)
-        self.addChild(shapeNode)
+        self.label.fontSize = fontSize
         
+        var spriteImage = emojiToImage(text: text, size: fontSize)
         if self.style == .normal {
-            if let image = emojiToImage(text: text, size: 45).noir {
-                self.labelSpriteNode.size = CGSize(width: self.label.fontSize, height: self.label.fontSize)
-                self.labelSpriteNode.texture = SKTexture.init(image: image)
-                self.labelSpriteNode.color = .clear
-                self.addChild(labelSpriteNode)
-                self.labelSpriteNode.position = pos
-                self.labelSpriteNode.zPosition = 10.0
-                return
+            if let image = spriteImage.noir {
+                spriteImage = image
             }// else
         }// else
         
+        self.labelSpriteNode.size = CGSize(width: fontSize, height: fontSize)
+        self.labelSpriteNode.texture = SKTexture.init(image: spriteImage)
+        self.labelSpriteNode.color = .clear
+        self.addChild(labelSpriteNode)
+        self.labelSpriteNode.position = CGPoint(x: pos.x, y:  pos.y + fontSize/2)
+        self.labelSpriteNode.zPosition = 10.0
         
-        self.label.text = text
-        self.addChild(label)
-        self.label.position = pos
-        self.label.zPosition = 10.0
+    }
+    
+    public func setColor(at pos: CGPoint, fontSize: CGFloat = 30, color: UIColor) {
         
+        colorLabel = SKShapeNode(circleOfRadius: (fontSize)/2)
+        colorLabel.fillColor = color
+        colorLabel.position = CGPoint(x: pos.x, y:  pos.y + (fontSize)/2 )
+        colorLabel.lineWidth = 3.5
+        colorLabel.strokeColor = self.body.strokeColor.withAlphaComponent(0.15)
+        self.addChild(colorLabel)
     }
     
     
@@ -162,6 +164,12 @@ public class FSMLine: SKSpriteNode {
         colorNode()
     }
     
+    var scaleLabel: SKAction = SKAction.sequence([ SKAction.scale(by: 1.3, duration: 0.3),  SKAction.scale(by: 1.2, duration: 0.3).reversed()])
+    
+    public func animateLabel() {
+        
+        colorLabel?.run(scaleLabel)
+    }
     
     
 }

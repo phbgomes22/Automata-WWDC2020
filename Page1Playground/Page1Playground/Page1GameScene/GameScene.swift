@@ -126,7 +126,7 @@ public class GameScene: SKScene {
     }
     
     public func setupBoard() {
-        DispatchQueue.main.asyncAfter(deadline: .now()) {
+        DispatchQueue.main.async() {
             self.setupStates()
             self.setupLines()
         }
@@ -258,7 +258,6 @@ public class GameScene: SKScene {
     public func touchDown(atPoint pos : CGPoint) {
        
         if isFirstTap {
-            
             isFirstTap = false
         }
         
@@ -313,7 +312,7 @@ public class GameScene: SKScene {
                 
                 semaphore.enter()
                 
-                DispatchQueue.main.asyncAfter(deadline: .now()) {
+                DispatchQueue.main.async() {
                     
                     let output = currStateNode.getOutput()
                     self.wordLabel.update(text: (self.wordLabel.text ?? "") + output)

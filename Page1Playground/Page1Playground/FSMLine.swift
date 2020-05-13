@@ -7,7 +7,7 @@
 //
 
 import SpriteKit
-
+import UIKit
 
 // MARK: - FSMLine
 
@@ -24,6 +24,7 @@ public class FSMLine: SKSpriteNode {
     private var glowBody: SKShapeNode = SKShapeNode()
     private var labelSpriteNode = SKSpriteNode()
     private var controlPos = CGPoint()
+    private var colorLabel: SKShapeNode!
     
     private var headSize: CGFloat = 0.0
     
@@ -68,14 +69,16 @@ public class FSMLine: SKSpriteNode {
         self.labelSpriteNode.position = CGPoint(x: pos.x, y:  pos.y + fontSize/2)
         self.labelSpriteNode.zPosition = 10.0
         
+    }
+    
+    public func setColor(at pos: CGPoint, fontSize: CGFloat = 30, color: UIColor) {
         
-        let shapeNode = SKShapeNode(circleOfRadius: (fontSize + 5)/2)
-        shapeNode.fillColor = .white
-        shapeNode.position = CGPoint(x: pos.x, y:  pos.y + (fontSize)/2 )
-        shapeNode.lineWidth = 3.5
-        shapeNode.strokeColor = self.body.strokeColor.withAlphaComponent(0.15)
-        self.addChild(shapeNode)
-
+        colorLabel = SKShapeNode(circleOfRadius: (fontSize)/2)
+        colorLabel.fillColor = color
+        colorLabel.position = CGPoint(x: pos.x, y:  pos.y + (fontSize)/2 )
+        colorLabel.lineWidth = 3.5
+        colorLabel.strokeColor = self.body.strokeColor.withAlphaComponent(0.15)
+        self.addChild(colorLabel)
     }
     
     
@@ -159,6 +162,12 @@ public class FSMLine: SKSpriteNode {
         colorNode()
     }
     
+    var scaleLabel: SKAction = SKAction.sequence([ SKAction.scale(by: 1.3, duration: 0.3),  SKAction.scale(by: 1.2, duration: 0.3).reversed()])
+    
+    public func animateLabel() {
+        
+        colorLabel?.run(scaleLabel)
+    }
     
     
 }

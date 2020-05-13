@@ -13,25 +13,125 @@ import PlaygroundSupport
 
 public class GameScene2: SKScene {
     
-    public var states : [FSMState] = []
+    public var states : [FSMLogic.StatesPG2 : FSMState] = [:]
     public var lines : [FSMLine] = []
+    public var whiteLines: [FSMLine] = []
+    public var coloredLines: [FSMLine] = []
     
     public var isFirstTap: Bool = true
-    public var fsmString: String = "🐶🎱🤖🎱🤖" //🤖🎱🔥🎩🎩🐶
-    public var firstState: FSMLogic.StatesPG1 = FSMLogic.StatesPG1.third //FSMLogic.StatesPG1.first
-    public var deltaY: CGFloat = -50.0
-    public var expectedOutput = "BANANA"
+    public var randomArrays: [Bool] = []
+    public var currentState: FSMLogic.StatesPG2 = FSMLogic.StatesPG2.third //FSMLogic.StatesPG1.first
+    public var currentMove: Int = 0
+    public var isGameLost: Bool = false
+    public var backgroundSprite = SKSpriteNode()
     
-    public var wordLabel: FSMOutput = FSMOutput(fontSize: 50)
+    // THIS WILL CHANGE
+    public var numberOfMoves: Int = 3
+    
+    
+    public var deltaY: CGFloat = -50.0
+    
+    public var instructionNode = SKSpriteNode()
+
     
     override public func didMove(to view: SKView) {
         
         self.backgroundColor = UIColor(hexString: "#E4DED3")
-      //  self.setParticles()
+        self.setParticles()
         self.setupBoard()
-       // self.setWordLabel()
         //self.setSound()
-       // self.setupBackground()
+        self.setupBackground()
+        
+        self.draftArray(delay: 2)
+    }
+    
+    public func draftArray(delay: Int) {
+        
+        let radius: CGFloat = 40.0
+        instructionNode = SKSpriteNode(color: .clear, size: CGSize(width: radius + 10, height: radius + 10))
+        let shapeNode2 = SKShapeNode(circleOfRadius: radius)
+        shapeNode2.lineWidth = 5.0
+        shapeNode2.fillColor = .clear
+        shapeNode2.zPosition = 1
+        shapeNode2.strokeColor = UIColor(hexString: "#511845").withAlphaComponent(0.15)
+        instructionNode.addChild(shapeNode2)
+        
+        // crop to make a circle
+        let shapeNode = SKShapeNode(circleOfRadius: radius + 1)
+        let cropNode = SKCropNode()
+        cropNode.maskNode = shapeNode
+        cropNode.addChild(instructionNode)
+        
+        
+        cropNode.position = CGPoint(x: 0.0, y:  -250.0 )
+        shapeNode.fillColor = .white
+        self.addChild(cropNode)
+        
+        cropNode.alpha = 0.0
+        let fadeIn = SKAction.fadeIn(withDuration: 0.2)
+        let fadeOut = SKAction.fadeAlpha(to: 0.0, duration: 1.0)
+        
+        let scale = SKAction.scale(by: 0.9, duration: 0.5)
+        let seqScale = SKAction.sequence([scale, scale.reversed()])
+        
+        let groupAction = SKAction.sequence([fadeIn, seqScale, .wait(forDuration: 0.1) , fadeOut])
+
+        
+        DispatchQueue.global(qos: .userInteractive).async() {
+            sleep(UInt32(delay))
+            for _ in 1...self.numberOfMoves {
+                let rand = Bool.random()
+                self.randomArrays.append(rand)
+
+                let group = DispatchGroup()
+                group.enter()
+                
+                DispatchQueue.main.async() {
+                    let playSound = SKAction.playSoundFileNamed(Sound.memorize, waitForCompletion: true)
+                    self.run(playSound)
+                    cropNode.run(groupAction) {
+                        group.leave()
+                    }
+                    shapeNode2.fillColor = rand ? UIColor(hexString: "#511845") : UIColor(hexString: "#F8F8F8")
+                    self.backgroundSprite.color = shapeNode2.fillColor
+                    
+                    if rand {
+                        for line in self.coloredLines {
+                            line.animateLabel()
+                        }
+                    } else {
+                        for line in self.whiteLines {
+                            line.animateLabel()
+                        }
+                    }
+                }
+                
+                group.wait()
+            }
+            
+            let array = [("1️⃣", FSMLogic.StatesPG2.first), ("2️⃣", FSMLogic.StatesPG2.second), ("3️⃣", FSMLogic.StatesPG2.third), ("4️⃣", FSMLogic.StatesPG2.forth)]
+            let random = Int.random(in: 0...3)
+            
+            
+
+            let scale = SKAction.scale(by: 0.9, duration: 0.5)
+            let action2 = SKAction.sequence([fadeIn, scale, scale.reversed(), .wait(forDuration: 0.8) , fadeOut])
+            
+            // sets first state
+            self.currentState = array[random].1
+            
+            let spriteImage = emojiToImage(text: array[random].0, size: radius*2.0)
+            self.instructionNode.texture = SKTexture(image: spriteImage)
+            DispatchQueue.main.async {
+                shapeNode2.fillColor = UIColor(hexString: "#F8F8F8")
+                shapeNode2.zPosition = -1
+                let playSound = SKAction.playSoundFileNamed(Sound.lastMemorize, waitForCompletion: true)
+                self.run(playSound)
+                cropNode.run(action2)
+                self.backgroundSprite.color = UIColor(hexString: "#DCD6CA")
+            }
+           
+        }
     }
     
     public func fireworks() {
@@ -93,7 +193,7 @@ public class GameScene2: SKScene {
     }
     
     public func setupBackground() {
-        let backgroundSprite = SKSpriteNode()
+       
         backgroundSprite.texture = SKTexture(imageNamed: "backgroundPG1")
         backgroundSprite.color = UIColor(hexString: "#DCD6CA")
         backgroundSprite.colorBlendFactor = 1
@@ -117,18 +217,8 @@ public class GameScene2: SKScene {
         
     }
     
-    public func setWordLabel() {
-        self.addChild(wordLabel)
-        
-        wordLabel.position = CGPoint(x: 0.0, y: -280.0)
-        wordLabel.fontColor = UIColor(hexString: "#333333")
-        wordLabel.fontName =  "Futura-Bold"
-        wordLabel.color = UIColor(hexString: "#FDFDFD")
-        wordLabel.restAnimation()
-    }
-    
     public func setupBoard() {
-        DispatchQueue.main.asyncAfter(deadline: .now()) {
+        DispatchQueue.main.async() {
             self.setupStates()
             self.setupLines()
         }
@@ -142,7 +232,8 @@ public class GameScene2: SKScene {
                         name: "state1",
                         style: .page1)
         self.addChild(state1)
-        states.append(state1)
+        state1.setOutput(text: "1", labelPos: CGPoint.zero, rotate: 0.0)
+        states[.first] = state1
         
         
         let state2 = FSMState(
@@ -151,7 +242,7 @@ public class GameScene2: SKScene {
                         name: "state2",
                         style: .page1)
         self.addChild(state2)
-        states.append(state2)
+        states[.second] = state2
         
         let state3 = FSMState(
                         side: 75,
@@ -160,107 +251,123 @@ public class GameScene2: SKScene {
                         style: .page1)
                
         self.addChild(state3)
-        states.append(state3)
+        states[.third] = state3
         
         
         let state4 = FSMState(
                         side: 75,
                         position: CGPoint(x: 180, y: 150 + deltaY),
-                        name: "state3",
+                        name: "state4",
                         style: .page1)
                
         self.addChild(state4)
-        states.append(state4)
+        states[.forth] = state4
     }
     
     public func setupLines() {
         let line1 = FSMLine(
-                        from: states[0].edgePosition(at: CGFloat.pi*1),
-                        to: states[1].edgePosition(at: CGFloat.pi/1.7, lambdaRadius: 1.4),
-                        dx: 2.2,
-                        dy: 15.5, name: "line1",
-                        style: .page1)
+            from: states[FSMLogic.StatesPG2.first]!.edgePosition(at: CGFloat.pi*1.1),
+            to: states[FSMLogic.StatesPG2.second]!.edgePosition(at: CGFloat.pi/1.7, lambdaRadius: 1.4),
+            dx: 1.8,
+            dy: 12.5, name: "line1Color",
+            style: .page1)
+        
         self.addChild(line1)
-        line1.setLabel(at: CGPoint(x: -200.0, y: 150.0 + deltaY), text: "🤖")
+        line1.setColor(at: CGPoint(x: -165.0, y: 150.0 + deltaY), color: UIColor(hexString: "#511845"))
         lines.append(line1)
+        coloredLines.append(line1)
         
         let line2 = FSMLine(
-                        from: states[1].edgePosition(at: CGFloat.pi/5),
-                        to: states[0].edgePosition(at: CGFloat.pi*1.35, lambdaRadius: 1.4),
-                        dx: 0.9,
-                        dy: 0.1, name: "line2",
-                        style: .page1)
-        self.addChild(line2)
-        line2.setLabel(at: CGPoint(x: -125.0, y: 85.0 + deltaY), text: "🔥")
-        lines.append(line2)
+            from: states[FSMLogic.StatesPG2.second]!.edgePosition(at: CGFloat.pi/5),
+            to: states[FSMLogic.StatesPG2.first]!.edgePosition(at: CGFloat.pi*1.35, lambdaRadius: 1.4),
+            dx: 0.9,
+            dy: 0.1, name: "line2",
+            style: .page1)
         
+        self.addChild(line2)
+        line2.setColor(at: CGPoint(x: -125.0, y: 85.0 + deltaY), color: UIColor(hexString: "#DDDDDD"))
+        lines.append(line2)
+        whiteLines.append(line2)
         
         let line3 = FSMLine(
-                        from: states[1].edgePosition(at: -CGFloat.pi/3),
-                        to: states[2].edgePosition(at: CGFloat.pi*1.0, lambdaRadius: 1.4),
-                        dx: 0.5,
-                        dy: 1.2, name: "line3",
-                        style: .page1)
+            from: states[FSMLogic.StatesPG2.second]!.edgePosition(at: -CGFloat.pi/3),
+            to: states[FSMLogic.StatesPG2.third]!.edgePosition(at: CGFloat.pi*1.1, lambdaRadius: 1.4),
+            dx: 0.5,
+            dy: 1.2, name: "line3Color",
+            style: .page1)
+        
         self.addChild(line3)
-        line3.setLabel(at: CGPoint(x: -60.0, y: -70.0 + deltaY), text: "🎱")
+        line3.setColor(at: CGPoint(x: -60.0, y: -90.0 + deltaY), color: UIColor(hexString: "#511845"))
         lines.append(line3)
+        coloredLines.append(line3)
         
         
         let line4 = FSMLine(
-                        from: states[2].edgePosition(at: CGFloat.pi*0.7),
-                        to: states[0].edgePosition(at: -CGFloat.pi/3, lambdaRadius: 1.4),
-                        dx: 0.18,
-                        dy: 0.52, name: "line4",
-                        style: .page1)
+            from: states[FSMLogic.StatesPG2.third]!.edgePosition(at: CGFloat.pi*0.9),
+            to: states[FSMLogic.StatesPG2.second]!.edgePosition(at: CGFloat.pi*0.0, lambdaRadius: 1.4),
+            dx: 0.50,
+            dy: 2.2, name: "line4",
+            style: .page1)
+        
         self.addChild(line4)
-        line4.setLabel(at: CGPoint(x: 36.0, y: 70.0 + deltaY), text: "🐶")
+        line4.setColor(at: CGPoint(x: -20.0, y: -36.0 + deltaY), color: UIColor(hexString: "#DDDDDD"))
         lines.append(line4)
+        whiteLines.append(line4)
         
         
         let line5 = FSMLine(
-                        from: states[2].edgePosition(at: CGFloat.pi*0.05),
-                        to: states[3].edgePosition(at: -CGFloat.pi*0.35, lambdaRadius: 1.4),
-                        dx: 1.6,  dy: -1.2,
-                        name: "line5",
-                        style: .page1)
+            from: states[FSMLogic.StatesPG2.third]!.edgePosition(at: CGFloat.pi*0.05),
+            to: states[FSMLogic.StatesPG2.forth]!.edgePosition(at: -CGFloat.pi*0.35, lambdaRadius: 1.4),
+            dx: 1.6,  dy: -1.2,
+            name: "line5Color",
+            style: .page1)
+        
         self.addChild(line5)
-        line5.setLabel(at: CGPoint(x: 195.0, y: -25.0 + deltaY), text: "🎩")
+        line5.setColor(at: CGPoint(x: 200.0, y: -25.0 + deltaY), color: UIColor(hexString: "#511845"))
         lines.append(line5)
+        coloredLines.append(line5)
         
         
         
         let line6 = FSMLine(
-                        from: states[3].edgePosition(at: CGFloat.pi*1.2),
-                        to: states[2].edgePosition(at: CGFloat.pi*0.45, lambdaRadius: 1.4),
-                        dx: 1.0,  dy: -1.0,
-                        name: "line6",
-                        style: .page1)
+            from: states[FSMLogic.StatesPG2.forth]!.edgePosition(at: CGFloat.pi*1.2),
+            to: states[FSMLogic.StatesPG2.third]!.edgePosition(at: CGFloat.pi*0.45, lambdaRadius: 1.4),
+            dx: 1.0,  dy: -1.0,
+            name: "line6",
+            style: .page1)
+        
         self.addChild(line6)
-        line6.setLabel(at: CGPoint(x: 135.0, y: 55.0 + deltaY), text: "🎃")
+        line6.setColor(at: CGPoint(x: 140.0, y: 55.0 + deltaY), color: UIColor(hexString: "#DDDDDD"))
         lines.append(line6)
+        whiteLines.append(line6)
         
         
         let line7 = FSMLine(
-                        from: states[3].edgePosition(at: CGFloat.pi*0.6),
-                        to: states[0].edgePosition(at: CGFloat.pi*0.2, lambdaRadius: 1.4),
-                        dx: 0.6,  dy: 1.2,
-                        name: "line7",
-                        style: .page1)
+            from: states[FSMLogic.StatesPG2.forth]!.edgePosition(at: CGFloat.pi*0.7),
+            to: states[FSMLogic.StatesPG2.first]!.edgePosition(at: CGFloat.pi*0.0, lambdaRadius: 1.4),
+            dx: 0.6,  dy: 1.0,
+            name: "line7Color",
+            style: .page1)
+        
         self.addChild(line7)
-        line7.setLabel(at: CGPoint(x: 98.0, y: 255.0 + deltaY), text: "🧠")
+        line7.setColor(at: CGPoint(x: 98.0, y: 200.0 + deltaY), color: UIColor(hexString: "#511845"))
         lines.append(line7)
+        coloredLines.append(line7)
         
         
         
         let line8 = FSMLine(
-                        from: states[0].edgePosition(at: CGFloat.pi*0.0),
-                        to: states[3].edgePosition(at: CGFloat.pi*0.9, lambdaRadius: 1.4),
-                        dx: 0.6,  dy: 1.5,
-                        name: "line7",
-                        style: .page1)
+            from: states[FSMLogic.StatesPG2.first]!.edgePosition(at: -CGFloat.pi*0.3),
+            to: states[FSMLogic.StatesPG2.third]!.edgePosition(at: CGFloat.pi*0.65, lambdaRadius: 1.4),
+            dx: -0.9,  dy: 0.0,
+            name: "line7",
+            style: .page1)
+        
         self.addChild(line8)
-        line8.setLabel(at: CGPoint(x: 40.0, y: 194.0 + deltaY), text: "🎾")
+        line8.setColor(at: CGPoint(x: 10.0, y: 95.0 + deltaY), color: UIColor(hexString: "#DDDDDD"))
         lines.append(line8)
+        whiteLines.append(line8)
+        
         
     }
     
@@ -282,14 +389,61 @@ public class GameScene2: SKScene {
     
     public func touchDown(atPoint pos : CGPoint) {
        
+        
         for node in self.nodes(at: pos) {
             if let state = node as? FSMState {
-                state.gotTouched(view: self.view!) { (bool) in
-                    print(bool)
+                state.gotTouched(view: self.view!) { (bool) in }
+                
+                if currentMove == numberOfMoves {return}
+                
+                var nextState: FSMState?
+                var rightMove: FSMLogic.StatesPG2?
+                if isFirstTap {
+                    rightMove = currentState
+                    isFirstTap = false
+                }
+                else {
+                    // checks the state that should be touched
+                    rightMove = FSMLogic.fsm2(from: self.currentState, bool: self.randomArrays[currentMove])
+                    currentMove += 1
+                }
+                
+                guard let rm = rightMove else {
+                    isGameLost = true
+                    print("SHOULD NOT ENTER HERE PAGE2")
+                    return
+                }
+                nextState = states[rm]!
+                print(rm)
+                // check if the touched state is the right state
+                if(nextState?.name != state.name) {
+                    isGameLost = true
+                }
+                
+                currentState = rm
+                
+                if currentMove == numberOfMoves {
+                    self.endGame()
                 }
             }
         }
         
+    }
+    
+    public func endGame() {
+        if !isGameLost {
+            fireworks()
+        } else {
+            loseSound()
+            let rightLastState = states[currentState]!
+            rightLastState.gotTouched(view: self.view!, completion: { (bool) in  })
+            
+            for state in states {
+                if state.value.name != rightLastState.name {
+                    state.value.alpha = 0.2
+                }
+            }
+        }
     }
     
     
@@ -302,5 +456,8 @@ public class GameScene2: SKScene {
         // Called before each frame is rendered
     }
 }
+
+
+
 
 

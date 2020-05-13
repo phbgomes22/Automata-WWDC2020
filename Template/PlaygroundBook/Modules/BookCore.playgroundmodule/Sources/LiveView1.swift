@@ -4,7 +4,7 @@
 //
 //  Created by Pedro Gomes on 11/05/20.
 //
-
+#warning("DONT REMOVE LIVEVIEWCONTROLLER")
 import SpriteKit
 import BookCore
 import UIKit
@@ -47,7 +47,7 @@ public class LiveView1: SKScene {
     }
     
     private func setupBoard() {
-        DispatchQueue.main.asyncAfter(deadline: .now()) {
+        DispatchQueue.main.async() {
             self.setupStates()
             self.setupLines()
         }
@@ -158,6 +158,7 @@ public class LiveView1: SKScene {
         }
     }
 }
+
 
 
 

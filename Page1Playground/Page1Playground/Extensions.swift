@@ -9,20 +9,6 @@
 import Foundation
 import SpriteKit
 
-extension String {
-    func image() -> UIImage? {
-        let size = CGSize(width: 40, height: 40)
-        UIGraphicsBeginImageContextWithOptions(size, false, 0)
-        UIColor.white.set()
-        let rect = CGRect(origin: .zero, size: size)
-        UIRectFill(CGRect(origin: .zero, size: size))
-        (self as AnyObject).draw(in: rect, withAttributes: [.font: UIFont.systemFont(ofSize: 40)])
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return image
-    }
-}
-
 public func emojiToImage(text: String, size: CGFloat) -> UIImage {
 
     let outputImageSize = CGSize.init(width: size, height: size)
@@ -146,8 +132,19 @@ public func edgeCircle(pos: CGPoint, at angle: CGFloat, radius: CGFloat) -> CGPo
 public struct Sound {
     
     private static var partialNotes = ["0b-b0", "2b-d1", "3b-e1", "4b-f1", "5b-g1", "6b-a1"]
+    private static var memorizeNotes = ["6b-a1", "7b-a1"]
+    
     private static var lastRandom: Int = 0
     public static var lineNote = "8b-b1"
+    
+    public static var memorize: String {
+        get {
+            let random = Int.random(in: 0...memorizeNotes.count - 1)
+            print(random, memorizeNotes[random])
+            return memorizeNotes[random]
+        }
+    }
+    public static var lastMemorize: String = "8b-b1"
     
     public static func randomSound() -> String {
         var random = Int.random(in: 0...partialNotes.count - 1)
@@ -156,9 +153,10 @@ public struct Sound {
         }
         Sound.lastRandom = random
         let str = Sound.partialNotes[random] + ".wav"
-        print(str)
         
         return str //SKAudioNode(fileNamed: str)
     }
+    
+    
     
 }
