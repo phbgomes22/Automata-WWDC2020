@@ -7,6 +7,9 @@
 //
 
 import SpriteKit
+import UIKit
+//import PlaygroundSupport
+import GameplayKit
 
 // MARK: - FSMState
 
@@ -58,7 +61,7 @@ public class FSMState: SKShapeNode {
         case .page1:
             arrayColors = arrayColorsPG1
         case .normal:
-            arrayColors = [UIColor(hexString: "#666666")]
+            arrayColors = [UIColor(hexString: "#888888")]
             self.alpha = 0.7
         case .page2:
             arrayColors = arrayColorsPG2

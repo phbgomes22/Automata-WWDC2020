@@ -2,6 +2,7 @@
 
 import SpriteKit
 import UIKit
+//import PlaygroundSupport
 import GameplayKit
 
 
@@ -38,6 +39,8 @@ public class GameScene: SKScene {
         let playSound = SKAction.playSoundFileNamed(sound, waitForCompletion: true)
         DispatchQueue.main.async {
             self.run(playSound)
+
+          //  PlaygroundPage.current.assessmentStatus = .pass(message: " **Great!** When you're ready, go to the [**Next Page**](@next)!")
         }
         DispatchQueue.global(qos: .userInteractive).async {
             
@@ -92,8 +95,8 @@ public class GameScene: SKScene {
     
     public func setupBackground() {
         let backgroundSprite = SKSpriteNode()
-        backgroundSprite.texture = SKTexture(imageNamed: "backgroundPG1")
-        backgroundSprite.color = UIColor(hexString: "#DCD6CA")
+        backgroundSprite.texture = SKTexture(imageNamed: "t1.jpg")
+        backgroundSprite.alpha = 0.25
         backgroundSprite.colorBlendFactor = 1
         backgroundSprite.size = CGSize(width: 1400*1.5, height: 980*1.5)
         backgroundSprite.position = CGPoint(x: 0.0, y: -100.0)
@@ -126,7 +129,7 @@ public class GameScene: SKScene {
     }
     
     public func setupBoard() {
-        DispatchQueue.main.async() {
+        DispatchQueue.main.asyncAfter(deadline: .now()) {
             self.setupStates()
             self.setupLines()
         }
@@ -258,6 +261,7 @@ public class GameScene: SKScene {
     public func touchDown(atPoint pos : CGPoint) {
        
         if isFirstTap {
+            
             isFirstTap = false
         }
         
@@ -312,7 +316,7 @@ public class GameScene: SKScene {
                 
                 semaphore.enter()
                 
-                DispatchQueue.main.async() {
+                DispatchQueue.main.asyncAfter(deadline: .now()) {
                     
                     let output = currStateNode.getOutput()
                     self.wordLabel.update(text: (self.wordLabel.text ?? "") + output)

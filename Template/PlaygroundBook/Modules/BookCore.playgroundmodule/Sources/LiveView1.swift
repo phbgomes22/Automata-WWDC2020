@@ -32,8 +32,10 @@ public class LiveView1: SKScene {
    
     private func setupBackground() {
         let backgroundSprite = SKSpriteNode()
-        backgroundSprite.texture = SKTexture(imageNamed: "backgroundPG1")
-        backgroundSprite.color = UIColor(hexString: "#CCCCCC")
+        
+        let image = UIImage(named: "t1.jpg")!.noir!
+        backgroundSprite.texture = SKTexture(image: image)
+        backgroundSprite.color = UIColor(hexString: "#CCCCCC").withAlphaComponent(0.25)
         backgroundSprite.colorBlendFactor = 1
         backgroundSprite.size = CGSize(width: 1400*1.5, height: 980*1.5)
         backgroundSprite.position = CGPoint(x: 0.0, y: -100.0)
@@ -167,7 +169,7 @@ public class LiveView1Controller: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        let sceneView = SKView(frame: CGRect(x:0 , y:0, width: 640, height: 480))
+        let sceneView = SKView(frame: CGRect(x:0 , y:0, width: 640, height: 580))
         if let scene = LiveView1(fileNamed: "LiveView1") {
             // Set the scale mode to scale to fit the window
             scene.scaleMode = .aspectFill

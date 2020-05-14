@@ -76,7 +76,7 @@ startAt(state: /*#-editable-code State*//*#-end-editable-code*/)
 
 // Load the SKScene from 'GameScene.sks'
 
-let sceneView = SKView(frame: CGRect(x:0 , y:0, width: 640, height: 480))
+let sceneView = SKView(frame: CGRect(x:0 , y:0, width: 640, height: 580))
 if let scene = GameScene(fileNamed: "GameScene") {
     // Set the scale mode to scale to fit the window
     scene.scaleMode = .aspectFill
@@ -107,6 +107,9 @@ add(element: 🎱)
 add(element: 🤖)
 add(element: 🎱)
 add(element: 🤖)
+ 
+
+ PlaygroundPage.current.assessmentStatus = .pass(message: " **Great!** When you're ready, go to the [**Next Page**](@next)!")
  */
 
 //#-end-hidden-code

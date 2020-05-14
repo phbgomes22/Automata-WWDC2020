@@ -7,6 +7,8 @@
 //
 import SpriteKit
 import UIKit
+import GameplayKit
+//import PlaygroundSupport
 
 public class GameScene2: SKScene {
     
@@ -25,7 +27,7 @@ public class GameScene2: SKScene {
     public var shapeNodeRight = SKShapeNode()
     
     // THIS WILL CHANGE
-    public var numberOfMoves: Int = 3
+    public var numberOfMoves: Int = 1
     
     public var deltaY: CGFloat = -50.0
 
@@ -38,7 +40,9 @@ public class GameScene2: SKScene {
         //self.setSound()
         self.setupBackground()
         
-        self.draftArray(delay: 2)
+        if numberOfMoves > 0 {
+            self.draftArray(delay: 2)
+        }
     }
     
     public func drawDrafter() {
@@ -127,7 +131,7 @@ public class GameScene2: SKScene {
             self.currentState = array[random].1
             
             let state = self.states[self.currentState]
-            
+            self.moveCamera(to: state!)
             DispatchQueue.main.async {
                 state?.gotTouched(view: self.view!, completion: { (_) in })
             }
@@ -141,6 +145,8 @@ public class GameScene2: SKScene {
         let playSound = SKAction.playSoundFileNamed(sound, waitForCompletion: true)
         DispatchQueue.main.async {
             self.run(playSound)
+            
+           // PlaygroundPage.current.assessmentStatus = .pass(message: " **Great!** When you're ready, go to the [**Next Page**](@next)!")
         }
         DispatchQueue.global(qos: .userInteractive).async {
             
@@ -193,12 +199,51 @@ public class GameScene2: SKScene {
         }
     }
     
+    public func moveCamera(to state: FSMState) {
+        
+        let width: CGFloat = 2400
+        let height: CGFloat = 2080
+        //
+        let shapeNodeBackground = SKSpriteNode(color: UIColor.black.withAlphaComponent(0.15), size: CGSize(width: width, height: height))
+        //shapeNodeBackground.alpha = 0.0
+    
+        let mask = SKSpriteNode(color: .white, size: CGSize(width: width, height: height))
+        mask.anchorPoint = .zero
+        mask.position = CGPoint(x: -width/2, y: -height/2)
+        mask.alpha = 0.0
+        
+        let circle = SKShapeNode(circleOfRadius: 70.0)
+        circle.alpha = 0.001
+        circle.blendMode = .replace
+        circle.fillColor = .white
+        
+        mask.addChild(circle)
+        let statePos = state.position
+        circle.position = CGPoint(x: width/2 + statePos.x, y: height/2 + statePos.y)
+        
+        let cropNode = SKCropNode()
+        cropNode.maskNode = mask
+        cropNode.addChild(shapeNodeBackground)
+        cropNode.position = CGPoint(x: 0, y: 0)
+        cropNode.alpha = 1.0
+        self.addChild(cropNode)
+        
+        let fadeIn = SKAction.fadeAlpha(to: 1.0, duration: 0.3)
+        let fadeOut = SKAction.fadeAlpha(to: 0.0, duration: 0.5)
+        
+        mask.run(.sequence([fadeIn, fadeOut])) {
+            cropNode.removeAllChildren()
+            cropNode.removeFromParent()
+        }
+        
+    }
+    
     public func setupBackground() {
        
         backgroundSprite.texture = SKTexture(imageNamed: "t.jpg")
         backgroundSprite.color = UIColor(hexString: "#DCD6CA").withAlphaComponent(0.28)
         backgroundSprite.colorBlendFactor = 1
-        backgroundSprite.size = CGSize(width: 1400, height: 980)
+        backgroundSprite.size = CGSize(width: 1400, height: 1180)
         backgroundSprite.position = CGPoint(x: 0.0, y: 0)
         backgroundSprite.zPosition = -100
         backgroundSprite.zRotation = .pi

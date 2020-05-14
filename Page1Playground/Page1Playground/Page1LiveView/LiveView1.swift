@@ -1,12 +1,16 @@
 //
-//  LiveView.swift
-//  Page1Playground
+//  LiveView1.swift
+//  BookCore
 //
 //  Created by Pedro Gomes on 11/05/20.
-//  Copyright © 2020 Pedro Gomes. All rights reserved. == CHECK IF DIDNT REMOVE LIVEVIEWCONTROLLER
 //
+#warning("DONT REMOVE LIVEVIEWCONTROLLER")
 import SpriteKit
+//import BookCore
 import UIKit
+import GameplayKit
+//import PlaygroundSupport
+
 
 public class LiveView1: SKScene {
     
@@ -28,8 +32,8 @@ public class LiveView1: SKScene {
    
     private func setupBackground() {
         let backgroundSprite = SKSpriteNode()
-        backgroundSprite.texture = SKTexture(imageNamed: "backgroundPG1")
-        backgroundSprite.color = UIColor(hexString: "#CCCCCC")
+        backgroundSprite.texture = SKTexture(imageNamed: "t1.jpg")
+        backgroundSprite.color = UIColor(hexString: "#CCCCCC").withAlphaComponent(0.2)
         backgroundSprite.colorBlendFactor = 1
         backgroundSprite.size = CGSize(width: 1400*1.5, height: 980*1.5)
         backgroundSprite.position = CGPoint(x: 0.0, y: -100.0)
@@ -153,4 +157,26 @@ public class LiveView1: SKScene {
             return true
         }
     }
+}
+
+
+
+
+public class LiveView1Controller: UIViewController {
+
+    public override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let sceneView = SKView(frame: CGRect(x:0 , y:0, width: 640, height: 480))
+        if let scene = LiveView1(fileNamed: "LiveView1") {
+            // Set the scale mode to scale to fit the window
+            scene.scaleMode = .aspectFill
+            
+            // Present the scene
+            sceneView.presentScene(scene)
+            
+        }
+        self.view = sceneView
+    }
+
 }

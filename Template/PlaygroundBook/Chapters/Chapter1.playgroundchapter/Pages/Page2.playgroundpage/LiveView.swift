@@ -13,4 +13,4 @@ import PlaygroundSupport
 
 
 
-PlaygroundPage.current.liveView = LiveView1Controller()
+PlaygroundPage.current.liveView = LiveView2Controller()

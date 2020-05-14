@@ -131,8 +131,8 @@ public class FSMLine: SKSpriteNode {
         
         switch self.style {
         case.normal:
-            self.body.strokeColor = UIColor(hexString: "#999999")
-            self.body.fillColor = UIColor(hexString: "#999999")
+            self.body.strokeColor = UIColor(hexString: "#888888")
+            self.body.fillColor = UIColor(hexString: "#888888")
         case .page1:
             self.body.strokeColor = UIColor(hexString: "#511845")
             self.body.fillColor = UIColor(hexString: "#511845")
@@ -145,7 +145,11 @@ public class FSMLine: SKSpriteNode {
     
     private func setGlow() {
         self.glowBody.path = self.body.path
-        self.glowBody.strokeColor = UIColor(hexString: "#511845").withAlphaComponent(0.08)
+        if self.style == .normal {
+            self.glowBody.strokeColor = UIColor(hexString: "#777777").withAlphaComponent(0.12)
+        }else {
+            self.glowBody.strokeColor = UIColor(hexString: "#511845").withAlphaComponent(0.08)
+        }
         self.glowBody.glowWidth = 7.0
         self.glowBody.zPosition = -1
         self.addChild(glowBody)
@@ -168,7 +172,8 @@ public class FSMLine: SKSpriteNode {
         colorNode()
     }
     
-    var scaleLabel: SKAction = SKAction.sequence([ SKAction.scale(by: 1.3, duration: 0.3),  SKAction.scale(by: 1.2, duration: 0.3).reversed()])
+    
+    var scaleLabel: SKAction = SKAction.sequence([ SKAction.scale(by: 1.3, duration: 0.3),  SKAction.scale(by: 1.3, duration: 0.2).reversed()])
     
     public func animateLabel() {
         

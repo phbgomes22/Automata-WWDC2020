@@ -22,6 +22,8 @@
 		4247AF272469D4A5004F7A1E /* winSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4247AF1B2469D4A5004F7A1E /* winSound.wav */; };
 		4247AF29246A13D1004F7A1E /* LiveView1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247AF28246A13D1004F7A1E /* LiveView1.swift */; };
 		429EBEB2246CAED900FC1118 /* ParticlePG1.sks in Resources */ = {isa = PBXBuildFile; fileRef = 429EBEB1246CAED900FC1118 /* ParticlePG1.sks */; };
+		429EBEBA246CE0D200FC1118 /* LiveView2.sks in Resources */ = {isa = PBXBuildFile; fileRef = 429EBEB9246CE0D200FC1118 /* LiveView2.sks */; };
+		429EBEBC246CE14000FC1118 /* LiveView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429EBEBB246CE14000FC1118 /* LiveView2.swift */; };
 		42B019BD2469B2D500A46158 /* LiveView1.sks in Resources */ = {isa = PBXBuildFile; fileRef = 42B019BC2469B2D500A46158 /* LiveView1.sks */; };
 		42B019C32469BD5D00A46158 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42B019C22469BD5D00A46158 /* Extensions.swift */; };
 		42B019C92469C29300A46158 /* FSMLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42B019C42469C29300A46158 /* FSMLine.swift */; };
@@ -171,6 +173,8 @@
 		4247AF1B2469D4A5004F7A1E /* winSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = winSound.wav; sourceTree = "<group>"; };
 		4247AF28246A13D1004F7A1E /* LiveView1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveView1.swift; sourceTree = "<group>"; };
 		429EBEB1246CAED900FC1118 /* ParticlePG1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = ParticlePG1.sks; path = ../../../Page1Playground/Page1Playground/Page1GameScene/ParticlePG1.sks; sourceTree = "<group>"; };
+		429EBEB9246CE0D200FC1118 /* LiveView2.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = LiveView2.sks; path = ../../../Page1Playground/Page1Playground/Page2GameScene/LiveView2.sks; sourceTree = "<group>"; };
+		429EBEBB246CE14000FC1118 /* LiveView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveView2.swift; sourceTree = "<group>"; };
 		42B019BC2469B2D500A46158 /* LiveView1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = LiveView1.sks; sourceTree = "<group>"; };
 		42B019C22469BD5D00A46158 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		42B019C42469C29300A46158 /* FSMLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMLine.swift; sourceTree = "<group>"; };
@@ -380,6 +384,7 @@
 				42B019C22469BD5D00A46158 /* Extensions.swift */,
 				4247AF28246A13D1004F7A1E /* LiveView1.swift */,
 				42DCB34E246A519C006B830E /* GameScene2.swift */,
+				429EBEBB246CE14000FC1118 /* LiveView2.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -449,6 +454,7 @@
 			isa = PBXGroup;
 			children = (
 				5EF2F97E2054B6E400191409 /* ManifestPlist.strings */,
+				429EBEB9246CE0D200FC1118 /* LiveView2.sks */,
 				4247AF0F2469D4A5004F7A1E /* Firework.sks */,
 				4247AF1A2469D4A5004F7A1E /* loseSound.wav */,
 				4247AF102469D4A5004F7A1E /* mixolydianB */,
@@ -635,6 +641,7 @@
 				5E551EC52371FC3F00784365 /* Assets.xcassets in Resources */,
 				4247AF252469D4A5004F7A1E /* 1b-c1.wav in Resources */,
 				4247AF202469D4A5004F7A1E /* 6b-a1.wav in Resources */,
+				429EBEBA246CE0D200FC1118 /* LiveView2.sks in Resources */,
 				4247AF1D2469D4A5004F7A1E /* 7b-a1.wav in Resources */,
 				4247AF0E2469D461004F7A1E /* GameScene.sks in Resources */,
 				4247AF262469D4A5004F7A1E /* loseSound.wav in Resources */,
@@ -709,6 +716,7 @@
 				42B019CB2469C29300A46158 /* FSMOutput.swift in Sources */,
 				42B019CC2469C29300A46158 /* FSMLogic.swift in Sources */,
 				42B019C32469BD5D00A46158 /* Extensions.swift in Sources */,
+				429EBEBC246CE14000FC1118 /* LiveView2.swift in Sources */,
 				5E3196F32061DEA40077BBD7 /* LiveViewSupport.swift in Sources */,
 				42B019CA2469C29300A46158 /* FSMState.swift in Sources */,
 				5EF2F9AE2054BBF300191409 /* LiveViewController.swift in Sources */,
