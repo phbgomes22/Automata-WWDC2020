@@ -40,6 +40,15 @@ public class FSMLine: SKSpriteNode {
         self.setGlow()
     }
     
+    public init(from point1: CGPoint, to point2: CGPoint, headSize: CGFloat = 20.0, name: String, style: Style) {
+           super.init(texture: nil, color: .clear, size: .zero)
+           self.headSize = headSize
+           self.name = name
+           self.style = style
+           self.setDraw(start: point1, end: point2)
+           self.setGlow()
+       }
+    
     
     public init(from point1: CGPoint, to point2: CGPoint, dx1: CGFloat, dy1: CGFloat, dx2: CGFloat, dy2: CGFloat, headSize: CGFloat, name: String, style: Style) {
         super.init(texture: nil, color: .clear, size: .zero)
@@ -172,6 +181,20 @@ public class FSMLine: SKSpriteNode {
         colorNode()
     }
     
+    private func setDraw(start: CGPoint, end: CGPoint) {
+        
+        let bodyPath = UIBezierPath()
+        bodyPath.move(to: start)
+        bodyPath.addLine(to: end)
+        bodyPath.addArrowHead(end: end, controlPoint: start, pointerLineLength: self.headSize + 1, arrowAngle: CGFloat.pi/8)
+        bodyPath.addLine(to: start)
+        bodyPath.close()
+        self.body.path = bodyPath.cgPath
+        self.body.lineWidth = 3.0
+        self.addChild(body)
+        
+        colorNode()
+    }
     
     var scaleLabel: SKAction = SKAction.sequence([ SKAction.scale(by: 1.3, duration: 0.3),  SKAction.scale(by: 1.3, duration: 0.2).reversed()])
     

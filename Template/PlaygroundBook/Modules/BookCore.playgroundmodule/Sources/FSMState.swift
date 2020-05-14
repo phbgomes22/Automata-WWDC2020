@@ -207,4 +207,3 @@ public class FSMState: SKShapeNode {
         return CGPoint(x: newX, y: newY)
     }
 }
-

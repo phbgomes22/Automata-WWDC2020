@@ -1,16 +1,15 @@
 //
 //  GameScene3.swift
-//  Page1Playground
+//  BookCore
 //
 //  Created by Pedro Gomes on 14/05/20.
-//  Copyright © 2020 Pedro Gomes. All rights reserved.
 //
 
 //: A SpriteKit based Playground
 
 import SpriteKit
 import UIKit
-//import PlaygroundSupport
+import PlaygroundSupport
 import GameplayKit
 
 
@@ -31,9 +30,7 @@ public class GameScene3: SKScene {
         self.setupBoard()
         //self.setSound()
         self.setupBackground()
-        
         self.teste()
-        
     }
     
     public func teste() {

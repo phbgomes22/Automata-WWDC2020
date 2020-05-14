@@ -28,7 +28,14 @@ public class FSMLogic {
         case forth
     }
     
-    static public func fsm1(from st1: StatesPG1, text: String) -> StatesPG1? {
+    public enum StatesPG3 {
+        case first
+        case second
+        case third
+        case forth
+    }
+    
+    static func fsm1(from st1: StatesPG1, text: String) -> StatesPG1? {
         // - - - - - - -
         switch st1 {
         case .first:
@@ -52,7 +59,7 @@ public class FSMLogic {
     }
     
     
-    static public func fsm2(from st1: StatesPG2, bool: Bool) -> StatesPG2? {
+    static func fsm2(from st1: StatesPG2, bool: Bool) -> StatesPG2? {
         // - - - - - - -
         switch st1 {
         case .first:
@@ -80,5 +87,20 @@ public class FSMLogic {
                 return .third
             }
         }
+    }
+    
+    static func fsm3(from st1: StatesPG3) -> StatesPG3? {
+        
+        switch st1 {
+        case .first:
+            return .second
+        case .second:
+            return .third
+        case .third:
+            return .forth
+        case .forth:
+            return nil
+        }
+        
     }
 }

@@ -21,6 +21,8 @@
 		4247AF262469D4A5004F7A1E /* loseSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4247AF1A2469D4A5004F7A1E /* loseSound.wav */; };
 		4247AF272469D4A5004F7A1E /* winSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4247AF1B2469D4A5004F7A1E /* winSound.wav */; };
 		4247AF29246A13D1004F7A1E /* LiveView1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247AF28246A13D1004F7A1E /* LiveView1.swift */; };
+		4295AC94246D9A1F002E7B95 /* GameScene3.sks in Resources */ = {isa = PBXBuildFile; fileRef = 4295AC93246D9A1F002E7B95 /* GameScene3.sks */; };
+		4295AC98246D9A92002E7B95 /* GameScene3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4295AC97246D9A92002E7B95 /* GameScene3.swift */; };
 		429EBEB2246CAED900FC1118 /* ParticlePG1.sks in Resources */ = {isa = PBXBuildFile; fileRef = 429EBEB1246CAED900FC1118 /* ParticlePG1.sks */; };
 		429EBEBA246CE0D200FC1118 /* LiveView2.sks in Resources */ = {isa = PBXBuildFile; fileRef = 429EBEB9246CE0D200FC1118 /* LiveView2.sks */; };
 		429EBEBC246CE14000FC1118 /* LiveView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429EBEBB246CE14000FC1118 /* LiveView2.swift */; };
@@ -172,6 +174,8 @@
 		4247AF1A2469D4A5004F7A1E /* loseSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = loseSound.wav; sourceTree = "<group>"; };
 		4247AF1B2469D4A5004F7A1E /* winSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = winSound.wav; sourceTree = "<group>"; };
 		4247AF28246A13D1004F7A1E /* LiveView1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveView1.swift; sourceTree = "<group>"; };
+		4295AC93246D9A1F002E7B95 /* GameScene3.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = GameScene3.sks; path = ../../../Page1Playground/Page1Playground/Page3GameScene/GameScene3.sks; sourceTree = "<group>"; };
+		4295AC97246D9A92002E7B95 /* GameScene3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene3.swift; sourceTree = "<group>"; };
 		429EBEB1246CAED900FC1118 /* ParticlePG1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = ParticlePG1.sks; path = ../../../Page1Playground/Page1Playground/Page1GameScene/ParticlePG1.sks; sourceTree = "<group>"; };
 		429EBEB9246CE0D200FC1118 /* LiveView2.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = LiveView2.sks; path = ../../../Page1Playground/Page1Playground/Page2GameScene/LiveView2.sks; sourceTree = "<group>"; };
 		429EBEBB246CE14000FC1118 /* LiveView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveView2.swift; sourceTree = "<group>"; };
@@ -385,6 +389,7 @@
 				4247AF28246A13D1004F7A1E /* LiveView1.swift */,
 				42DCB34E246A519C006B830E /* GameScene2.swift */,
 				429EBEBB246CE14000FC1118 /* LiveView2.swift */,
+				4295AC97246D9A92002E7B95 /* GameScene3.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -459,6 +464,7 @@
 				4247AF1A2469D4A5004F7A1E /* loseSound.wav */,
 				4247AF102469D4A5004F7A1E /* mixolydianB */,
 				4247AF1B2469D4A5004F7A1E /* winSound.wav */,
+				4295AC93246D9A1F002E7B95 /* GameScene3.sks */,
 				42B019BC2469B2D500A46158 /* LiveView1.sks */,
 				429EBEB1246CAED900FC1118 /* ParticlePG1.sks */,
 				42DCB350246A51B4006B830E /* GameScene2.sks */,
@@ -632,6 +638,7 @@
 				429EBEB2246CAED900FC1118 /* ParticlePG1.sks in Resources */,
 				42DCB351246A51B4006B830E /* GameScene2.sks in Resources */,
 				4247AF232469D4A5004F7A1E /* 3b-e1.wav in Resources */,
+				4295AC94246D9A1F002E7B95 /* GameScene3.sks in Resources */,
 				42B019BD2469B2D500A46158 /* LiveView1.sks in Resources */,
 				4247AF1C2469D4A5004F7A1E /* Firework.sks in Resources */,
 				5EF2F97C2054B6E400191409 /* ManifestPlist.strings in Resources */,
@@ -715,6 +722,7 @@
 				42DCB34F246A519C006B830E /* GameScene2.swift in Sources */,
 				42B019CB2469C29300A46158 /* FSMOutput.swift in Sources */,
 				42B019CC2469C29300A46158 /* FSMLogic.swift in Sources */,
+				4295AC98246D9A92002E7B95 /* GameScene3.swift in Sources */,
 				42B019C32469BD5D00A46158 /* Extensions.swift in Sources */,
 				429EBEBC246CE14000FC1118 /* LiveView2.swift in Sources */,
 				5E3196F32061DEA40077BBD7 /* LiveViewSupport.swift in Sources */,
