@@ -22,7 +22,8 @@ public class GameScene3: SKScene {
     public var isFirstTap: Bool = true
     public var currentState: FSMLogic.StatesPG3 = FSMLogic.StatesPG3.first
     public var deltaY: CGFloat = -50.0
-    
+    public var ball: SKShapeNode!
+    public var dirArrow: FSMLine!
     
     override public func didMove(to view: SKView) {
         
@@ -32,15 +33,66 @@ public class GameScene3: SKScene {
         //self.setSound()
         self.setupBackground()
         
-        self.teste()
+        self.ballBase()
+        self.setupBall()
+    }
+    
+    public func setupBall() {
+        
+        // arrow direction
+        
+        dirArrow = FSMLine(
+            from: CGPoint(x: 0.0, y: 0),
+            to: CGPoint(x: 0.0, y: 80.0),
+            headSize: 10.0,  name: "lineDir",
+            style: .page1)
+        dirArrow.body.strokeColor = UIColor.red.withAlphaComponent(0.03)
+        dirArrow.body.fillColor = UIColor.red.withAlphaComponent(0.20)
+        dirArrow.position = CGPoint(x: 0.0, y: -220.0)
+        self.addChild(dirArrow)
+        
+        
+        let durationMove: Double = 1.2
+        let moveAction = SKAction.moveTo(x: -80.0, duration: durationMove)
+        let moveActionLeft = SKAction.moveTo(x: 80.0, duration: 2*durationMove)
+        let moveActionZero = SKAction.moveTo(x: 0.0, duration: durationMove)
+        
+        let rotate = SKAction.rotate(toAngle: -.pi/9, duration: durationMove)
+        let rotateBack = SKAction.rotate(toAngle: .pi/9, duration: 2*durationMove)
+        let rotateZero = SKAction.rotate(toAngle: 0.0, duration: durationMove)
+        
+        let sequenceRotating = SKAction.sequence([rotate, rotateBack, rotateZero])
+        let sequenceMoving = SKAction.sequence([moveAction, moveActionLeft, moveActionZero])
+        dirArrow.anchorPoint = CGPoint(x: 0.5, y: 2.0)
+        dirArrow.run(.repeatForever(.group([sequenceMoving, sequenceRotating])))
+        
+        
+        // ball
+        
+        let radius: CGFloat = 14.0
+        ball = SKShapeNode(circleOfRadius: radius)
+        ball.position = CGPoint(x: 0.0, y:  -220.0)
+        ball.fillColor = UIColor.orange
+        ball.strokeColor = UIColor.clear
+        let scaleBall = SKAction.scale(by: 1.1, duration: 0.6)
+        let repeatForever = SKAction.repeatForever(.sequence([scaleBall, scaleBall.reversed()]))
+        
+        self.addChild(ball)
+        ball.run(repeatForever)
+        
+        
+        ball.run(SKAction.repeatForever(sequenceMoving), withKey: "horizontalMove")
+        
         
     }
     
-    public func teste() {
-        let shapeNode = SKShapeNode(rect: CGRect(x: 0.0, y: 0.0, width: 400.0, height: 80.0), cornerRadius: 20.0)
-        shapeNode.fillColor = UIColor.white
-        shapeNode.position = CGPoint(x: -200.0, y: -220 - 40)
+    public func ballBase() {
+        let width: CGFloat = 200.0
+        let shapeNode = SKShapeNode(rect: CGRect(x: 0.0, y: 0.0, width: width, height: 40.0), cornerRadius: 20.0)
+        shapeNode.fillColor = UIColor.white.withAlphaComponent(0.3)
+        shapeNode.position = CGPoint(x: -width/2.0, y: -220 - 20)
         self.addChild(shapeNode)
+        
     }
     
     public func fireworks() {
@@ -131,20 +183,16 @@ public class GameScene3: SKScene {
     public func setupBoard() {
         self.setupTopStates()
         self.setupLines()
-        self.setupPads()
-    }
-    
-    public func setupPads() {
-        
     }
     
     public func setupTopStates() {
         
         let spacingX: CGFloat = 50.0
+        let yPos: CGFloat = 280.0
         
         let state1 = FSMState(
                         side: 55,
-                        position: CGPoint(x: -3*spacingX, y: 220 + deltaY),
+                        position: CGPoint(x: -3*spacingX, y: yPos + deltaY),
                         name: "state1",
                         style: .page1)
         self.addChild(state1)
@@ -153,32 +201,35 @@ public class GameScene3: SKScene {
         
         let state2 = FSMState(
                         side: 55,
-                        position: CGPoint(x: -1*spacingX, y: 220 + deltaY),
+                        position: CGPoint(x: -1*spacingX, y: yPos + deltaY),
                         name: "state2",
                         style: .page1)
         self.addChild(state2)
         state2.setOutput(text: "II", labelPos: CGPoint(x: -35, y: -48), rotate: 0.0, size: 20)
+        state2.alpha = 0.25
         states.append(state2)
         
         let state3 = FSMState(
                         side: 55,
-                        position: CGPoint(x: 1*spacingX, y: 220 + deltaY),
+                        position: CGPoint(x: 1*spacingX, y: yPos + deltaY),
                         name: "state3",
                         style: .page1)
                
         self.addChild(state3)
         state3.setOutput(text: "III", labelPos: CGPoint(x: -35, y: -48), rotate: 0.0, size: 20)
+        state3.alpha = 0.25
         states.append(state3)
         
         
         let state4 = FSMState(
                         side: 55,
-                        position: CGPoint(x: 3*spacingX, y: 220 + deltaY),
+                        position: CGPoint(x: 3*spacingX, y: yPos + deltaY),
                         name: "state4",
                         style: .page1)
                
         self.addChild(state4)
         state4.setOutput(text: "🏆", labelPos: CGPoint(x: -35, y: -48), rotate: 0.0, size: 20)
+        state4.alpha = 0.25
         states.append(state4)
     }
     
@@ -219,11 +270,17 @@ public class GameScene3: SKScene {
         case .second:
             // change parameters here
             states[1].gotTouched(view: self.view!) { (_) in }
+            states[1].alpha = 1.0
+            states[0].alpha = 0.25
         case .third:
             // change parameters here
             states[2].gotTouched(view: self.view!) { (_) in }
+            states[2].alpha = 1.0
+            states[1].alpha = 0.25
         case .forth:
             states[3].gotTouched(view: self.view!) { (_) in }
+            states[3].alpha = 1.0
+            states[2].alpha = 0.25
             fireworks()
         default:
             print("SHOULDNT ENTER HERE")
@@ -255,6 +312,19 @@ public class GameScene3: SKScene {
             
             isFirstTap = false
         }
+        
+        let endPoint = CGPoint(x: 0, y: 180)
+      
+        
+        let moveAction = SKAction.move(to: endPoint, duration: 0.7)
+        let scaleDown = SKAction.scale(by: 0.5, duration: 0.7)
+        ball.removeAllActions()
+        ball.run(SKAction.group([moveAction, scaleDown])) {[weak self ] in
+            self?.ball.removeFromParent()
+            self?.setupBall()
+            
+        }
+        dirArrow.removeFromParent()
     }
     
     
@@ -264,6 +334,8 @@ public class GameScene3: SKScene {
     }
     override public func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
+        
+        
     }
 }
 
