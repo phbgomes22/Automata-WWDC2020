@@ -115,14 +115,14 @@ public class FSMState: SKShapeNode {
         return self.label.text ?? ""
     }
     
-    public func setOutput(text: String, labelPos: CGPoint, rotate: CGFloat) {
+    public func setOutput(text: String, labelPos: CGPoint, rotate: CGFloat, size: CGFloat = 30.0) {
         
         self.setHolder()
         
         self.label.text = text
         self.label.fontName = "Futura-Bold"
         self.label.fontColor = UIColor(hexString: "#333333")
-        self.label.fontSize = 30
+        self.label.fontSize = size
                 
         let skaction = SKAction.rotate(byAngle: rotate, duration: 0.0)
         holder.run(skaction)

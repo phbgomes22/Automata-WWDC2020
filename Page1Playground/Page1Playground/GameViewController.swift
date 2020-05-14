@@ -16,7 +16,7 @@ class GameViewController: UIViewController {
         super.viewDidLoad()
         
         let sceneView = SKView(frame: CGRect(x:0 , y:0, width: 640, height: 480))
-        if let scene = GameScene2(fileNamed: "GameScene2") {
+        if let scene = GameScene3(fileNamed: "GameScene3") {
             // Set the scale mode to scale to fit the window
             scene.scaleMode = .aspectFill
             

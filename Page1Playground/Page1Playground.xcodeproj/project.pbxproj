@@ -26,6 +26,8 @@
 		4247AF2B246A15B2004F7A1E /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247AF2A246A15B2004F7A1E /* Extensions.swift */; };
 		4247AF2E246A247A004F7A1E /* GameScene2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247AF2D246A247A004F7A1E /* GameScene2.swift */; };
 		4247AF30246A249E004F7A1E /* GameScene2.sks in Resources */ = {isa = PBXBuildFile; fileRef = 4247AF2F246A249E004F7A1E /* GameScene2.sks */; };
+		4295AC90246D8BFE002E7B95 /* GameScene3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4295AC8F246D8BFE002E7B95 /* GameScene3.swift */; };
+		4295AC92246D8C84002E7B95 /* GameScene3.sks in Resources */ = {isa = PBXBuildFile; fileRef = 4295AC91246D8C84002E7B95 /* GameScene3.sks */; };
 		429EBEB4246CDC1F00FC1118 /* LiveView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429EBEB3246CDC1F00FC1118 /* LiveView2.swift */; };
 		429EBEB8246CE0AE00FC1118 /* LiveView2.sks in Resources */ = {isa = PBXBuildFile; fileRef = 429EBEB7246CE0AE00FC1118 /* LiveView2.sks */; };
 		42EC4BF42463760E00281D12 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EC4BF32463760E00281D12 /* AppDelegate.swift */; };
@@ -61,6 +63,8 @@
 		4247AF2A246A15B2004F7A1E /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		4247AF2D246A247A004F7A1E /* GameScene2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene2.swift; sourceTree = "<group>"; };
 		4247AF2F246A249E004F7A1E /* GameScene2.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene2.sks; sourceTree = "<group>"; };
+		4295AC8F246D8BFE002E7B95 /* GameScene3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene3.swift; sourceTree = "<group>"; };
+		4295AC91246D8C84002E7B95 /* GameScene3.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene3.sks; sourceTree = "<group>"; };
 		429EBEB3246CDC1F00FC1118 /* LiveView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveView2.swift; sourceTree = "<group>"; };
 		429EBEB7246CE0AE00FC1118 /* LiveView2.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = LiveView2.sks; sourceTree = "<group>"; };
 		42EC4BF02463760E00281D12 /* Page1Playground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Page1Playground.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -134,6 +138,15 @@
 			path = Page2GameScene;
 			sourceTree = "<group>";
 		};
+		4295AC8E246D8BE2002E7B95 /* Page3GameScene */ = {
+			isa = PBXGroup;
+			children = (
+				4295AC8F246D8BFE002E7B95 /* GameScene3.swift */,
+				4295AC91246D8C84002E7B95 /* GameScene3.sks */,
+			);
+			path = Page3GameScene;
+			sourceTree = "<group>";
+		};
 		42EC4BE72463760E00281D12 = {
 			isa = PBXGroup;
 			children = (
@@ -153,6 +166,7 @@
 		42EC4BF22463760E00281D12 /* Page1Playground */ = {
 			isa = PBXGroup;
 			children = (
+				4295AC8E246D8BE2002E7B95 /* Page3GameScene */,
 				4247AF2C246A245E004F7A1E /* Page2GameScene */,
 				42439F58246909B0004F076C /* Page1LiveView */,
 				42439F5724690996004F076C /* Page1GameScene */,
@@ -238,6 +252,7 @@
 				4247AF30246A249E004F7A1E /* GameScene2.sks in Resources */,
 				42439F252468B4D5004F076C /* 3b-e1.wav in Resources */,
 				42439F232468B4D5004F076C /* 8b-b1.wav in Resources */,
+				4295AC92246D8C84002E7B95 /* GameScene3.sks in Resources */,
 				42EC4BFF2463760E00281D12 /* Main.storyboard in Resources */,
 				42439F5C24690B75004F076C /* LiveView1.sks in Resources */,
 				42439F262468B4D5004F076C /* 0b-b0.wav in Resources */,
@@ -270,6 +285,7 @@
 				4247AF2E246A247A004F7A1E /* GameScene2.swift in Sources */,
 				42EC4BFA2463760E00281D12 /* GameScene.swift in Sources */,
 				42EC4BFC2463760E00281D12 /* GameViewController.swift in Sources */,
+				4295AC90246D8BFE002E7B95 /* GameScene3.swift in Sources */,
 				42439F5A246909C0004F076C /* LiveView1.swift in Sources */,
 				429EBEB4246CDC1F00FC1118 /* LiveView2.swift in Sources */,
 				42EC4C0E2464C90C00281D12 /* FSMLine.swift in Sources */,

@@ -1,3 +1,11 @@
+//
+//  GameScene3.swift
+//  Page1Playground
+//
+//  Created by Pedro Gomes on 14/05/20.
+//  Copyright © 2020 Pedro Gomes. All rights reserved.
+//
+
 //: A SpriteKit based Playground
 
 import SpriteKit
@@ -6,7 +14,7 @@ import UIKit
 import GameplayKit
 
 
-public class GameScene: SKScene {
+public class GameScene3: SKScene {
     
     public var states : [FSMState] = []
     public var lines : [FSMLine] = []
@@ -28,9 +36,6 @@ public class GameScene: SKScene {
         //self.setSound()
         self.setupBackground()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
-            self.startFSM()
-        }
     }
     
     public func fireworks() {
@@ -129,57 +134,70 @@ public class GameScene: SKScene {
     }
     
     public func setupBoard() {
-        self.setupStates()
-        self.setupLines()
+        DispatchQueue.main.asyncAfter(deadline: .now()) {
+            self.setupStates()
+            self.setupLines()
+        }
     }
     
     public func setupStates() {
         
+        let spacingX: CGFloat = 50.0
+        
         let state1 = FSMState(
-                        side: 75,
-                        position: CGPoint(x: -160, y: -50 + deltaY),
+                        side: 55,
+                        position: CGPoint(x: -3*spacingX, y: 220 + deltaY),
                         name: "state1",
                         style: .page1)
         self.addChild(state1)
-        state1.setOutput(text: "N", labelPos: CGPoint(x: -48, y: -68), rotate: 0.0)
+        state1.setOutput(text: "I", labelPos: CGPoint(x: -35, y: -48), rotate: 0.0, size: 20)
         states.append(state1)
         
         let state2 = FSMState(
-                        side: 75,
-                        position: CGPoint(x: -40, y: 210 + deltaY),
+                        side: 55,
+                        position: CGPoint(x: -1*spacingX, y: 220 + deltaY),
                         name: "state2",
                         style: .page1)
         self.addChild(state2)
-        state2.setOutput(text: "A", labelPos: CGPoint(x: 46, y: 46), rotate: .pi)
+        state2.setOutput(text: "II", labelPos: CGPoint(x: -35, y: -48), rotate: 0.0, size: 20)
         states.append(state2)
         
         let state3 = FSMState(
-                        side: 75,
-                        position: CGPoint(x: 160, y: 50 + deltaY),
+                        side: 55,
+                        position: CGPoint(x: 1*spacingX, y: 220 + deltaY),
                         name: "state3",
                         style: .page1)
                
         self.addChild(state3)
-        state3.setOutput(text: "B", labelPos: CGPoint(x: 26, y: -82), rotate: .pi/3)
+        state3.setOutput(text: "III", labelPos: CGPoint(x: -35, y: -48), rotate: 0.0, size: 20)
         states.append(state3)
+        
+        
+        let state4 = FSMState(
+                        side: 55,
+                        position: CGPoint(x: 3*spacingX, y: 220 + deltaY),
+                        name: "state4",
+                        style: .page1)
+               
+        self.addChild(state4)
+        state4.setOutput(text: "🏆", labelPos: CGPoint(x: -35, y: -48), rotate: 0.0, size: 20)
+        states.append(state4)
     }
     
     public func setupLines() {
         let line1 = FSMLine(
-                        from: states[0].edgePosition(at: CGFloat.pi/1.3),
+                        from: states[0].edgePosition(at: 0.0),
                         to: states[1].edgePosition(at: CGFloat.pi, lambdaRadius: 1.4),
-                        dx: 1.2,
-                        dy: 0.5, name: "line1",
+                        headSize: 12.0, name: "line1",
                         style: .page1)
         self.addChild(line1)
         line1.setLabel(at: CGPoint(x: -210.0, y: 90.0 + deltaY), text: "🤖")
         lines.append(line1)
         
         let line2 = FSMLine(
-                        from: states[0].edgePosition(at: -CGFloat.pi/8),
-                        to: states[2].edgePosition(at: CGFloat.pi*1.35, lambdaRadius: 1.4),
-                        dx: -0.3,
-                        dy: 2.5, name: "line2",
+                        from: states[1].edgePosition(at: 0.0),
+                        to: states[2].edgePosition(at: CGFloat.pi, lambdaRadius: 1.4),
+                        headSize: 12.0,  name: "line2",
                         style: .page1)
         self.addChild(line2)
         line2.setLabel(at: CGPoint(x: 40.0, y: -90.0 + deltaY), text: "🔥")
@@ -187,37 +205,13 @@ public class GameScene: SKScene {
         
         
         let line3 = FSMLine(
-                        from: states[1].edgePosition(at: -CGFloat.pi/2.3),
-                        to: states[0].edgePosition(at: CGFloat.pi/4, lambdaRadius: 1.4),
-                        dx: 1.2,
-                        dy: -0.3, name: "line3",
+                        from: states[2].edgePosition(at: 0.0),
+                        to: states[3].edgePosition(at: CGFloat.pi, lambdaRadius: 1.4),
+                        headSize: 12.0,  name: "line3",
                         style: .page1)
         self.addChild(line3)
-        line3.setLabel(at: CGPoint(x: -30.0, y: 40.0 + deltaY), text: "🎱")
+        line3.setLabel(at: CGPoint(x: 30.0, y: -40.0 + deltaY), text: "🎱")
         lines.append(line3)
-        
-        
-        let line4 = FSMLine(
-                        from: states[2].edgePosition(at: CGFloat.pi*0.9),
-                        to: states[1].edgePosition(at: -CGFloat.pi/8, lambdaRadius: 1.4),
-                        dx: 0.6,
-                        dy: 0.52, name: "line4",
-                        style: .page1)
-        self.addChild(line4)
-        line4.setLabel(at: CGPoint(x: 90.0, y: 125.0 + deltaY), text: "🐶")
-        lines.append(line4)
-        
-        
-        let line5 = FSMLine(
-                        from: states[2].edgePosition(at: CGFloat.pi*0.6),
-                        to: states[2].edgePosition(at: CGFloat.pi*0.1, lambdaRadius: 1.4),
-                        dx1: 0.9,  dy1: 7.0,
-                        dx2: 1.8,  dy2: 4.2,
-                        headSize: 15, name: "line5",
-                        style: .page1)
-        self.addChild(line5)
-        line5.setLabel(at: CGPoint(x: 225.0, y: 130.0 + deltaY), text: "🎩")
-        lines.append(line5)
         
     }
     
@@ -237,24 +231,6 @@ public class GameScene: SKScene {
         }
     }
     
-    func startFSM() {
-        self.automateFSM(delay: 0) { (ended) in
-            print(ended)
-            if(!ended) {
-                self.wordLabel.update(text: (self.wordLabel.text ?? "") + " 🙊?")
-                self.loseSound()
-            }
-            else if (self.wordLabel.text != self.expectedOutput) {
-                self.wordLabel.update(text: (self.wordLabel.text ?? "") + " 🙊?")
-                self.loseSound()
-            } else {
-                self.wordLabel.update(text: (self.wordLabel.text ?? "") + " 🐵!")
-                DispatchQueue.main.async {
-                    self.fireworks()
-                }
-            }
-        }
-    }
     
     public func touchDown(atPoint pos : CGPoint) {
        
@@ -266,93 +242,6 @@ public class GameScene: SKScene {
     }
     
     
-    public func automateFSM(delay: Int, completion: @escaping (_ ended: Bool) -> ()) {
-        
-        DispatchQueue.global(qos: .userInteractive).asyncAfter(deadline: .now() + .seconds(delay)) {
-            var bool = true
-            
-            var currentState = self.firstState
-            let stringToRun = self.fsmString + "X" // "X" marks the final state!
-            for char in stringToRun {
-                let nState = FSMLogic.fsm1(from: currentState, text: String(char))
-                print(char)
-
-                var currStateNode: FSMState!
-                var nLineNode: FSMLine?
-                
-                switch currentState {
-                case .first:
-                    currStateNode = self.states[0]
-                    if nState == .first { // if im going from current state to nState !!!! #Attention!
-                        nLineNode = nil
-                    } else if nState == .second {
-                        nLineNode = self.lines[0]
-                    } else if nState == .third {
-                       nLineNode = self.lines[1]
-                    }
-                case .second:
-                    currStateNode = self.states[1]
-                    if nState == .first { // if im going from current state to nState !!!! #Attention!
-                        nLineNode = self.lines[2]
-                    } else if nState == .second {
-                        nLineNode = nil
-                    } else if nState == .third {
-                        nLineNode = nil
-                    }
-                case .third:
-                    currStateNode = self.states[2]
-                    if nState == .first { // if im going from current state to nState !!!! #Attention!
-                        nLineNode = nil
-                    } else if nState == .second {
-                        nLineNode = self.lines[3]
-                    } else if nState == .third {
-                        nLineNode = self.lines[4]
-                    }
-                }
-                
-                let semaphore = DispatchGroup()
-                
-                semaphore.enter()
-                
-                DispatchQueue.main.asyncAfter(deadline: .now()) {
-                    
-                    let output = currStateNode.getOutput()
-                    self.wordLabel.update(text: (self.wordLabel.text ?? "") + output)
-                    currStateNode.gotTouched(view: self.view!) { bool in
-                        if(bool) {
-                            semaphore.leave()
-                        }
-                    }
-                }
-                semaphore.wait()
-                
-                // sets next state
-                guard let nextState = nState else { // if there is no next state, the line wont animate
-                    if(char != "X") {
-                        bool = false
-                    }
-                    break
-                }
-                currentState = nextState
-                
-                guard let lNode = nLineNode else { print("WOW, something went very wrong!");break}
-                
-                let semaphore2 = DispatchGroup()
-                semaphore2.enter()
-                DispatchQueue.main.async {
-                    lNode.gotUsed(scene: self) {
-                        semaphore2.leave()
-                    }
-                }
-                
-                semaphore2.wait()
-                
-            }
-            
-            completion(bool)
-        }
-    }
-    
     override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches { touchDown(atPoint: t.location(in: self)) }
         
@@ -361,3 +250,4 @@ public class GameScene: SKScene {
         // Called before each frame is rendered
     }
 }
+

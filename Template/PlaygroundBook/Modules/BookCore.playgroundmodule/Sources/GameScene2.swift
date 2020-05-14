@@ -270,10 +270,8 @@ public class GameScene2: SKScene {
     }
     
     public func setupBoard() {
-        DispatchQueue.main.async() {
-            self.setupStates()
-            self.setupLines()
-        }
+        self.setupStates()
+        self.setupLines()
     }
     
     public func setupStates() {
@@ -284,7 +282,7 @@ public class GameScene2: SKScene {
                         name: "state1",
                         style: .page2)
         self.addChild(state1)
-        state1.setOutput(text: "1️⃣", labelPos: CGPoint(x: -40, y: 50), rotate: -.pi*0.6)
+        state1.setOutput(text: "I", labelPos: CGPoint(x: -40, y: 50), rotate: -.pi*0.6, size: 25.0)
         states[.first] = state1
         
         
@@ -293,7 +291,7 @@ public class GameScene2: SKScene {
                         position: CGPoint(x: -180, y: 10 + deltaY),
                         name: "state2",
                         style: .page2)
-        state2.setOutput(text: "2️⃣", labelPos: CGPoint(x: -48, y: -68), rotate: 0.0)
+        state2.setOutput(text: "II", labelPos: CGPoint(x: -48, y: -68), rotate: 0.0, size: 25.0)
         self.addChild(state2)
         states[.second] = state2
         
@@ -303,7 +301,7 @@ public class GameScene2: SKScene {
                         name: "state3",
                         style: .page2)
         
-        state3.setOutput(text: "3️⃣", labelPos: CGPoint(x: 38, y: -75), rotate: .pi*0.4)
+        state3.setOutput(text: "III", labelPos: CGPoint(x: 38, y: -75), rotate: .pi*0.4, size: 25.0)
         self.addChild(state3)
         states[.third] = state3
         
@@ -314,7 +312,7 @@ public class GameScene2: SKScene {
                         name: "state4",
                         style: .page2)
         
-        state4.setOutput(text: "4️⃣", labelPos: CGPoint(x: 62, y: 28), rotate: .pi*0.9)
+        state4.setOutput(text: "IV", labelPos: CGPoint(x: 62, y: 28), rotate: .pi*0.9, size: 25.0)
         self.addChild(state4)
         states[.forth] = state4
     }

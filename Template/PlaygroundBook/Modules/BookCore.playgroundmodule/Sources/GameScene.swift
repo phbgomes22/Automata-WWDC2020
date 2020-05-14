@@ -130,10 +130,8 @@ public class GameScene: SKScene {
     }
     
     public func setupBoard() {
-        DispatchQueue.main.asyncAfter(deadline: .now()) {
-            self.setupStates()
-            self.setupLines()
-        }
+        self.setupStates()
+        self.setupLines()
     }
     
     public func setupStates() {
