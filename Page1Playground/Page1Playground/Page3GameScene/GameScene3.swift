@@ -35,6 +35,7 @@ public class GameScene3: SKScene {
         
         self.ballBase()
         self.setupBall()
+        self.setHoles() 
     }
     
     public func setupBall() {
@@ -80,10 +81,41 @@ public class GameScene3: SKScene {
         self.addChild(ball)
         ball.run(repeatForever)
         
-        
         ball.run(SKAction.repeatForever(sequenceMoving), withKey: "horizontalMove")
         
+    }
+    
+    public func setHoles() {
+        let holeNode1 = FSMState(
+                            side: 40,
+                            position: CGPoint.zero,
+                            name: "holeNode1",
+                            style: .page3)
+        holeNode1.zPosition = -3
+        holeNode1.position = CGPoint(x: -70, y: -50 + deltaY)
+        self.addChild(holeNode1)
         
+        let holeNode2 = FSMState(
+                            side: 50,
+                            position: CGPoint.zero,
+                            name: "holeNode2",
+                            style: .page3)
+        holeNode2.zPosition = -3
+        holeNode2.position = CGPoint(x: 120, y: 110 + deltaY)
+        self.addChild(holeNode2)
+        
+        
+        let holeNode3 = FSMState(
+                            side: 80,
+                            position: CGPoint.zero,
+                            name: "holeNode2",
+                            style: .page3)
+        holeNode3.zPosition = -4
+        holeNode3.position = CGPoint(x: -80.0, y: 60.0 + deltaY)
+        self.addChild(holeNode3)
+        
+        holeNode1.rotate(center: CGPoint(x: 80.0 , y: 40.0))
+        holeNode2.rotate(center: CGPoint(x: -30.0, y: -20.0))
     }
     
     public func ballBase() {
@@ -157,11 +189,11 @@ public class GameScene3: SKScene {
     
     public func setupBackground() {
         let backgroundSprite = SKSpriteNode()
-        backgroundSprite.texture = SKTexture(imageNamed: "t1.jpg")
-        backgroundSprite.alpha = 0.25
+        backgroundSprite.texture = SKTexture(imageNamed: "bk.jpg")
         backgroundSprite.colorBlendFactor = 1
-        backgroundSprite.size = CGSize(width: 1400*1.5, height: 980*1.5)
-        backgroundSprite.position = CGPoint(x: 0.0, y: -100.0)
+        backgroundSprite.color = UIColor(hexString: "#E4DED3").withAlphaComponent(0.35)
+        backgroundSprite.size = CGSize(width: 1400*1.0, height: 880*1.0)
+        backgroundSprite.position = CGPoint(x: 0.0, y: 0.0)
         backgroundSprite.zPosition = -100
         backgroundSprite.name = "background"
         self.addChild(backgroundSprite)
@@ -188,47 +220,51 @@ public class GameScene3: SKScene {
     public func setupTopStates() {
         
         let spacingX: CGFloat = 50.0
-        let yPos: CGFloat = 280.0
+        let yPos: CGFloat = 300.0
         
         let state1 = FSMState(
-                        side: 55,
+                        side: 50,
                         position: CGPoint(x: -3*spacingX, y: yPos + deltaY),
                         name: "state1",
                         style: .page1)
         self.addChild(state1)
-        state1.setOutput(text: "I", labelPos: CGPoint(x: -35, y: -48), rotate: 0.0, size: 20)
+        state1.setOutput(text: "I", labelPos: CGPoint(x: -32, y: -45), rotate: 0.0, size: 20)
+        state1.holder.lineWidth = 2.0
         states.append(state1)
         
         let state2 = FSMState(
-                        side: 55,
+                        side: 50,
                         position: CGPoint(x: -1*spacingX, y: yPos + deltaY),
                         name: "state2",
                         style: .page1)
         self.addChild(state2)
-        state2.setOutput(text: "II", labelPos: CGPoint(x: -35, y: -48), rotate: 0.0, size: 20)
+        state2.setOutput(text: "II", labelPos: CGPoint(x: -32, y: -45), rotate: 0.0, size: 20)
+        state2.holder.lineWidth = 2.0
         state2.alpha = 0.25
         states.append(state2)
         
         let state3 = FSMState(
-                        side: 55,
+                        side: 50,
                         position: CGPoint(x: 1*spacingX, y: yPos + deltaY),
                         name: "state3",
                         style: .page1)
                
         self.addChild(state3)
-        state3.setOutput(text: "III", labelPos: CGPoint(x: -35, y: -48), rotate: 0.0, size: 20)
+        state3.setOutput(text: "III", labelPos: CGPoint(x: -32, y: -45), rotate: 0.0, size: 20)
+        state3.holder.lineWidth = 2.0
         state3.alpha = 0.25
         states.append(state3)
         
         
         let state4 = FSMState(
-                        side: 55,
+                        side: 50,
                         position: CGPoint(x: 3*spacingX, y: yPos + deltaY),
                         name: "state4",
                         style: .page1)
                
         self.addChild(state4)
-        state4.setOutput(text: "🏆", labelPos: CGPoint(x: -35, y: -48), rotate: 0.0, size: 20)
+        state4.setOutput(text: "🏆", labelPos: CGPoint(x: -32, y: -45), rotate: 0.0, size: 20)
+        state4.holder.lineWidth = 2.0
         state4.alpha = 0.25
         states.append(state4)
     }
@@ -321,8 +357,11 @@ public class GameScene3: SKScene {
         ball.removeAllActions()
         ball.run(SKAction.group([moveAction, scaleDown])) {[weak self ] in
             self?.ball.removeFromParent()
-            self?.setupBall()
-            
+            DispatchQueue.main.async {
+                self?.setupBall()
+                self?.passPhase()
+                
+            }
         }
         dirArrow.removeFromParent()
     }
