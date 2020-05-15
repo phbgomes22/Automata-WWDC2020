@@ -35,7 +35,9 @@ public class GameScene3: SKScene {
         
         self.ballBase()
         self.setupBall()
-        self.setHoles() 
+        self.setHoles()
+        self.view?.showsFields = true
+        self.physicsWorld.contactDelegate = self
     }
     
     public func setupBall() {
@@ -80,8 +82,16 @@ public class GameScene3: SKScene {
         
         self.addChild(ball)
         ball.run(repeatForever)
-        
+        ball.name = "ball"
         ball.run(SKAction.repeatForever(sequenceMoving), withKey: "horizontalMove")
+        
+        
+        ball.physicsBody = SKPhysicsBody(circleOfRadius: radius)
+        ball.physicsBody?.categoryBitMask = 0
+        ball.physicsBody?.contactTestBitMask = 1
+        ball.physicsBody?.collisionBitMask = 1
+        ball.physicsBody?.affectedByGravity = false
+        ball.physicsBody?.fieldBitMask = 1
         
     }
     
@@ -93,6 +103,7 @@ public class GameScene3: SKScene {
                             style: .page3)
         holeNode1.zPosition = -3
         holeNode1.position = CGPoint(x: -70, y: -50 + deltaY)
+        holeNode1.setPhysicsBody(forceField: true)
         self.addChild(holeNode1)
         
         let holeNode2 = FSMState(
@@ -102,6 +113,7 @@ public class GameScene3: SKScene {
                             style: .page3)
         holeNode2.zPosition = -3
         holeNode2.position = CGPoint(x: 120, y: 110 + deltaY)
+        holeNode2.setPhysicsBody(forceField: true)
         self.addChild(holeNode2)
         
         
@@ -112,6 +124,7 @@ public class GameScene3: SKScene {
                             style: .page3)
         holeNode3.zPosition = -4
         holeNode3.position = CGPoint(x: -80.0, y: 60.0 + deltaY)
+        holeNode3.setPhysicsBody(forceField: true)
         self.addChild(holeNode3)
         
         holeNode1.rotate(center: CGPoint(x: 80.0 , y: 40.0))
@@ -124,7 +137,6 @@ public class GameScene3: SKScene {
         shapeNode.fillColor = UIColor.white.withAlphaComponent(0.3)
         shapeNode.position = CGPoint(x: -width/2.0, y: -220 - 20)
         self.addChild(shapeNode)
-        
     }
     
     public func fireworks() {
@@ -350,16 +362,19 @@ public class GameScene3: SKScene {
         }
         
         let endPoint = CGPoint(x: 0, y: 180)
-      
+        let dx = -ball.position.x/5.0
+        let dy: CGFloat = 200.0
+        print(dx)
+        print(dy)
         
-        let moveAction = SKAction.move(to: endPoint, duration: 0.7)
+        let moveAction = SKAction.applyForce(CGVector(dx: dx, dy: dy), duration: 0.1)
         let scaleDown = SKAction.scale(by: 0.5, duration: 0.7)
         ball.removeAllActions()
         ball.run(SKAction.group([moveAction, scaleDown])) {[weak self ] in
             self?.ball.removeFromParent()
             DispatchQueue.main.async {
                 self?.setupBall()
-                self?.passPhase()
+                //self?.passPhase()
                 
             }
         }
@@ -376,5 +391,40 @@ public class GameScene3: SKScene {
         
         
     }
+}
+
+extension GameScene3: SKPhysicsContactDelegate {
+    
+    public func orderNodes(nodeA: SKNode, nodeB: SKNode) -> (first: SKNode, second: SKNode){
+        if(nodeA.physicsBody!.categoryBitMask < nodeB.physicsBody!.categoryBitMask){
+            return (first: nodeA, second: nodeB)
+        }
+        return (first: nodeB, second: nodeA)
+    }
+    
+    public func didBegin(_ contact: SKPhysicsContact) {
+        
+        guard let nA = contact.bodyA.node, var nameA = nA.name else {return}
+        guard let nB = contact.bodyB.node, var nameB = nB.name else {return}
+        
+        let nodes = orderNodes(nodeA: nA, nodeB: nB)
+        let nodeA = nodes.first
+        let nodeB = nodes.second
+        nameA = nodeA.name!
+        nameB = nodeB.name!
+        
+        if let ball = nodeA as? SKShapeNode {
+            ball.removeAllActions()
+            let action = SKAction.scale(by: 0.0, duration: 0.35)
+            ball.run(action) {
+                ball.removeFromParent()
+                self.setupBall()
+            }
+            
+        }
+        print(nameA)
+        print(nameB)
+    }
+    
 }
 

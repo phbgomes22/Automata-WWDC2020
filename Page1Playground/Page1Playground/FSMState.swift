@@ -100,9 +100,28 @@ public class FSMState: SKShapeNode {
         path.addArc(withCenter: CGPoint(x: center.x, y: center.y), radius: self.radius*5, startAngle: 0.0, endAngle: .pi, clockwise: true)
         path.addArc(withCenter: CGPoint(x: center.x, y: center.y), radius: self.radius*5, startAngle: .pi, endAngle: 0.0, clockwise: true)
         
-        let movement = SKAction.follow(path.cgPath, asOffset: false, orientToPath: false, speed: 100.0)
+        let movement = SKAction.follow(path.cgPath, asOffset: false, orientToPath: false, speed: self.radius*6)
                
         self.run(.repeatForever(movement))
+    }
+    
+    
+    public func setPhysicsBody(forceField: Bool) {
+        self.physicsBody = SKPhysicsBody(circleOfRadius: self.radius)
+        self.physicsBody?.categoryBitMask = 1
+        self.physicsBody?.contactTestBitMask = 0
+        self.physicsBody?.collisionBitMask = 0
+        self.physicsBody?.affectedByGravity = false
+        self.physicsBody?.fieldBitMask = 0
+        
+        if(forceField) {
+            let forceField = SKFieldNode.radialGravityField()
+            forceField.categoryBitMask = 1
+            forceField.strength = Float(self.radius*2.0)
+            forceField.region = SKRegion(radius: Float(1.5*self.radius))
+            forceField.falloff = 0.0
+            self.addChild(forceField)
+        }
     }
     
     private func setHolder() {
