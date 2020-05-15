@@ -28,6 +28,7 @@ public class GameScene3: SKScene {
     override public func didMove(to view: SKView) {
         
         self.backgroundColor = UIColor(hexString: "#E4DED3")
+        self.prepareSound()
         self.setParticles()
         self.setupBoard()
         //self.setSound()
@@ -38,6 +39,18 @@ public class GameScene3: SKScene {
         self.setHoles()
        // self.view?.showsFields = true
         self.physicsWorld.contactDelegate = self
+        
+    }
+    
+    // ADD THIS TO OTHERS TOO
+    public func prepareSound() {
+
+        let audio = SKAudioNode(fileNamed: "7b-a1")
+        audio.autoplayLooped = false
+        self.addChild(audio)
+        audio.run(SKAction.changeVolume(to: 0.0, duration: 0.0)) {
+            audio.removeFromParent()
+        }
     }
     
     public func setupBall() {
