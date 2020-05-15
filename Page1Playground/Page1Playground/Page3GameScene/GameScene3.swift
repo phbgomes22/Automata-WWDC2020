@@ -25,6 +25,8 @@ public class GameScene3: SKScene {
     public var ball: SKShapeNode!
     public var dirArrow: FSMLine!
     
+    private var ballPath: CGPath!
+    
     override public func didMove(to view: SKView) {
         
         self.backgroundColor = UIColor(hexString: "#E4DED3")
@@ -33,7 +35,7 @@ public class GameScene3: SKScene {
         self.setupBoard()
         //self.setSound()
         self.setupBackground()
-        
+        self.setEndNode()
         self.ballBase()
         self.setupBall()
         self.setHoles()
@@ -52,61 +54,7 @@ public class GameScene3: SKScene {
             audio.removeFromParent()
         }
     }
-    
-    public func setupBall() {
-        
-        // arrow direction
-        
-        dirArrow = FSMLine(
-            from: CGPoint(x: 0.0, y: 0),
-            to: CGPoint(x: 0.0, y: 80.0),
-            headSize: 10.0,  name: "lineDir",
-            style: .page1)
-        dirArrow.body.strokeColor = UIColor.red.withAlphaComponent(0.03)
-        dirArrow.body.fillColor = UIColor.red.withAlphaComponent(0.20)
-        dirArrow.position = CGPoint(x: 0.0, y: -220.0)
-        self.addChild(dirArrow)
-        
-        
-        let durationMove: Double = 1.2
-        let moveAction = SKAction.moveTo(x: -80.0, duration: durationMove)
-        let moveActionLeft = SKAction.moveTo(x: 80.0, duration: 2*durationMove)
-        let moveActionZero = SKAction.moveTo(x: 0.0, duration: durationMove)
-        
-        let rotate = SKAction.rotate(toAngle: -.pi/9, duration: durationMove)
-        let rotateBack = SKAction.rotate(toAngle: .pi/9, duration: 2*durationMove)
-        let rotateZero = SKAction.rotate(toAngle: 0.0, duration: durationMove)
-        
-        let sequenceRotating = SKAction.sequence([rotate, rotateBack, rotateZero])
-        let sequenceMoving = SKAction.sequence([moveAction, moveActionLeft, moveActionZero])
-        dirArrow.anchorPoint = CGPoint(x: 0.5, y: 2.0)
-        dirArrow.run(.repeatForever(.group([sequenceMoving, sequenceRotating])))
-        
-        
-        // ball
-        
-        let radius: CGFloat = 14.0
-        ball = SKShapeNode(circleOfRadius: radius)
-        ball.position = CGPoint(x: 0.0, y:  -220.0)
-        ball.fillColor = UIColor.orange
-        ball.strokeColor = UIColor.clear
-        let scaleBall = SKAction.scale(by: 1.1, duration: 0.6)
-        let repeatForever = SKAction.repeatForever(.sequence([scaleBall, scaleBall.reversed()]))
-        
-        self.addChild(ball)
-        ball.run(repeatForever)
-        ball.name = "ball"
-        ball.run(SKAction.repeatForever(sequenceMoving), withKey: "horizontalMove")
-        
-        
-        ball.physicsBody = SKPhysicsBody(circleOfRadius: radius)
-        ball.physicsBody?.categoryBitMask = 0
-        ball.physicsBody?.contactTestBitMask = 1 | 2
-        ball.physicsBody?.collisionBitMask = 1 | 2
-        ball.physicsBody?.affectedByGravity = false
-        ball.physicsBody?.fieldBitMask = 1
-        
-    }
+ 
     
     public func setHoles() {
         let holeNode1 = FSMState(
@@ -131,12 +79,12 @@ public class GameScene3: SKScene {
         
         
         let holeNode3 = FSMState(
-                            side: 80,
+                            side: 40,
                             position: CGPoint.zero,
                             name: "holeNode2",
                             style: .page3)
         holeNode3.zPosition = -4
-        holeNode3.position = CGPoint(x: -80.0, y: 60.0 + deltaY)
+        holeNode3.position = CGPoint(x: -100.0, y: 60.0 + deltaY)
         holeNode3.setPhysicsBody(forceField: true)
         self.addChild(holeNode3)
         
@@ -145,24 +93,109 @@ public class GameScene3: SKScene {
     }
     
     public func ballBase() {
-        let width: CGFloat = 200.0
-        let shapeNode = SKShapeNode(rect: CGRect(x: 0.0, y: 0.0, width: width, height: 40.0), cornerRadius: 20.0)
-        shapeNode.fillColor = UIColor.white.withAlphaComponent(0.3)
-        shapeNode.position = CGPoint(x: -width/2.0, y: -220 - 20)
+        let size: CGFloat = 250.0*2
+        
+        let bezierPath = UIBezierPath(ovalIn: CGRect(x: -size/2.0, y: -size/2, width: size, height: size))
+        bezierPath.apply(CGAffineTransform.init(rotationAngle: -.pi/2.0))
+        let pattern : [CGFloat] = [5.0, 20.0]
+        let dashedPath = bezierPath.cgPath.copy(dashingWithPhase: 5.0, lengths: pattern)
+ 
+        self.ballPath = bezierPath.cgPath
+        
+        let shapeNode = SKShapeNode(path: dashedPath)
+        shapeNode.strokeColor = UIColor.white.withAlphaComponent(0.3)
+        shapeNode.position = CGPoint(x: 0.0, y: 0.0)
+        shapeNode.lineWidth = 3.0
         self.addChild(shapeNode)
         
-        let endNode = SKShapeNode(circleOfRadius: 40.0)
-        endNode.fillColor = .white
-        endNode.position = CGPoint(x: 0, y: 180)
+    }
+    
+    
+    public func setupBall() {
+        
+        // ball
+        
+        let radius: CGFloat = 14.0
+        ball = SKShapeNode(circleOfRadius: radius)
+        ball.position = CGPoint(x: 0.0, y:  -220.0)
+        ball.fillColor = UIColor.white
+        ball.strokeColor = UIColor.lightGray.withAlphaComponent(0.15)
+        ball.lineWidth = 4
+        let scaleBall = SKAction.scale(by: 1.1, duration: 0.6)
+        let repeatForever = SKAction.repeatForever(.sequence([scaleBall, scaleBall.reversed()]))
+        ball.name = "ball"
+        
+        self.addChild(ball)
+        //  ball.run(repeatForever)
+        
+        
+        let durationMove: Double = 10.0
+        
+        // let sequenceRotating = SKAction.sequence([rotate, rotateBack, rotateZero])
+        //let sequenceMoving = SKAction.sequence([moveAction, moveActionLeft, moveActionZero])
+        let move = SKAction.follow(self.ballPath, asOffset: false, orientToPath: true, duration: durationMove)
+        
+        ball.physicsBody = SKPhysicsBody(circleOfRadius: radius)
+        ball.physicsBody?.categoryBitMask = 0
+        ball.physicsBody?.contactTestBitMask = 1 | 2
+        ball.physicsBody?.collisionBitMask = 1 | 2
+        ball.physicsBody?.affectedByGravity = false
+        ball.physicsBody?.fieldBitMask = 1
+        
+        // arrow direction
+        dirArrow = FSMLine(
+            from: CGPoint(x: 0.0, y: 0),
+            to: CGPoint(x: -80.0, y: 0),
+            headSize: 10.0,  name: "lineDir",
+            style: .page1)
+        dirArrow.body.strokeColor = UIColor.white.withAlphaComponent(0.1)
+        dirArrow.body.fillColor = UIColor.white.withAlphaComponent(0.30)
+        dirArrow.position = CGPoint(x: 0.0, y: 0.0)
+        dirArrow.glowBody.fillColor = UIColor.white.withAlphaComponent(0.1)
+        dirArrow.glowBody.strokeColor = UIColor.white.withAlphaComponent(0.1)
+        dirArrow.alpha = 0.0
+        dirArrow.zPosition = -1
+        ball.addChild(dirArrow)
+        
+        dirArrow.run(SKAction.sequence([.wait(forDuration: 0.3), .fadeIn(withDuration: 0.3)]))
+        
+        
+        ball.run(SKAction.repeatForever(move), withKey: "horizontalMove")
+        
+    }
+    
+    public func setEndNode() {
+        var endNodeSize: CGFloat = 40.0
+        
+        let bezierPath = UIBezierPath(ovalIn: CGRect(x: -endNodeSize/2.0, y: -endNodeSize/2.0, width: endNodeSize, height: endNodeSize))
+        
+        var endNodeSize2: CGFloat = endNodeSize + endNodeSize/5.0
+        let bezierPath2 = UIBezierPath(ovalIn: CGRect(x: -endNodeSize2/2.0, y: -endNodeSize2/2.0, width: endNodeSize2, height: endNodeSize2))
+
+        let underEndNode = SKShapeNode(path: bezierPath2.cgPath)
+        underEndNode.fillColor = UIColor.gray.withAlphaComponent(0.2)
+        underEndNode.strokeColor = UIColor.clear
+        underEndNode.position = CGPoint(x: 0.0, y: 00.0)
+        self.addChild(underEndNode)
+        
+        let endNode = SKShapeNode(path: bezierPath.cgPath)
+        endNode.fillColor = UIColor.white
+        endNode.strokeColor = UIColor.lightGray.withAlphaComponent(0.2)
+        endNode.lineWidth = 6
+        endNode.position = CGPoint(x: 0.0, y: 00.0)
         endNode.name = "endNode"
         self.addChild(endNode)
         
-        endNode.physicsBody = SKPhysicsBody(circleOfRadius: 40.0)
+        
+//        dashed.position = CGPoint(x: 0.0, y: 00.0)
+//        self.addChild(dashed)
+        
+        endNode.physicsBody = SKPhysicsBody(circleOfRadius: endNodeSize/2.5)
         endNode.physicsBody?.categoryBitMask = 2
         endNode.physicsBody?.contactTestBitMask = 0
         endNode.physicsBody?.collisionBitMask = 0
         endNode.physicsBody?.affectedByGravity = false
-        
+        endNode.physicsBody?.fieldBitMask = 0
     }
     
     public func fireworks() {
@@ -387,9 +420,8 @@ public class GameScene3: SKScene {
             isFirstTap = false
         }
         
-        let endPoint = CGPoint(x: 0, y: 180)
-        let dx = -ball.position.x/5.0
-        let dy: CGFloat = 200.0
+        let dx = -(ball.position.x - 0.0)
+        let dy = -(ball.position.y - 20.0)
         print(dx)
         print(dy)
         
@@ -438,25 +470,27 @@ extension GameScene3: SKPhysicsContactDelegate {
         nameB = nodeB.name!
         
         if nameA == "ball" {
+            print("A")
             if nameB == "endNode" {
                 passPhase()
-                nodeA.removeAllActions()
-                nodeA.removeFromParent()
-                self.setupBall()
-            } else {
-                nodeA.removeAllActions()
-                let action = SKAction.scale(by: 0.0, duration: 0.35)
-                nodeA.run(action) {
-                    nodeA.removeFromParent()
-                    self.setupBall()
-                }
             }
         } else if nameA == "endNode" {
+            print("B")
             passPhase()
-            nodeB.removeAllActions()
-            nodeB.removeFromParent()
-            self.setupBall()
+        } else if nameA.hasPrefix("hole") {
+            print("C")
+            
         }
+        self.ball.physicsBody = nil
+        self.ball.removeAllActions()
+        
+        let action = SKAction.scale(by: 0.0, duration: 0.35)
+        
+        self.ball.run(action) {[weak self] in
+            self?.ball.removeFromParent()
+            self?.setupBall()
+        }
+           
         print(nameA)
         print(nameB)
     }
