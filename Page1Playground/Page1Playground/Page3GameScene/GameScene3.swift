@@ -36,7 +36,7 @@ public class GameScene3: SKScene {
         self.ballBase()
         self.setupBall()
         self.setHoles()
-        self.view?.showsFields = true
+       // self.view?.showsFields = true
         self.physicsWorld.contactDelegate = self
     }
     
@@ -88,8 +88,8 @@ public class GameScene3: SKScene {
         
         ball.physicsBody = SKPhysicsBody(circleOfRadius: radius)
         ball.physicsBody?.categoryBitMask = 0
-        ball.physicsBody?.contactTestBitMask = 1
-        ball.physicsBody?.collisionBitMask = 1
+        ball.physicsBody?.contactTestBitMask = 1 | 2
+        ball.physicsBody?.collisionBitMask = 1 | 2
         ball.physicsBody?.affectedByGravity = false
         ball.physicsBody?.fieldBitMask = 1
         
@@ -127,8 +127,8 @@ public class GameScene3: SKScene {
         holeNode3.setPhysicsBody(forceField: true)
         self.addChild(holeNode3)
         
-        holeNode1.rotate(center: CGPoint(x: 80.0 , y: 40.0))
-        holeNode2.rotate(center: CGPoint(x: -30.0, y: -20.0))
+        holeNode1.rotate(center: CGPoint(x: 80.0 , y: 40.0), clockwise: true)
+        holeNode2.rotate(center: CGPoint(x: -30.0, y: -20.0), clockwise: false)
     }
     
     public func ballBase() {
@@ -137,6 +137,19 @@ public class GameScene3: SKScene {
         shapeNode.fillColor = UIColor.white.withAlphaComponent(0.3)
         shapeNode.position = CGPoint(x: -width/2.0, y: -220 - 20)
         self.addChild(shapeNode)
+        
+        let endNode = SKShapeNode(circleOfRadius: 40.0)
+        endNode.fillColor = .white
+        endNode.position = CGPoint(x: 0, y: 180)
+        endNode.name = "endNode"
+        self.addChild(endNode)
+        
+        endNode.physicsBody = SKPhysicsBody(circleOfRadius: 40.0)
+        endNode.physicsBody?.categoryBitMask = 2
+        endNode.physicsBody?.contactTestBitMask = 0
+        endNode.physicsBody?.collisionBitMask = 0
+        endNode.physicsBody?.affectedByGravity = false
+        
     }
     
     public func fireworks() {
@@ -374,8 +387,6 @@ public class GameScene3: SKScene {
             self?.ball.removeFromParent()
             DispatchQueue.main.async {
                 self?.setupBall()
-                //self?.passPhase()
-                
             }
         }
         dirArrow.removeFromParent()
@@ -413,14 +424,25 @@ extension GameScene3: SKPhysicsContactDelegate {
         nameA = nodeA.name!
         nameB = nodeB.name!
         
-        if let ball = nodeA as? SKShapeNode {
-            ball.removeAllActions()
-            let action = SKAction.scale(by: 0.0, duration: 0.35)
-            ball.run(action) {
-                ball.removeFromParent()
+        if nameA == "ball" {
+            if nameB == "endNode" {
+                passPhase()
+                nodeA.removeAllActions()
+                nodeA.removeFromParent()
                 self.setupBall()
+            } else {
+                nodeA.removeAllActions()
+                let action = SKAction.scale(by: 0.0, duration: 0.35)
+                nodeA.run(action) {
+                    nodeA.removeFromParent()
+                    self.setupBall()
+                }
             }
-            
+        } else if nameA == "endNode" {
+            passPhase()
+            nodeB.removeAllActions()
+            nodeB.removeFromParent()
+            self.setupBall()
         }
         print(nameA)
         print(nameB)

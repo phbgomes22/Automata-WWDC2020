@@ -95,10 +95,10 @@ public class FSMState: SKShapeNode {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func rotate(center: CGPoint) {
+    public func rotate(center: CGPoint, clockwise: Bool) {
         let path = UIBezierPath()
-        path.addArc(withCenter: CGPoint(x: center.x, y: center.y), radius: self.radius*5, startAngle: 0.0, endAngle: .pi, clockwise: true)
-        path.addArc(withCenter: CGPoint(x: center.x, y: center.y), radius: self.radius*5, startAngle: .pi, endAngle: 0.0, clockwise: true)
+        path.addArc(withCenter: CGPoint(x: center.x, y: center.y), radius: self.radius*5, startAngle: 0.0, endAngle: .pi, clockwise: clockwise)
+        path.addArc(withCenter: CGPoint(x: center.x, y: center.y), radius: self.radius*5, startAngle: .pi, endAngle: 0.0, clockwise: clockwise)
         
         let movement = SKAction.follow(path.cgPath, asOffset: false, orientToPath: false, speed: self.radius*6)
                
