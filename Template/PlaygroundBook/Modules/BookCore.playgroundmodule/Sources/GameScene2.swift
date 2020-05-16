@@ -468,14 +468,15 @@ public class GameScene2: SKScene {
                 }
                 nextState = states[rm]!
                 print(rm)
+                
+                
+                currentState = rm
                 // check if the touched state is the right state
                 if(nextState?.name != state.name) {
                     isGameLost = true
                     endGame()
                     return
                 }
-                
-                currentState = rm
                 
                 if currentMove == numberOfMoves {
                     self.endGame()
