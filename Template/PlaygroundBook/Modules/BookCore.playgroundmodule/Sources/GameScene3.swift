@@ -61,10 +61,10 @@ public class GameScene3: SKScene {
         let block2 = SKAction.run {
             self.endNode.physicsBody = nil
         }
-        let fadeIn = SKAction.fadeIn(withDuration: 0.25)
-        let fadeOut = SKAction.fadeOut(withDuration: 0.25)
+        let fadeIn = SKAction.fadeIn(withDuration: 0.1)
+        let fadeOut = SKAction.fadeOut(withDuration: 0.1)
         
-        self.endNode.run(SKAction.repeatForever(.sequence([fadeIn, block, .wait(forDuration: 1.0), fadeOut, block2, .wait(forDuration: 1.0)])))
+        self.endNode.run(SKAction.repeatForever(.sequence([fadeIn, block, .wait(forDuration: 0.8), fadeOut, block2, .wait(forDuration: 0.8)])))
     }
     
     

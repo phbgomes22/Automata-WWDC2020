@@ -1,3 +1,4 @@
+//#-hidden-code
 import SpriteKit
 import PlaygroundSupport
 import UIKit
@@ -37,7 +38,7 @@ public func hideAim() {
     scene.isAimHidden = true
 }
 
-public isBlinking: Bool = false
+public var isBlinking: Bool = false
 
 public func blinkTarget() {
     if(!isBlinking) {
@@ -48,15 +49,41 @@ public func blinkTarget() {
 
 public func state2() {
     
-    // first user code will enter here!
-    circleFaster()
-    blinkTarget()
+//#-end-hidden-code
+/*:
+     Add things that will happen when we change from State 2 to State 3!
+*/
+// enter your code here!
+//#-code-completion(everything, hide)
+//#-code-completion(identifier, show, circleFaster(), launchSlower(), hideAim(), blinkTarget(), stopOrbs())
+//#-editable-code
+
+//#-end-editable-code
+
+/*:
+     Add things that will happen when we change from State 2 to State 3!
+*/
+//#-hidden-code
 }
 
 
-public func state3() {
-    // second user code will enter here!
+func state3() {
+    
+//#-end-hidden-code
+// enter your code here!
+//#-code-completion(everything, hide)
+//#-code-completion(identifier, show, circleFaster(), launchSlower(), hideAim(), blinkTarget(), stopOrbs())
+//#-editable-code
+
+//#-end-editable-code
+/*:
+
+     Run the code to see how our game evolves!
+     
+ */
+//#-hidden-code
 }
+
 
 scene.functionState2 = state2
 scene.functionState3 = state3
@@ -64,9 +91,7 @@ scene.functionState3 = state3
 
 sceneView.presentScene(scene)
 
-
-
-
 PlaygroundPage.current.liveView = sceneView
 
+//#-end-hidden-code
 
