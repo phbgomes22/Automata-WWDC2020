@@ -3,7 +3,7 @@
  # Welcome to State Machine 🤖!
  
  
- "**Finite State Machines**" (FSM) is a daunting name. But don't be misled by it. They are not , and very fun!
+ "**Finite State Machines**" (FSM) is a daunting name. But don't be misled by it. They are not that complicated, and are very fun to toy with!
  
  FSM are commonly used, and they model all sorts of behaviors.
  
