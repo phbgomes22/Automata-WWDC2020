@@ -1,20 +1,27 @@
 /*:
-__Cordel__ Literature is a traditional literary genre of Brazil. Its content is commonly written in __verses__ printed with __woodcut__ in small __leaflets__.
+
+ # Welcome to State Machine 🤖!
+ 
+ 
+ "**Finite State Machines**" (FSM) is a daunting name. But don't be misled by it. They are not , and very fun!
+ 
+ FSM are commonly used, and they model all sorts of behaviors.
+ 
+ Their __States__ are usually represented by circles. They can have output, that we will represent by the symbol on its side.
+ 
+ ![State](smallerState.png)
+ 
+Transition between states are triggered by a certain inputs, and are represented by __lines__. The input will be defined by an emoji, such as bellow.
+ 
+ ![Line](linePage1.png)
+ 
 
 
+ * Experiment:
+ Let's start! Try to use the FSM to writte the word "BANANA" 🍌🐵
+ 
 
-Welcome to the  **Cordel Roots**
-
-When you're hooked you can not stop
-
-Prepare your walking boots
-
-**Shake your iPad to drop!**
-
-
-
- - Experiment:  Drop a cordel During the __morning__ ☀️ or at __night__ 🌙 to see some of the most common genres of cordels that brazilians read to __shake__ off the bad mood. **Run the code** to start!
-
+ **First**, choose the state in which the FSM will start!
 */
 
 //#-hidden-code
@@ -28,8 +35,8 @@ import BookCore
 
 public var answer = ""
 
-public func add(element: String) {
-    answer += element
+public func add(input: String) {
+    answer += input
 }
 
 public var chosenState: String = ""
@@ -50,24 +57,28 @@ public var 🎱 = "🎱"
 
 //#-end-hidden-code
 
-/*:
-   Choose the state where you will start!
-*/
-
 //#-code-completion(everything, hide)
 //#-code-completion(identifier, show, A, B, N)
-startAt(state: /*#-editable-code State*//*#-end-editable-code*/)
+startAt(state: /*#-editable-code State*/A/*#-end-editable-code*/)
 //#-code-completion(identifier, hide, A, B, N)
 
 
 /*:
-    Add elements to the State Machine!
+ 
+**Now**, add the inputs to for the State Machine!
+ 
+
+ * Experiment:
+ Add the emojis using the `add(input:)` function!
  */
 
 //#-code-completion(everything, hide)
-//#-code-completion(identifier, show, add(element:))
+//#-code-completion(identifier, show, add(input:))
 //#-code-completion(identifier, show, 🎩, 🤖, 🐶, 🔥, 🎱)
 //#-editable-code
+// 🎩, 🐶, 🤖, 🔥, 🎱
+add(input: 🎱)
+add(input: 🔥)
 
 //#-end-editable-code
 
@@ -102,11 +113,11 @@ if let scene = GameScene(fileNamed: "GameScene") {
 
 PlaygroundPage.current.liveView = sceneView
 /*
-add(element: 🐶)
-add(element: 🎱)
-add(element: 🤖)
-add(element: 🎱)
-add(element: 🤖)
+add(input: 🐶)
+add(input: 🎱)
+add(input: 🤖)
+add(input: 🎱)
+add(input: 🤖)
  
 
  PlaygroundPage.current.assessmentStatus = .pass(message: " **Great!** When you're ready, go to the [**Next Page**](@next)!")
