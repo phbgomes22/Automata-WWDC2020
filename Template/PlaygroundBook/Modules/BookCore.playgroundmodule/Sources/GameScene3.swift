@@ -620,14 +620,12 @@ extension GameScene3: SKPhysicsContactDelegate {
                 self.ball.physicsBody = nil
                 passPhase()
             } else {
-                loseSound()
             }
         } else if nameA == "endNode" {
             self.ball.physicsBody = nil
             passPhase()
         } else if nameA.hasPrefix("hole") {
             print("C")
-            loseSound()
         }
        // self.ball.physicsBody = nil
         self.ball.physicsBody?.contactTestBitMask = 2

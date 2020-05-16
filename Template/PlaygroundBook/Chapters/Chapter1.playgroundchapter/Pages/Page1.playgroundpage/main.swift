@@ -3,7 +3,7 @@ __Cordel__ Literature is a traditional literary genre of Brazil. Its content is 
 
 
 
-Welcome to the 🌵 **Cordel Roots**
+Welcome to the  **Cordel Roots**
 
 When you're hooked you can not stop
 
