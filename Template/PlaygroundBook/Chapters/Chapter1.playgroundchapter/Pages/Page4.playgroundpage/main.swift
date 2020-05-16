@@ -6,8 +6,13 @@
  
  ### Game sounds
  
- - Sound effects obtained from freesound user  [menegass](https://freesound.org/people/menegass/)
+ - Sound effect obtained from freesound user  [menegass](https://freesound.org/people/menegass/)
  
+ - Sound effect obtained from freesound user  [original_sound](https://freesound.org/people/original_sound/sounds/366102/)
+ 
+ - Sound effect obtained from freesound user  [GameAudio](https://freesound.org/people/GameAudio/sounds/220174/)
+ 
+
  ### Songs
  
  - Song by [Jeremy Korpas](https://www.youtube.com/channel/UCbRZuQ5ampehni5RYpJlYOw)
