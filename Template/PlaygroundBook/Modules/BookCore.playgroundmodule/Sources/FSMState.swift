@@ -13,11 +13,13 @@ import GameplayKit
 
 // MARK: - FSMState
 
+
 public class FSMState: SKShapeNode {
     
     public enum Style {
         case page1
         case page2
+        case page3
         case normal
     }
     
@@ -25,7 +27,6 @@ public class FSMState: SKShapeNode {
     
     private var label: SKLabelNode = SKLabelNode()
     public var radius: CGFloat = 0.0
-    private var glowBody: SKShapeNode = SKShapeNode()
     private var arrayColorsPG1: [UIColor] = [UIColor(hexString: "#511845"),
                                           UIColor(hexString: "#900c3f"),
                                           UIColor(hexString: "#c70039"),
@@ -36,7 +37,12 @@ public class FSMState: SKShapeNode {
                                           UIColor(hexString: "#dd6892"),
                                           UIColor(hexString: "#f9c6ba")]
     
-    private var holder: SKShapeNode = SKShapeNode()
+    private var arrayColorsPG3: [UIColor] = [UIColor(hexString: "#211c76"),
+                                             UIColor(hexString: "#210c66"),
+                                             UIColor(hexString: "#110046"),
+                                             UIColor(hexString: "#010026")]
+    
+    public var holder: SKShapeNode = SKShapeNode()
     private var holderPos: CGPoint = .zero
     
     private var arcs: [SKShapeNode] = []
@@ -54,6 +60,7 @@ public class FSMState: SKShapeNode {
     
     private func setup(side: CGFloat) {
         
+        var mult: CGFloat = 1.0
         var count: CGFloat = 0.0
         var arrayColors: [UIColor] = []
         switch self.style {
@@ -64,13 +71,19 @@ public class FSMState: SKShapeNode {
             self.alpha = 0.7
         case .page2:
             arrayColors = arrayColorsPG2
+        case .page3:
+            arrayColors = arrayColorsPG3
+            mult = 0.3
         }
         for retroColor in arrayColors {
             self.setDraw(color: retroColor, side: side - count, position: position)
-            count += side/CGFloat(arrayColors.count)
+            count += side*mult/CGFloat(arrayColors.count)
+        }
+        if self.style == .page3 {
+            self.setGlow(size: side/5, color: arrayColorsPG3[0], at: self.arcs[0].path!)
+            self.setGlow(size: side/4.5, color: arrayColorsPG3[3], at: self.arcs[3].path!)
         }
         
-        self.setGlow()
     }
     
     public override init() {
@@ -80,6 +93,41 @@ public class FSMState: SKShapeNode {
     
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    public func rotate(center: CGPoint, clockwise: Bool, angleStart: CGFloat = 0.0, speed: CGFloat) {
+        let path = UIBezierPath()
+        
+        let dx = self.position.x - center.x
+        let dy = self.position.y - center.y
+        let radius = sqrt(dx*dx + dy*dy)
+        
+        path.addArc(withCenter: CGPoint(x: center.x, y: center.y), radius: radius, startAngle: 0.0, endAngle: .pi, clockwise: clockwise)
+        path.addArc(withCenter: CGPoint(x: center.x, y: center.y), radius: radius, startAngle: .pi, endAngle: 0.0, clockwise: clockwise)
+        
+        path.apply(CGAffineTransform(rotationAngle: angleStart))
+        let movement = SKAction.follow(path.cgPath, asOffset: false, orientToPath: false, speed: radius*1)
+               
+        self.run(.repeatForever(movement))
+    }
+    
+    
+    public func setPhysicsBody(forceField: Bool) {
+        self.physicsBody = SKPhysicsBody(circleOfRadius: self.radius)
+        self.physicsBody?.categoryBitMask = 1
+        self.physicsBody?.contactTestBitMask = 0
+        self.physicsBody?.collisionBitMask = 0
+        self.physicsBody?.affectedByGravity = false
+        self.physicsBody?.fieldBitMask = 0
+        
+        if(forceField) {
+            let forceField = SKFieldNode.springField()
+            forceField.categoryBitMask = 1
+            forceField.strength = 5
+            forceField.region = SKRegion(radius: Float(1.5*self.radius))
+            forceField.falloff = -1.0
+            self.addChild(forceField)
+        }
     }
     
     private func setHolder() {
@@ -96,7 +144,7 @@ public class FSMState: SKShapeNode {
         holderPath.close()
         holder.path = holderPath.cgPath
         switch self.style {
-        case .page1, .page2:
+        case .page1, .page2, .page3:
             holder.strokeColor = UIColor(hexString: "#DFD8CD")
             holder.fillColor = UIColor.white
         case .normal:
@@ -148,12 +196,15 @@ public class FSMState: SKShapeNode {
     }
     
     
-    private func setGlow() {
-        self.glowBody.path = self.path
-        self.glowBody.strokeColor = UIColor(hexString: "#511845").withAlphaComponent(0.06)
-        self.glowBody.glowWidth = 7.0
-        self.glowBody.zPosition = -1
-        self.addChild(glowBody)
+    private func setGlow(size: CGFloat, color: UIColor, at path: CGPath) {
+
+        let glowBody: SKShapeNode = SKShapeNode()
+        
+        glowBody.path = path
+        glowBody.strokeColor = color.withAlphaComponent(0.8)
+        glowBody.glowWidth = size
+        glowBody.zPosition = -1
+        addChild(glowBody)
     }
 
     

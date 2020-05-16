@@ -95,12 +95,18 @@ public class FSMState: SKShapeNode {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func rotate(center: CGPoint, clockwise: Bool) {
+    public func rotate(center: CGPoint, clockwise: Bool, angleStart: CGFloat = 0.0, speed: CGFloat) {
         let path = UIBezierPath()
-        path.addArc(withCenter: CGPoint(x: center.x, y: center.y), radius: self.radius*5, startAngle: 0.0, endAngle: .pi, clockwise: clockwise)
-        path.addArc(withCenter: CGPoint(x: center.x, y: center.y), radius: self.radius*5, startAngle: .pi, endAngle: 0.0, clockwise: clockwise)
         
-        let movement = SKAction.follow(path.cgPath, asOffset: false, orientToPath: false, speed: self.radius*6)
+        let dx = self.position.x - center.x
+        let dy = self.position.y - center.y
+        let radius = sqrt(dx*dx + dy*dy)
+        
+        path.addArc(withCenter: CGPoint(x: center.x, y: center.y), radius: radius, startAngle: 0.0, endAngle: .pi, clockwise: clockwise)
+        path.addArc(withCenter: CGPoint(x: center.x, y: center.y), radius: radius, startAngle: .pi, endAngle: 0.0, clockwise: clockwise)
+        
+        path.apply(CGAffineTransform(rotationAngle: angleStart))
+        let movement = SKAction.follow(path.cgPath, asOffset: false, orientToPath: false, speed: radius*1)
                
         self.run(.repeatForever(movement))
     }
@@ -115,11 +121,11 @@ public class FSMState: SKShapeNode {
         self.physicsBody?.fieldBitMask = 0
         
         if(forceField) {
-            let forceField = SKFieldNode.radialGravityField()
+            let forceField = SKFieldNode.springField()
             forceField.categoryBitMask = 1
-            forceField.strength = Float(self.radius*2.0)
+            forceField.strength = 5
             forceField.region = SKRegion(radius: Float(1.5*self.radius))
-            forceField.falloff = 0.0
+            forceField.falloff = -1.0
             self.addChild(forceField)
         }
     }

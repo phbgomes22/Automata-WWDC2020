@@ -18,6 +18,7 @@ public class GameScene3: SKScene {
     
     public var states : [FSMState] = []
     public var lines : [FSMLine] = []
+    public var blackHoles : [FSMState] = []
     
     public var isFirstTap: Bool = true
     public var currentState: FSMLogic.StatesPG3 = FSMLogic.StatesPG3.first
@@ -26,6 +27,30 @@ public class GameScene3: SKScene {
     public var dirArrow: FSMLine!
     
     private var ballPath: CGPath!
+    
+    // MARK: - User Interaction
+    
+    var functionState2: (() -> Void)!
+    var functionState3: (() -> Void)!
+
+    // THIS WILL CHANGE
+    // reduce to make it faster
+    var durationBallMove: Double = 10.0
+    
+    // THIS WILL CHANGE
+    // reduce to make it slower
+    var speedBallMovement: CGFloat = 0.6
+    
+    public var blackHoleSpeed: CGFloat = 150.0
+    
+    public func printTeste1() {
+        print("A")
+    }
+    public func printTeste2() {
+        print("B")
+    }
+    
+    // MARK: - Functions
     
     override public func didMove(to view: SKView) {
         
@@ -39,9 +64,10 @@ public class GameScene3: SKScene {
         self.ballBase()
         self.setupBall()
         self.setHoles()
-       // self.view?.showsFields = true
         self.physicsWorld.contactDelegate = self
         
+        rotateCloserBlackHoles()
+      //  rotateFurtherBlackHoles()
     }
     
     // ADD THIS TO OTHERS TOO
@@ -63,9 +89,10 @@ public class GameScene3: SKScene {
                             name: "holeNode1",
                             style: .page3)
         holeNode1.zPosition = -3
-        holeNode1.position = CGPoint(x: -70, y: -50 + deltaY)
+        holeNode1.position = CGPoint(x: -50, y: 160 + deltaY)
         holeNode1.setPhysicsBody(forceField: true)
         self.addChild(holeNode1)
+        blackHoles.append(holeNode1)
         
         let holeNode2 = FSMState(
                             side: 50,
@@ -73,23 +100,97 @@ public class GameScene3: SKScene {
                             name: "holeNode2",
                             style: .page3)
         holeNode2.zPosition = -3
-        holeNode2.position = CGPoint(x: 120, y: 110 + deltaY)
+        holeNode2.position = CGPoint(x: 120, y: 0 + deltaY)
         holeNode2.setPhysicsBody(forceField: true)
         self.addChild(holeNode2)
-        
+        blackHoles.append(holeNode2)
         
         let holeNode3 = FSMState(
                             side: 40,
                             position: CGPoint.zero,
-                            name: "holeNode2",
+                            name: "holeNode3",
                             style: .page3)
         holeNode3.zPosition = -4
-        holeNode3.position = CGPoint(x: -100.0, y: 60.0 + deltaY)
+        holeNode3.position = CGPoint(x: -80.0, y: 60.0 + deltaY)
         holeNode3.setPhysicsBody(forceField: true)
         self.addChild(holeNode3)
+        blackHoles.append(holeNode3)
         
-        holeNode1.rotate(center: CGPoint(x: 80.0 , y: 40.0), clockwise: true)
-        holeNode2.rotate(center: CGPoint(x: -30.0, y: -20.0), clockwise: false)
+        let holeNode4 = FSMState(
+                            side: 45,
+                            position: CGPoint.zero,
+                            name: "holeNode4",
+                            style: .page3)
+        holeNode4.zPosition = -4
+        holeNode4.position = CGPoint(x: 50.0, y: 100.0 + deltaY)
+        holeNode4.setPhysicsBody(forceField: true)
+        self.addChild(holeNode4)
+        blackHoles.append(holeNode4)
+        
+        let holeNode5 = FSMState(
+                            side: 50,
+                            position: CGPoint.zero,
+                            name: "holeNode5",
+                            style: .page3)
+        holeNode5.zPosition = -4
+        holeNode5.position = CGPoint(x: 0.0, y: -20.0 + deltaY)
+        holeNode5.setPhysicsBody(forceField: true)
+        self.addChild(holeNode5)
+        blackHoles.append(holeNode5)
+        
+        
+        let holeNode6 = FSMState(
+                            side: 50,
+                            position: CGPoint.zero,
+                            name: "holeNode6",
+                            style: .page3)
+        holeNode6.zPosition = -4
+        holeNode6.position = CGPoint(x: -90.0, y: -70.0 + deltaY)
+        holeNode6.setPhysicsBody(forceField: true)
+        self.addChild(holeNode6)
+        blackHoles.append(holeNode6)
+        
+    }
+    
+    public func rotateFurtherBlackHoles() {
+        blackHoles[0].rotate(
+            center: CGPoint(x: -10.0 , y: 0.0),
+            clockwise: true,
+            angleStart: .pi/3,
+            speed: blackHoleSpeed*3)
+        
+        blackHoles[1].rotate(
+            center: CGPoint(x: -10.0, y: 0.0),
+            clockwise: true,
+            angleStart: -.pi/3,
+            speed: blackHoleSpeed*3)
+            
+        blackHoles[5].rotate(
+            center: CGPoint(x: -10.0, y: 0.0),
+            clockwise: true,
+            angleStart: .pi*1.1,
+            speed: blackHoleSpeed*3)
+    }
+    
+    public func rotateCloserBlackHoles() {
+        
+        blackHoles[2].rotate(
+            center: CGPoint(x: 0.0, y: 0.0),
+            clockwise: false,
+            angleStart: .pi/3,
+            speed: blackHoleSpeed*0.7)
+        
+        blackHoles[3].rotate(
+            center: CGPoint(x: 0.0, y: 0.0),
+            clockwise: false,
+            angleStart: -.pi/3,
+            speed: blackHoleSpeed*0.7)
+      
+        blackHoles[4].rotate(
+            center: CGPoint(x: 0.0, y: 0.0),
+            clockwise: false,
+            angleStart: .pi*1.1,
+            speed: blackHoleSpeed*0.7)
     }
     
     public func ballBase() {
@@ -115,25 +216,21 @@ public class GameScene3: SKScene {
         
         // ball
         
-        let radius: CGFloat = 14.0
+        let radius: CGFloat = 11.0
         ball = SKShapeNode(circleOfRadius: radius)
         ball.position = CGPoint(x: 0.0, y:  -220.0)
         ball.fillColor = UIColor.white
         ball.strokeColor = UIColor.lightGray.withAlphaComponent(0.15)
         ball.lineWidth = 4
-        let scaleBall = SKAction.scale(by: 1.1, duration: 0.6)
-        let repeatForever = SKAction.repeatForever(.sequence([scaleBall, scaleBall.reversed()]))
+        
         ball.name = "ball"
         
         self.addChild(ball)
         //  ball.run(repeatForever)
         
-        
-        let durationMove: Double = 10.0
-        
         // let sequenceRotating = SKAction.sequence([rotate, rotateBack, rotateZero])
         //let sequenceMoving = SKAction.sequence([moveAction, moveActionLeft, moveActionZero])
-        let move = SKAction.follow(self.ballPath, asOffset: false, orientToPath: true, duration: durationMove)
+        let move = SKAction.follow(self.ballPath, asOffset: false, orientToPath: true, duration: durationBallMove)
         
         ball.physicsBody = SKPhysicsBody(circleOfRadius: radius)
         ball.physicsBody?.categoryBitMask = 0
@@ -145,7 +242,7 @@ public class GameScene3: SKScene {
         // arrow direction
         dirArrow = FSMLine(
             from: CGPoint(x: 0.0, y: 0),
-            to: CGPoint(x: -80.0, y: 0),
+            to: CGPoint(x: -90.0, y: 0),
             headSize: 10.0,  name: "lineDir",
             style: .page1)
         dirArrow.body.strokeColor = UIColor.white.withAlphaComponent(0.1)
@@ -165,11 +262,11 @@ public class GameScene3: SKScene {
     }
     
     public func setEndNode() {
-        var endNodeSize: CGFloat = 40.0
+        let endNodeSize: CGFloat = 35.0
         
         let bezierPath = UIBezierPath(ovalIn: CGRect(x: -endNodeSize/2.0, y: -endNodeSize/2.0, width: endNodeSize, height: endNodeSize))
         
-        var endNodeSize2: CGFloat = endNodeSize + endNodeSize/5.0
+        let endNodeSize2: CGFloat = endNodeSize + endNodeSize/5.0
         let bezierPath2 = UIBezierPath(ovalIn: CGRect(x: -endNodeSize2/2.0, y: -endNodeSize2/2.0, width: endNodeSize2, height: endNodeSize2))
 
         let underEndNode = SKShapeNode(path: bezierPath2.cgPath)
@@ -186,10 +283,6 @@ public class GameScene3: SKScene {
         endNode.name = "endNode"
         self.addChild(endNode)
         
-        
-//        dashed.position = CGPoint(x: 0.0, y: 00.0)
-//        self.addChild(dashed)
-        
         endNode.physicsBody = SKPhysicsBody(circleOfRadius: endNodeSize/2.5)
         endNode.physicsBody?.categoryBitMask = 2
         endNode.physicsBody?.contactTestBitMask = 0
@@ -198,57 +291,6 @@ public class GameScene3: SKScene {
         endNode.physicsBody?.fieldBitMask = 0
     }
     
-    public func fireworks() {
-        
-        let sound = "winSound"
-        let playSound = SKAction.playSoundFileNamed(sound, waitForCompletion: true)
-        DispatchQueue.main.async {
-            self.run(playSound)
-
-          //  PlaygroundPage.current.assessmentStatus = .pass(message: " **Great!** When you're ready, go to the [**Next Page**](@next)!")
-        }
-        DispatchQueue.global(qos: .userInteractive).async {
-            
-            var arrayFireworks = [CGPoint(x: -200.0, y: 300.0),
-                                  CGPoint(x: 180.0, y: 240.0),
-                                  CGPoint(x: 70.0, y: -240.0),
-                                  CGPoint(x: -90.0, y: -10.0)]
-            
-           var arrayColors: [UIColor] = [UIColor(hexString: "#511845"),
-                                                UIColor(hexString: "#900c3f"),
-                                                UIColor(hexString: "#c70039"),
-                                                UIColor(hexString: "#ff5733")]
-            
-            arrayColors += arrayColors.reversed()
-            arrayFireworks += arrayFireworks
-            
-            for i in 0...(arrayFireworks.count/2 - 1) {
-                if let rp = SKEmitterNode(fileNamed: "Firework.sks") {
-                    rp.position = arrayFireworks[i*2]
-                    rp.targetNode = self.scene
-                    rp.particleColor = arrayColors[i*2]
-                    rp.particleColorBlendFactor = 1.0
-                    rp.particleColorSequence = nil
-
-                    DispatchQueue.main.async {
-                        self.scene!.addChild(rp)
-                    }
-                    usleep(150000)
-                    
-                    let aa = rp.copy() as! SKEmitterNode
-                    aa.position = arrayFireworks[i*2 + 1]
-                    aa.particleColor = arrayColors[i*2 + 1]
-                    aa.targetNode = self.scene
-                    DispatchQueue.main.async {
-                        self.scene!.addChild(aa)
-                    }
-                    
-                }
-                   
-                usleep(520000)
-            }
-        }
-    }
     
     public func loseSound() {
         let sound = "loseSound"
@@ -282,6 +324,85 @@ public class GameScene3: SKScene {
         node.run(.play())
         
     }
+    
+    
+    public func passPhase() {
+        guard let nextState = FSMLogic.fsm3(from: currentState) else {
+            return
+        }
+        
+        switch nextState {
+        case .second:
+            // change parameters here
+            states[1].gotTouched(view: self.view!) { (_) in }
+            states[1].alpha = 1.0
+            states[0].alpha = 0.25
+            functionState2()
+        case .third:
+            // change parameters here
+            states[2].gotTouched(view: self.view!) { (_) in }
+            states[2].alpha = 1.0
+            states[1].alpha = 0.25
+            functionState3()
+        case .forth:
+            states[3].gotTouched(view: self.view!) { (_) in }
+            states[3].alpha = 1.0
+            states[2].alpha = 0.25
+            fireworks()
+        default:
+            print("SHOULDNT ENTER HERE")
+            break
+        }
+        currentState = nextState
+    }
+    
+    public func setParticles() {
+        if let rp = SKEmitterNode(fileNamed: "ParticlePG1.sks") {
+            rp.position = .zero
+            rp.targetNode = scene
+            scene!.addChild(rp)
+        }
+    }
+    
+    @objc static override public var supportsSecureCoding: Bool {
+        // SKNode conforms to NSSecureCoding, so any subclass going
+        // through the decoding process must support secure coding
+        get {
+            return true
+        }
+    }
+    
+    
+    public func touchDown(atPoint pos : CGPoint) {
+       
+        if isFirstTap {
+            
+            isFirstTap = false
+        }
+        
+        let dx = -(ball.position.x - 0.0)*speedBallMovement
+        let dy = -(ball.position.y - 20.0)*speedBallMovement
+        print(dx)
+        print(dy)
+        
+        let moveAction = SKAction.applyForce(CGVector(dx: dx, dy: dy), duration: 0.1)
+        let scaleDown = SKAction.scale(by: 0.5, duration: 0.7)
+        ball.removeAllActions()
+        ball.run(SKAction.group([moveAction, scaleDown])) {[weak self ] in
+            self?.ball.removeFromParent()
+            DispatchQueue.main.async {
+                self?.setupBall()
+            }
+        }
+        dirArrow.removeFromParent()
+    }
+    
+    
+    override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for t in touches { touchDown(atPoint: t.location(in: self)) }
+        
+    }
+    
     
     public func setupBoard() {
         self.setupTopStates()
@@ -368,84 +489,56 @@ public class GameScene3: SKScene {
         
     }
     
-    public func passPhase() {
-        guard let nextState = FSMLogic.fsm3(from: currentState) else {
-            return
-        }
-        
-        switch nextState {
-        case .second:
-            // change parameters here
-            states[1].gotTouched(view: self.view!) { (_) in }
-            states[1].alpha = 1.0
-            states[0].alpha = 0.25
-        case .third:
-            // change parameters here
-            states[2].gotTouched(view: self.view!) { (_) in }
-            states[2].alpha = 1.0
-            states[1].alpha = 0.25
-        case .forth:
-            states[3].gotTouched(view: self.view!) { (_) in }
-            states[3].alpha = 1.0
-            states[2].alpha = 0.25
-            fireworks()
-        default:
-            print("SHOULDNT ENTER HERE")
-            break
-        }
-        currentState = nextState
-    }
     
-    public func setParticles() {
-        if let rp = SKEmitterNode(fileNamed: "ParticlePG1.sks") {
-            rp.position = .zero
-            rp.targetNode = scene
-            scene!.addChild(rp)
+    public func fireworks() {
+        let sound = "winSound"
+        let playSound = SKAction.playSoundFileNamed(sound, waitForCompletion: true)
+        DispatchQueue.main.async {
+            self.run(playSound)
+
+          //  PlaygroundPage.current.assessmentStatus = .pass(message: " **Great!** When you're ready, go to the [**Next Page**](@next)!")
         }
-    }
-    
-    @objc static override public var supportsSecureCoding: Bool {
-        // SKNode conforms to NSSecureCoding, so any subclass going
-        // through the decoding process must support secure coding
-        get {
-            return true
-        }
-    }
-    
-    
-    public func touchDown(atPoint pos : CGPoint) {
-       
-        if isFirstTap {
+        DispatchQueue.global(qos: .userInteractive).async {
             
-            isFirstTap = false
-        }
-        
-        let dx = -(ball.position.x - 0.0)
-        let dy = -(ball.position.y - 20.0)
-        print(dx)
-        print(dy)
-        
-        let moveAction = SKAction.applyForce(CGVector(dx: dx, dy: dy), duration: 0.1)
-        let scaleDown = SKAction.scale(by: 0.5, duration: 0.7)
-        ball.removeAllActions()
-        ball.run(SKAction.group([moveAction, scaleDown])) {[weak self ] in
-            self?.ball.removeFromParent()
-            DispatchQueue.main.async {
-                self?.setupBall()
+            var arrayFireworks = [CGPoint(x: -200.0, y: 300.0),
+                                  CGPoint(x: 180.0, y: 240.0),
+                                  CGPoint(x: 70.0, y: -240.0),
+                                  CGPoint(x: -90.0, y: -10.0)]
+            
+           var arrayColors: [UIColor] = [UIColor(hexString: "#511845"),
+                                                UIColor(hexString: "#900c3f"),
+                                                UIColor(hexString: "#c70039"),
+                                                UIColor(hexString: "#ff5733")]
+            
+            arrayColors += arrayColors.reversed()
+            arrayFireworks += arrayFireworks
+            
+            for i in 0...(arrayFireworks.count/2 - 1) {
+                if let rp = SKEmitterNode(fileNamed: "Firework.sks") {
+                    rp.position = arrayFireworks[i*2]
+                    rp.targetNode = self.scene
+                    rp.particleColor = arrayColors[i*2]
+                    rp.particleColorBlendFactor = 1.0
+                    rp.particleColorSequence = nil
+
+                    DispatchQueue.main.async {
+                        self.scene!.addChild(rp)
+                    }
+                    usleep(150000)
+                    
+                    let aa = rp.copy() as! SKEmitterNode
+                    aa.position = arrayFireworks[i*2 + 1]
+                    aa.particleColor = arrayColors[i*2 + 1]
+                    aa.targetNode = self.scene
+                    DispatchQueue.main.async {
+                        self.scene!.addChild(aa)
+                    }
+                    
+                }
+                   
+                usleep(520000)
             }
         }
-        dirArrow.removeFromParent()
-    }
-    
-    
-    override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { touchDown(atPoint: t.location(in: self)) }
-        
-    }
-    override public func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
-        
-        
     }
 }
 
@@ -470,18 +563,19 @@ extension GameScene3: SKPhysicsContactDelegate {
         nameB = nodeB.name!
         
         if nameA == "ball" {
-            print("A")
             if nameB == "endNode" {
+                self.ball.physicsBody = nil
                 passPhase()
             }
         } else if nameA == "endNode" {
-            print("B")
+            self.ball.physicsBody = nil
             passPhase()
         } else if nameA.hasPrefix("hole") {
             print("C")
             
         }
-        self.ball.physicsBody = nil
+       // self.ball.physicsBody = nil
+        self.ball.physicsBody?.contactTestBitMask = 2
         self.ball.removeAllActions()
         
         let action = SKAction.scale(by: 0.0, duration: 0.35)

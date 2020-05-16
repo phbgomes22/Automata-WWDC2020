@@ -22,9 +22,9 @@ public class FSMLine: SKSpriteNode {
     }
     
     private var style: Style = .normal
-    private var body: SKShapeNode = SKShapeNode()
+    public var body: SKShapeNode = SKShapeNode()
     private var label: SKLabelNode = SKLabelNode()
-    private var glowBody: SKShapeNode = SKShapeNode()
+    public var glowBody: SKShapeNode = SKShapeNode()
     private var labelSpriteNode = SKSpriteNode()
     private var controlPos = CGPoint()
     private var colorLabel: SKShapeNode!
