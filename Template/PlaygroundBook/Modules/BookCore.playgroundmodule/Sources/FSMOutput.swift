@@ -14,11 +14,14 @@ import PlaygroundSupport
 public class FSMOutput: SKLabelNode {
 
     public var background: SKShapeNode!
+    private var sizeFont: CGFloat = 0.0
+    private var widthSize: CGFloat = 30.0
     
     public init(fontSize: CGFloat) {
         super.init()
         
         self.fontSize = fontSize
+        sizeFont = fontSize
         self.setBackground()
     }
     
@@ -29,7 +32,7 @@ public class FSMOutput: SKLabelNode {
     public func setBackground() {
         print("OK!")
         background = SKShapeNode()
-        background.path = UIBezierPath(roundedRect: CGRect(x: self.position.x - 15.0 , y: self.position.y - 20.0, width: 30.0, height: self.fontSize + 20), cornerRadius: 3.0).cgPath
+        background.path = UIBezierPath(roundedRect: CGRect(x: self.position.x - 15.0 , y: self.position.y - 20.0, width: self.widthSize, height: self.fontSize + 20), cornerRadius: 3.0).cgPath
         
         background.fillColor = UIColor(hexString: "#FDFDFD")
         background.strokeColor = UIColor(hexString: "#DFD8CD")
@@ -47,12 +50,20 @@ public class FSMOutput: SKLabelNode {
     }
     
     public func update(text: String) {
-        self.text = text
-        self.updateBackground()
+        self.text = (self.text ?? "") + text
+        print("A")
+        self.updateBackground(text: text)
+        print("B")
     }
     
-    public func updateBackground() {
+    
+    public func updateBackground(text: String) {
         
-        background.path = UIBezierPath(roundedRect: CGRect(x: -(self.frame.width + 30)/2.0 , y: -20, width: self.frame.width + 30, height: self.fontSize + 20), cornerRadius: 10.0).cgPath
+        self.widthSize += 40.0
+        if text.count > 1 {
+            self.widthSize += 45.0
+        }
+        background.path = UIBezierPath(roundedRect: CGRect(x: -(self.widthSize)/2.0 , y: -20, width:         self.widthSize, height: sizeFont + 20), cornerRadius: 10.0).cgPath
+        print("C")
     }
 }

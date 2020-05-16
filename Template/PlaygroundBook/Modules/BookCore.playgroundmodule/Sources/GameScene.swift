@@ -241,14 +241,14 @@ public class GameScene: SKScene {
         self.automateFSM() { (ended) in
           //  self.backgroundSprite.alpha = 1.0
             if(!ended) {
-                self.wordLabel.update(text: (self.wordLabel.text ?? "") + " 🙊?")
+                self.wordLabel.update(text: " 🙊?")
                 self.loseSound()
             }
             else if (self.wordLabel.text != self.expectedOutput) {
-                self.wordLabel.update(text: (self.wordLabel.text ?? "") + " 🙊?")
+                self.wordLabel.update(text: " 🙊?")
                 self.loseSound()
             } else {
-                self.wordLabel.update(text: (self.wordLabel.text ?? "") + " 🐵!")
+                self.wordLabel.update(text: " 🐵!")
                 print("OK!")
                 self.fireworks()
                 
@@ -313,20 +313,16 @@ public class GameScene: SKScene {
                 
                 print("OK1!")
                 let output = currStateNode.getOutput()
-                self.wordLabel.update(text: (self.wordLabel.text ?? "") + output)
+                self.wordLabel.update(text: output)
                 print("OK2!")
                 if let lNode = nLineNode {
-                    let semaphore = DispatchGroup()
-                    semaphore.enter()
                     currStateNode.gotTouched(view: self.view!) { bool in
                         if(bool) {
                             lNode.gotUsed(scene: self) {
-                                semaphore.leave()
-                                print("LEAVE 1")
                             }
                         }
                     }
-                    semaphore.wait()
+                    sleep(2)
                 } else {
                     print("ELSE")
                     currStateNode.gotTouched(view: self.view!) { _ in
