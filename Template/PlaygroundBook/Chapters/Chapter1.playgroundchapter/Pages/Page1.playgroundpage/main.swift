@@ -3,22 +3,25 @@
  # Welcome to State Machine 🤖!
  
  
- "**Finite State Machines**" (FSM) is a daunting name. But don't be misled by it. They are not that complicated, and are very fun to toy with!
+ "**Finite State Machines**" (FSM) is a daunting name. But don't be misled by it. They are are very fun to toy with, and are commonly used to model all sorts of behaviors.
  
- FSM are commonly used, and they model all sorts of behaviors.
  
- Their __States__ are usually represented by circles. They can have output, that we will represent by the symbol on its side.
+  They work as such: starting from the initial **State**, the FSM will choose the next State it will **transition to** according to the **input** it receives.
+ 
+ __States__ are usually represented by circles. They can have an output, that we will represent by the symbol on its side.
  
  ![State](smallerState.png)
  
-Transition between states are triggered by a certain inputs, and are represented by __lines__. The input will be defined by an emoji, such as bellow.
+ Transition between states are triggered by a certain inputs, and are represented by __lines__. The input will be defined by emojis. For exemple, the transition bellow would move you to another **State** when the FSM receives a 🔥.
+ 
  
  ![Line](linePage1.png)
  
+ Each **input** will lead to **one** change of State, but only if the current State has a **transition** that is triggered by that **input**.
 
 
  * Experiment:
- Let's start! Try to use the FSM to writte the word "BANANA" 🍌🐵
+ Let's start! Try to use the FSM outputs to write the word "BANANA" 🍌🐵
  
 
  **First**, choose the state in which the FSM will start!

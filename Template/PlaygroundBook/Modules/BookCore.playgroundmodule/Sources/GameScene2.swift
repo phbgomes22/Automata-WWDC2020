@@ -26,6 +26,7 @@ public class GameScene2: SKScene {
     public var shapeNodeLeft: SKShapeNode!
     public var shapeNodeRight: SKShapeNode!
     public var shapeNodeFull: SKShapeNode!
+    public var isTouchingEnabled: Bool = false
     
     // THIS WILL CHANGE
     public var numberOfMoves: Int = 1
@@ -137,7 +138,7 @@ public class GameScene2: SKScene {
             self.shapeNodeLeft.run(fadeOut)
             self.shapeNodeRight.run(fadeOut)
             
-           
+            self.isTouchingEnabled = true
         }
     }
     
@@ -437,6 +438,9 @@ public class GameScene2: SKScene {
     }
     
     public func touchDown(atPoint pos : CGPoint) {
+        if !isTouchingEnabled {
+            return
+        }
        
         for node in self.nodes(at: pos) {
             if let state = node as? FSMState {
@@ -447,15 +451,15 @@ public class GameScene2: SKScene {
                 
                 var nextState: FSMState?
                 var rightMove: FSMLogic.StatesPG2?
-//                if isFirstTap {
-//                    rightMove = currentState
-//                    isFirstTap = false
-//                }
-//                else {
+                if isFirstTap {
+                    rightMove = currentState
+                    isFirstTap = false
+                }
+                else {
                     // checks the state that should be touched
-                rightMove = FSMLogic.fsm2(from: self.currentState, bool: self.randomArrays[currentMove])
-                currentMove += 1
-              //  }
+                    rightMove = FSMLogic.fsm2(from: self.currentState, bool: self.randomArrays[currentMove])
+                    currentMove += 1
+                }
                 
                 guard let rm = rightMove else {
                     isGameLost = true

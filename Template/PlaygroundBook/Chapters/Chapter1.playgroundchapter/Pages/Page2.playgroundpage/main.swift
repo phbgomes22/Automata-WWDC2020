@@ -2,21 +2,16 @@
 
  # Becoming the Machine 🤖!
  
- Now, let's **swich places**!
+ Now, let's **swich places** in a Memory Game!
  
- A sequence of inputs, either purple 🟣 or white ⚪️, will be drawn. Then, the initial state will be chosen.
- Touch the States as you move to them, until you cover all the input.
+ **Memorize** the sequence of inputs given. They will be either purple 🟣 or white ⚪️. Then, the initial state will be chosen.
  
+ After that, starting at the initial state, touch on **every State** you visit until you get to the final State. If you touch all in the right order, you win 🏆!
  
- - Note:
- We can only play this game because of a property of this FSM: it is **deterministic**. That means that if we are at a given **initial State**, if we run the **same input sequence**, we will always arrive at the same **final State**.
-
-
  
  * Experiment:
- Let's start! Choose a number of inputs that you will try to memorize!
+ Let's start! Choose the number of inputs that you will try to memorize!
  
-
 */
 
 //#-hidden-code
@@ -38,10 +33,8 @@ var movesToMemorize: Int = /*#-editable-code number of moves*/4/*#-end-editable-
  
  When you're ready, run the code!
  
- A sequence of size  `movesToMemorize`  will be drawn. Then, the initial state will be chosen. Follow the path from it!
- 
   - Tip:
-  If you choose to memorize 3 inputs, you'll need to move through 3 States.
+  If you chose to memorize 3 inputs, you'll need to move through 4 States, the initial one and three others based on the input you were given!
 */
 
 //#-hidden-code

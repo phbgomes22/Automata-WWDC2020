@@ -5,7 +5,7 @@
  A common application for FSM are **games**! They can be used to model how enemies will act, how the game mode will change, and even dialogues!
  
  
- **Now**, try that out ourselves!
+ **Now**, let's try that out ourselves!
  
  
  * Experiment:
