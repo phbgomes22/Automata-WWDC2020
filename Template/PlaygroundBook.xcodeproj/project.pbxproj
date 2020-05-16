@@ -33,6 +33,8 @@
 		42B019CB2469C29300A46158 /* FSMOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42B019C62469C29300A46158 /* FSMOutput.swift */; };
 		42B019CC2469C29300A46158 /* FSMLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42B019C72469C29300A46158 /* FSMLogic.swift */; };
 		42B019CD2469C29300A46158 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42B019C82469C29300A46158 /* GameScene.swift */; };
+		42B5FD8624702EB2009FE88B /* LiveView3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42B5FD8524702EB2009FE88B /* LiveView3.swift */; };
+		42B5FD8B24703092009FE88B /* LiveView3.sks in Resources */ = {isa = PBXBuildFile; fileRef = 42B5FD8A24703092009FE88B /* LiveView3.sks */; };
 		42DCB34F246A519C006B830E /* GameScene2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DCB34E246A519C006B830E /* GameScene2.swift */; };
 		42DCB351246A51B4006B830E /* GameScene2.sks in Resources */ = {isa = PBXBuildFile; fileRef = 42DCB350246A51B4006B830E /* GameScene2.sks */; };
 		5E086DCA2051DDAE004D8D25 /* LiveView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5E086DCC2051DDAE004D8D25 /* LiveView.storyboard */; };
@@ -186,6 +188,8 @@
 		42B019C62469C29300A46158 /* FSMOutput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMOutput.swift; sourceTree = "<group>"; };
 		42B019C72469C29300A46158 /* FSMLogic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FSMLogic.swift; sourceTree = "<group>"; };
 		42B019C82469C29300A46158 /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		42B5FD8524702EB2009FE88B /* LiveView3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveView3.swift; sourceTree = "<group>"; };
+		42B5FD8A24703092009FE88B /* LiveView3.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = LiveView3.sks; sourceTree = "<group>"; };
 		42DCB34E246A519C006B830E /* GameScene2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene2.swift; sourceTree = "<group>"; };
 		42DCB350246A51B4006B830E /* GameScene2.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = GameScene2.sks; path = ../../../Page1Playground/Page1Playground/Page2GameScene/GameScene2.sks; sourceTree = "<group>"; };
 		5E086DC02051C5A7004D8D25 /* Teste.playgroundbook */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Teste.playgroundbook; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -390,6 +394,7 @@
 				42DCB34E246A519C006B830E /* GameScene2.swift */,
 				429EBEBB246CE14000FC1118 /* LiveView2.swift */,
 				4295AC97246D9A92002E7B95 /* GameScene3.swift */,
+				42B5FD8524702EB2009FE88B /* LiveView3.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -471,6 +476,7 @@
 				4247AF0C2469D461004F7A1E /* GameScene.sks */,
 				5E086DCC2051DDAE004D8D25 /* LiveView.storyboard */,
 				5E551EC42371FC3F00784365 /* Assets.xcassets */,
+				42B5FD8A24703092009FE88B /* LiveView3.sks */,
 			);
 			path = PrivateResources;
 			sourceTree = "<group>";
@@ -636,6 +642,7 @@
 			files = (
 				4247AF222469D4A5004F7A1E /* 2b-d1.wav in Resources */,
 				429EBEB2246CAED900FC1118 /* ParticlePG1.sks in Resources */,
+				42B5FD8B24703092009FE88B /* LiveView3.sks in Resources */,
 				42DCB351246A51B4006B830E /* GameScene2.sks in Resources */,
 				4247AF232469D4A5004F7A1E /* 3b-e1.wav in Resources */,
 				4295AC94246D9A1F002E7B95 /* GameScene3.sks in Resources */,
@@ -720,6 +727,7 @@
 				42B019C92469C29300A46158 /* FSMLine.swift in Sources */,
 				4247AF29246A13D1004F7A1E /* LiveView1.swift in Sources */,
 				42DCB34F246A519C006B830E /* GameScene2.swift in Sources */,
+				42B5FD8624702EB2009FE88B /* LiveView3.swift in Sources */,
 				42B019CB2469C29300A46158 /* FSMOutput.swift in Sources */,
 				42B019CC2469C29300A46158 /* FSMLogic.swift in Sources */,
 				4295AC98246D9A92002E7B95 /* GameScene3.swift in Sources */,

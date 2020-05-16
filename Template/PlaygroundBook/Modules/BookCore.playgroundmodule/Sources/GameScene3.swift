@@ -22,7 +22,7 @@ public class GameScene3: SKScene {
     
     public var isFirstTap: Bool = true
     public var currentState: FSMLogic.StatesPG3 = FSMLogic.StatesPG3.first
-    public var deltaY: CGFloat = -50.0
+    public var deltaY: CGFloat = -40.0
     public var ball: SKShapeNode!
     public var dirArrow: FSMLine!
     
@@ -54,6 +54,8 @@ public class GameScene3: SKScene {
     
     public var ballClockwise: Bool = true
     
+    public var backgroundSprite: SKSpriteNode!
+    
     public var endNode: SKShapeNode!
     public var physicsBodyEndNode: SKPhysicsBody!
     
@@ -73,7 +75,7 @@ public class GameScene3: SKScene {
         let fadeIn = SKAction.fadeIn(withDuration: 0.1)
         let fadeOut = SKAction.fadeOut(withDuration: 0.1)
         
-        self.endNode.run(SKAction.repeatForever(.sequence([fadeIn, block, .wait(forDuration: 0.8), fadeOut, block2, .wait(forDuration: 0.8)])))
+        self.endNode.run(SKAction.repeatForever(.sequence([block, fadeIn, .wait(forDuration: 1.0), fadeOut, block2, .wait(forDuration: 0.8)])))
     }
     
     
@@ -340,10 +342,10 @@ public class GameScene3: SKScene {
     }
     
     public func setupBackground() {
-        let backgroundSprite = SKSpriteNode()
+        backgroundSprite = SKSpriteNode()
         backgroundSprite.texture = SKTexture(imageNamed: "bk.jpg")
-        backgroundSprite.colorBlendFactor = 1
-        backgroundSprite.color = UIColor(hexString: "#E4DED3").withAlphaComponent(0.35)
+       // backgroundSprite.colorBlendFactor = 1
+        backgroundSprite.alpha = 0.15//UIColor(hexString: "#E4DED3").withAlphaComponent(0.15)
         backgroundSprite.size = CGSize(width: 1400*1.0, height: 880*1.0)
         backgroundSprite.position = CGPoint(x: 0.0, y: 0.0)
         backgroundSprite.zPosition = -100
@@ -364,33 +366,45 @@ public class GameScene3: SKScene {
         
     }
     
+    public func moveCamera() {
+        if let camera = self.scene!.camera {
+            let scale = SKAction.scaleX(by: 1.03, y: 1.03, duration: 0.3)
+            
+            camera.run(scale)
+        }
+    }
     
     public func passPhase() {
         guard let nextState = FSMLogic.fsm3(from: currentState) else {
             return
         }
-        
+
+        let alphaActionBackgrond = SKAction.fadeAlpha(by: 0.15, duration: 0.3)
         switch nextState {
         case .second:
             // change parameters here
             states[1].gotTouched(view: self.view!) { (_) in }
             states[1].alpha = 1.0
             states[0].alpha = 0.25
+            backgroundSprite.run(alphaActionBackgrond)
             stateCount = 1
             functionState2()
+            moveCamera()
         case .third:
             // change parameters here
             states[2].gotTouched(view: self.view!) { (_) in }
             states[2].alpha = 1.0
             states[1].alpha = 0.25
+            backgroundSprite.run(alphaActionBackgrond)
             stateCount = 2
             functionState3()
+            moveCamera()
         case .forth:
+            fireworks()
             states[3].gotTouched(view: self.view!) { (_) in }
             states[3].alpha = 1.0
             states[2].alpha = 0.25
             stateCount = 0
-            fireworks()
         default:
             print("SHOULDNT ENTER HERE")
             break
@@ -533,11 +547,10 @@ public class GameScene3: SKScene {
     public func fireworks() {
         let sound = "winSound"
         let playSound = SKAction.playSoundFileNamed(sound, waitForCompletion: true)
-        DispatchQueue.main.async {
-            self.run(playSound)
-
-          //  PlaygroundPage.current.assessmentStatus = .pass(message: " **Great!** When you're ready, go to the [**Next Page**](@next)!")
-        }
+        
+        self.run(playSound)
+        PlaygroundPage.current.assessmentStatus = .pass(message: " **Great!!** Thanks for playing! Hope you've enjoyed 🤖**State Machine!**")
+        
         DispatchQueue.global(qos: .userInteractive).async {
             
             var arrayFireworks = [CGPoint(x: -200.0, y: 300.0),
@@ -606,13 +619,15 @@ extension GameScene3: SKPhysicsContactDelegate {
             if nameB == "endNode" {
                 self.ball.physicsBody = nil
                 passPhase()
+            } else {
+                loseSound()
             }
         } else if nameA == "endNode" {
             self.ball.physicsBody = nil
             passPhase()
         } else if nameA.hasPrefix("hole") {
             print("C")
-            
+            loseSound()
         }
        // self.ball.physicsBody = nil
         self.ball.physicsBody?.contactTestBitMask = 2

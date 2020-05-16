@@ -37,11 +37,11 @@ public class GameScene: SKScene {
         
         let sound = "winSound"
         let playSound = SKAction.playSoundFileNamed(sound, waitForCompletion: true)
-        DispatchQueue.main.async {
-            self.run(playSound)
+        
+        self.run(playSound)
 
-            PlaygroundPage.current.assessmentStatus = .pass(message: " **Great!** When you're ready, go to the [**Next Page**](@next)!")
-        }
+        PlaygroundPage.current.assessmentStatus = .pass(message: " **Great!** When you're ready, go to the [**Next Page**](@next)!")
+        
         DispatchQueue.global(qos: .userInteractive).async {
             
             var arrayFireworks = [CGPoint(x: -200.0, y: 300.0),
@@ -88,9 +88,9 @@ public class GameScene: SKScene {
     public func loseSound() {
         let sound = "loseSound"
         let playSound = SKAction.playSoundFileNamed(sound, waitForCompletion: true)
-        DispatchQueue.main.async {
-            self.run(playSound)
-        }
+        
+        self.run(playSound)
+        
     }
     
     public func setupBackground() {
@@ -239,7 +239,7 @@ public class GameScene: SKScene {
     }
     
     func startFSM() {
-        self.automateFSM(delay: 0) { (ended) in
+        self.automateFSM() { (ended) in
             print(ended)
             if(!ended) {
                 self.wordLabel.update(text: (self.wordLabel.text ?? "") + " 🙊?")
@@ -250,9 +250,8 @@ public class GameScene: SKScene {
                 self.loseSound()
             } else {
                 self.wordLabel.update(text: (self.wordLabel.text ?? "") + " 🐵!")
-                DispatchQueue.main.async {
-                    self.fireworks()
-                }
+                self.fireworks()
+                
             }
         }
     }
@@ -267,9 +266,9 @@ public class GameScene: SKScene {
     }
     
     
-    public func automateFSM(delay: Int, completion: @escaping (_ ended: Bool) -> ()) {
+    public func automateFSM(completion: @escaping (_ ended: Bool) -> ()) {
         
-        DispatchQueue.global(qos: .userInteractive).asyncAfter(deadline: .now() + .seconds(delay)) {
+        DispatchQueue.global(qos: .userInteractive).async() {
             var bool = true
             
             var currentState = self.firstState
@@ -315,7 +314,7 @@ public class GameScene: SKScene {
                 
                 semaphore.enter()
                 
-                DispatchQueue.main.asyncAfter(deadline: .now()) {
+                DispatchQueue.main.async() {
                     
                     let output = currStateNode.getOutput()
                     self.wordLabel.update(text: (self.wordLabel.text ?? "") + output)
