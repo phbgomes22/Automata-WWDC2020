@@ -27,15 +27,22 @@ public class GameScene3: SKScene {
     public var dirArrow: FSMLine!
     
     private var ballPath: CGPath!
+    private var ballPathInversed: CGPath!
+    
+    private var colors: [UIColor] = [UIColor(hexString: "#010026"),
+                                     UIColor(hexString: "#413066"),
+                                     UIColor.white].reversed()
+    public var stateCount:Int = 0
     
     // MARK: - User Interaction
     
     public var functionState2: (() -> Void)!
     public var functionState3: (() -> Void)!
+    
 
     // THIS WILL CHANGE
     // reduce to make it faster
-    public var durationBallMove: Double = 10.0
+    public var durationBallMove: Double = 9.0
     
     // THIS WILL CHANGE
     // reduce to make it slower
@@ -44,6 +51,8 @@ public class GameScene3: SKScene {
     public var isAimHidden: Bool = false
     
     public var blackHoleSpeed: CGFloat = 150.0
+    
+    public var ballClockwise: Bool = true
     
     public var endNode: SKShapeNode!
     public var physicsBodyEndNode: SKPhysicsBody!
@@ -215,12 +224,16 @@ public class GameScene3: SKScene {
         let size: CGFloat = 250.0*2
         
         let bezierPath = UIBezierPath(ovalIn: CGRect(x: -size/2.0, y: -size/2, width: size, height: size))
+        
+        var invertedPath = bezierPath.reversing()
+        invertedPath.apply(CGAffineTransform.init(rotationAngle: -.pi/2.0))
+        
+        self.ballPathInversed = invertedPath.cgPath
         bezierPath.apply(CGAffineTransform.init(rotationAngle: -.pi/2.0))
         let pattern : [CGFloat] = [5.0, 20.0]
         let dashedPath = bezierPath.cgPath.copy(dashingWithPhase: 5.0, lengths: pattern)
  
         self.ballPath = bezierPath.cgPath
-        
         let shapeNode = SKShapeNode(path: dashedPath)
         shapeNode.strokeColor = UIColor.white.withAlphaComponent(0.3)
         shapeNode.position = CGPoint(x: 0.0, y: 0.0)
@@ -237,7 +250,7 @@ public class GameScene3: SKScene {
         let radius: CGFloat = 11.0
         ball = SKShapeNode(circleOfRadius: radius)
         ball.position = CGPoint(x: 0.0, y:  -220.0)
-        ball.fillColor = UIColor.white
+        ball.fillColor = colors[stateCount]
         ball.strokeColor = UIColor.lightGray.withAlphaComponent(0.15)
         ball.lineWidth = 4
         
@@ -248,7 +261,9 @@ public class GameScene3: SKScene {
         
         // let sequenceRotating = SKAction.sequence([rotate, rotateBack, rotateZero])
         //let sequenceMoving = SKAction.sequence([moveAction, moveActionLeft, moveActionZero])
-        let move = SKAction.follow(self.ballPath, asOffset: false, orientToPath: true, duration: durationBallMove)
+        let pathBall: CGPath = self.ballClockwise ? self.ballPath : self.ballPathInversed
+        
+        let move = SKAction.follow(pathBall, asOffset: false, orientToPath: true, duration: durationBallMove)
         
         ball.physicsBody = SKPhysicsBody(circleOfRadius: radius)
         ball.physicsBody?.categoryBitMask = 0
@@ -259,17 +274,18 @@ public class GameScene3: SKScene {
         
         if !isAimHidden {
            
+            let lambda: CGFloat = self.ballClockwise ? -1 : 1
             // arrow direction
             dirArrow = FSMLine(
                 from: CGPoint(x: 0.0, y: 0),
-                to: CGPoint(x: -90.0, y: 0),
+                to: CGPoint(x: lambda*90.0, y: 0),
                 headSize: 10.0,  name: "lineDir",
                 style: .page1)
-            dirArrow.body.strokeColor = UIColor.white.withAlphaComponent(0.1)
-            dirArrow.body.fillColor = UIColor.white.withAlphaComponent(0.30)
+            dirArrow.body.strokeColor = colors[stateCount].withAlphaComponent(0.1)
+            dirArrow.body.fillColor = colors[stateCount].withAlphaComponent(0.30)
             dirArrow.position = CGPoint(x: 0.0, y: 0.0)
-            dirArrow.glowBody.fillColor = UIColor.white.withAlphaComponent(0.1)
-            dirArrow.glowBody.strokeColor = UIColor.white.withAlphaComponent(0.1)
+            dirArrow.glowBody.fillColor = colors[stateCount].withAlphaComponent(0.1)
+            dirArrow.glowBody.strokeColor = colors[stateCount].withAlphaComponent(0.1)
             dirArrow.alpha = 0.0
             dirArrow.zPosition = -1
             ball.addChild(dirArrow)
@@ -288,9 +304,10 @@ public class GameScene3: SKScene {
         let bezierPath = UIBezierPath(ovalIn: CGRect(x: -endNodeSize/2.0, y: -endNodeSize/2.0, width: endNodeSize, height: endNodeSize))
         
         let endNodeSize2: CGFloat = endNodeSize + endNodeSize/5.0
-        let bezierPath2 = UIBezierPath(ovalIn: CGRect(x: -endNodeSize2/2.0, y: -endNodeSize2/2.0, width: endNodeSize2, height: endNodeSize2))
+        let bezierPath2 = UIBezierPath(ovalIn: CGRect(x: 0.0, y: 0.0, width: endNodeSize2, height: endNodeSize2))
 
         let underEndNode = SKShapeNode(path: bezierPath2.cgPath)
+        underEndNode.position = CGPoint(x: -endNodeSize2/2.0, y: -endNodeSize2/2.0)
         underEndNode.fillColor = UIColor.gray.withAlphaComponent(0.2)
         underEndNode.strokeColor = UIColor.clear
         
@@ -300,17 +317,16 @@ public class GameScene3: SKScene {
         endNode.fillColor = UIColor.white
         endNode.strokeColor = UIColor.lightGray.withAlphaComponent(0.2)
         endNode.lineWidth = 6
-        endNode.position = CGPoint(x: 0.0, y: 00.0)
+        endNode.position = CGPoint(x: 0.0, y: 0.0)
         endNode.name = "endNode"
         self.addChild(endNode)
         
-        physicsBodyEndNode = SKPhysicsBody(circleOfRadius: endNodeSize/2.5)
+        physicsBodyEndNode = SKPhysicsBody(circleOfRadius: endNodeSize/2.0)
         physicsBodyEndNode.categoryBitMask = 2
         physicsBodyEndNode.contactTestBitMask = 0
         physicsBodyEndNode.collisionBitMask = 0
         physicsBodyEndNode.affectedByGravity = false
         physicsBodyEndNode.fieldBitMask = 0
-        
         endNode.physicsBody = physicsBodyEndNode
     }
     
@@ -360,17 +376,20 @@ public class GameScene3: SKScene {
             states[1].gotTouched(view: self.view!) { (_) in }
             states[1].alpha = 1.0
             states[0].alpha = 0.25
+            stateCount = 1
             functionState2()
         case .third:
             // change parameters here
             states[2].gotTouched(view: self.view!) { (_) in }
             states[2].alpha = 1.0
             states[1].alpha = 0.25
+            stateCount = 2
             functionState3()
         case .forth:
             states[3].gotTouched(view: self.view!) { (_) in }
             states[3].alpha = 1.0
             states[2].alpha = 0.25
+            stateCount = 0
             fireworks()
         default:
             print("SHOULDNT ENTER HERE")
@@ -411,7 +430,10 @@ public class GameScene3: SKScene {
         let moveAction = SKAction.applyForce(CGVector(dx: dx, dy: dy), duration: 0.1)
         let scaleDown = SKAction.scale(by: 0.5, duration: durationBallMove/11)
         ball.removeAllActions()
-        ball.run(SKAction.group([moveAction, scaleDown]))
+        ball.run(SKAction.group([moveAction, scaleDown])) {
+            self.ball.removeFromParent()
+            self.setupBall()
+        }
         dirArrow.removeFromParent()
     }
     

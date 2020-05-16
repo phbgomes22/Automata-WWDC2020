@@ -46,22 +46,25 @@ public func blinkTarget() {
         isBlinking = true
     }
 }
+public func invertDirection() {
+    scene.ballClockwise.toggle()
+}
 
 public func state2() {
     
 //#-end-hidden-code
 /*:
-     Add things that will happen when we change from State 2 to State 3!
+     Add things that will happen when we change from State 2!
 */
 // enter your code here!
 //#-code-completion(everything, hide)
-//#-code-completion(identifier, show, circleFaster(), launchSlower(), hideAim(), blinkTarget(), stopOrbs())
+//#-code-completion(identifier, show, circleFaster(), launchSlower(), hideAim(), blinkTarget(), invertDirection(), stopOrbs())
 //#-editable-code
 
 //#-end-editable-code
 
 /*:
-     Add things that will happen when we change from State 2 to State 3!
+     Add things that will happen when we reach State 3!
 */
 //#-hidden-code
 }
@@ -72,7 +75,7 @@ func state3() {
 //#-end-hidden-code
 // enter your code here!
 //#-code-completion(everything, hide)
-//#-code-completion(identifier, show, circleFaster(), launchSlower(), hideAim(), blinkTarget(), stopOrbs())
+//#-code-completion(identifier, show, circleFaster(), launchSlower(), hideAim(), blinkTarget(), invertDirection(), stopOrbs())
 //#-editable-code
 
 //#-end-editable-code
