@@ -6,8 +6,11 @@
  
  **Memorize** the sequence of inputs given. They will be either purple 🟣 or white ⚪️. Then, the initial state will be chosen.
  
- After that, starting at the **initial state**, touch on **every State** you transition to until you go through all the input sequence. If you touch all in the right order, you win 🏆!
+ After that, starting at the **initial state**, touch on **every State** you transition to until you go through all the input sequence.
+ If you touch all in the right order, you win 🏆!
  
+ - Note:
+  This game works because of the **deterministic** property of this FSM. That means that if start at a given **initial State**, if we run the **same input sequence**, we will always arrive at the same **final State**.
  
  * Experiment:
  Let's start! Choose the number of inputs that you will try to memorize!

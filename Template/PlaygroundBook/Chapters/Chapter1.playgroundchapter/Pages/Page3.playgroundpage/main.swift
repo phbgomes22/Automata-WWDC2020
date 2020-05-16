@@ -2,18 +2,18 @@
 
  # Wielding the FSM Power 🤖!
  
- A common application for FSM are **games**! They can be used to model how enemies will act, how the game mode will change, and even dialogues!
+ A common application for FSM are **Games**! They can be used to model how enemies will act, how the game mode will change, and even dialogues!
  
  
- **Now**, let's try that out ourselves playing a game 🕹!
+ ## **Now**, let's try that out playing a game 🕹!
+ 
  
  In our game, each phase is represented by a State.
  
  We move to the next State by getting the ball to hit its target. To do so, we need to launch it at the right time, while avoiding to collide with the dark Orbs ⚫️.
  
   * Experiment:
-  We can define what changes between phases by adding functions bellow! After that, run the code to see the changes!
- 
+  We can define what changes will happen between phases by adding functions bellow! That way, they will be included in the FSM! After that, run the code to play the game!
  
 */
 
