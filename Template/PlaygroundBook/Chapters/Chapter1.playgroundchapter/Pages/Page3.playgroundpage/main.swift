@@ -1,6 +1,6 @@
 /*:
 
- # Weilding FSM Power 🤖!
+ # Wielding the FSM Power 🤖!
  
  A common application for FSM are **games**! They can be used to model how enemies will act, how the game mode will change, and even dialogues!
  
@@ -70,17 +70,21 @@ public func state2() {
     
 //#-end-hidden-code
 /*:
-     Add things that will happen when we go to State 2! You can make the game easier, or harder!
+ * Callout(State 2!):
+ Add the changes that will happen when we go to State 2!
+ You can make the game easier, or harder!
 */
-// enter your code here!
+// add your code to State 2 here!
 //#-code-completion(everything, hide)
-//#-code-completion(identifier, show, circleFaster(), launchSlower(), hideAim(), blinkTarget(), invertDirection(), stopOrbs())
+//#-code-completion(identifier, show, circleFaster(), launchSlower(), hideAim(), blinkTarget(), invertDirection())
 //#-editable-code
 
 //#-end-editable-code
 
 /*:
-     Add things that will happen when we reach State 3!
+ * Callout(State 3!):
+ Add the changes that will happen when we reach State 3!
+     
 */
 //#-hidden-code
 }
@@ -89,15 +93,15 @@ public func state2() {
 func state3() {
     
 //#-end-hidden-code
-// enter your code here!
+// add your code to State 3 here!
 //#-code-completion(everything, hide)
 //#-code-completion(identifier, show, circleFaster(), launchSlower(), hideAim(), blinkTarget(), invertDirection(), stopOrbs())
 //#-editable-code
 
 //#-end-editable-code
 /*:
-
-     Run the code to see how our game evolves!
+ * Experiment:
+ To try other combinations, change the functions and run the code again!
      
  */
 //#-hidden-code

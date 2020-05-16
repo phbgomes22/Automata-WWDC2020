@@ -103,23 +103,21 @@ public class GameScene2: SKScene {
                 let group = DispatchGroup()
                 group.enter()
                 
-                DispatchQueue.main.async() {
-                    self.run(playSound)
-                    
-                    if rand {
-                        self.shapeNodeLeft.run(scaleAction) {
-                            group.leave()
-                        }
-                        for line in self.coloredLines {
-                            line.animateLabel()
-                        }
-                    } else {
-                        self.shapeNodeRight.run(scaleAction) {
-                            group.leave()
-                        }
-                        for line in self.whiteLines {
-                            line.animateLabel()
-                        }
+                self.run(playSound)
+                
+                if rand {
+                    self.shapeNodeLeft.run(scaleAction) {
+                        group.leave()
+                    }
+                    for line in self.coloredLines {
+                        line.animateLabel()
+                    }
+                } else {
+                    self.shapeNodeRight.run(scaleAction) {
+                        group.leave()
+                    }
+                    for line in self.whiteLines {
+                        line.animateLabel()
                     }
                 }
                 
@@ -134,12 +132,11 @@ public class GameScene2: SKScene {
             
             let state = self.states[self.currentState]
             self.moveCamera(to: state!)
-            DispatchQueue.main.async {
-                state?.gotTouched(view: self.view!, completion: { (_) in })
-                self.shapeNodeFull.run(fadeOut)
-                self.shapeNodeLeft.run(fadeOut)
-                self.shapeNodeRight.run(fadeOut)
-            }
+            state?.gotTouched(view: self.view!, completion: { (_) in })
+            self.shapeNodeFull.run(fadeOut)
+            self.shapeNodeLeft.run(fadeOut)
+            self.shapeNodeRight.run(fadeOut)
+            
            
         }
     }
