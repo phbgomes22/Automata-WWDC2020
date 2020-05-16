@@ -2,7 +2,7 @@
 
  # Becoming the Machine 🤖!
  
- Now, lets **swich places**!
+ Now, let's **swich places**!
  
  A sequence of inputs, either purple 🟣 or white ⚪️, will be drawn. Then, the initial state will be chosen.
  Touch the States as you move to them, until you cover all the input.
