@@ -442,7 +442,7 @@ public class GameScene3: SKScene {
         print(dy)
         
         let moveAction = SKAction.applyForce(CGVector(dx: dx, dy: dy), duration: 0.1)
-        let scaleDown = SKAction.scale(by: 0.5, duration: durationBallMove/11)
+        let scaleDown = SKAction.scale(by: 0.5, duration: TimeInterval(2/speedBallMovement))
         ball.removeAllActions()
         ball.run(SKAction.group([moveAction, scaleDown])) {
             self.ball.removeFromParent()
