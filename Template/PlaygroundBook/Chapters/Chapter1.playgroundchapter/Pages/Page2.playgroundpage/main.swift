@@ -6,7 +6,7 @@
  
  **Memorize** the sequence of inputs given. They will be either purple 🟣 or white ⚪️. Then, the initial state will be chosen.
  
- After that, starting at the initial state, touch on **every State** you visit until you get to the final State. If you touch all in the right order, you win 🏆!
+ After that, starting at the **initial state**, touch on **every State** you visit until you get to the final State. If you touch all in the right order, you win 🏆!
  
  
  * Experiment:
