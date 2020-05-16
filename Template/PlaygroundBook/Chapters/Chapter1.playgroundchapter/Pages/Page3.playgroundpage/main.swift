@@ -1,11 +1,8 @@
-
-
 import SpriteKit
 import PlaygroundSupport
 import UIKit
 import BookAPI
 import BookCore
-
 
 
 
@@ -21,19 +18,32 @@ public func stopOrbs() {
 }
 
 public func circleFaster() {
-    scene.durationBallMove -= 5
+    if (scene.durationBallMove - 5.5 > 3.0) {
+        scene.durationBallMove -= 5.5
+    } else {
+        scene.durationBallMove = 3.0
+    }
 }
 
 public func launchSlower() {
-    scene.speedBallMovement -= 0.5
+    if (scene.durationBallMove - 0.35 > 0.1) {
+        scene.speedBallMovement -= 0.35
+    } else {
+        scene.speedBallMovement = 0.1
+    }
 }
 
 public func hideAim() {
     scene.isAimHidden = true
 }
 
+public isBlinking: Bool = false
+
 public func blinkTarget() {
-    scene.blinkTarget()
+    if(!isBlinking) {
+        scene.blinkTarget()
+        isBlinking = true
+    }
 }
 
 public func state2() {
