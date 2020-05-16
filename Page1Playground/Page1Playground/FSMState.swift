@@ -220,22 +220,21 @@ public class FSMState: SKShapeNode {
         }
         
         let sound = Sound.randomSound()
-        let actionSound = SKAction.playSoundFileNamed(sound, waitForCompletion: true)
-        let sequenceSound = SKAction.sequence([actionSound, SKAction.wait(forDuration: 0.75)])
-        self.run(sequenceSound) {
-           completion(true)
-        }
+        let actionSound = SKAction.playSoundFileNamed(sound, waitForCompletion: false)
+        self.run(actionSound)
         
         // move camera
         
         if let camera = self.scene!.camera {
-            let scale = SKAction.scaleX(by: 1.01, y: 1.01, duration: 0.3)
-            let move = SKAction.moveBy(x: 3.0, y: -2.0, duration: 0.3)
-            let scaleAction = SKAction.sequence([scale, scale.reversed()])
-            let moveAction = SKAction.sequence([move, move.reversed()])
+            let scale = SKAction.scaleX(by: 1.01, y: 1.01, duration: 0.4)
+            let move = SKAction.moveBy(x: 3.0, y: -2.0, duration: 0.4)
+            let scaleAction = SKAction.sequence([scale, scale.reversed(), .wait(forDuration: 0.5)])
+            let moveAction = SKAction.sequence([move, move.reversed(), .wait(forDuration: 0.5)])
             let groupCamera = SKAction.group([scaleAction, moveAction])
             
-            camera.run(groupCamera)
+            camera.run(groupCamera) {
+                  completion(true)
+               }
         } else {
             print("NO CAMERA")
         }

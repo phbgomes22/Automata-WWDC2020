@@ -12,10 +12,11 @@ public class GameScene: SKScene {
     public var lines : [FSMLine] = []
     
     public var isFirstTap: Bool = true
-    public var fsmString: String = "🐶🎱🤖🎱🤖" //🤖🎱🔥🎩🎩🐶
+    public var fsmString: String = "🐶🎱" //🤖🎱🔥🎩🎩🐶
     public var firstState: FSMLogic.StatesPG1 = FSMLogic.StatesPG1.third //FSMLogic.StatesPG1.first
     public var deltaY: CGFloat = -50.0
     public var expectedOutput = "BANANA"
+    public let backgroundSprite = SKSpriteNode()
     
     public var wordLabel: FSMOutput = FSMOutput(fontSize: 50)
     
@@ -34,12 +35,12 @@ public class GameScene: SKScene {
     }
     
     public func fireworks() {
-        
+        print("AAA")
         let sound = "winSound"
-        let playSound = SKAction.playSoundFileNamed(sound, waitForCompletion: true)
+        let playSound = SKAction.playSoundFileNamed(sound, waitForCompletion: false)
         
         self.run(playSound)
-
+        print("BBB")
         PlaygroundPage.current.assessmentStatus = .pass(message: " **Great!** When you're ready, go to the [**Next Page**](@next)!")
         
         DispatchQueue.global(qos: .userInteractive).async {
@@ -94,8 +95,6 @@ public class GameScene: SKScene {
     }
     
     public func setupBackground() {
-        let backgroundSprite = SKSpriteNode()
-        
         backgroundSprite.texture = SKTexture(imageNamed: "t1.jpg")
         backgroundSprite.color = UIColor(hexString: "#DCD6CA").withAlphaComponent(0.25)
         backgroundSprite.colorBlendFactor = 1
@@ -240,7 +239,7 @@ public class GameScene: SKScene {
     
     func startFSM() {
         self.automateFSM() { (ended) in
-            print(ended)
+          //  self.backgroundSprite.alpha = 1.0
             if(!ended) {
                 self.wordLabel.update(text: (self.wordLabel.text ?? "") + " 🙊?")
                 self.loseSound()
@@ -250,6 +249,7 @@ public class GameScene: SKScene {
                 self.loseSound()
             } else {
                 self.wordLabel.update(text: (self.wordLabel.text ?? "") + " 🐵!")
+                print("OK!")
                 self.fireworks()
                 
             }
@@ -310,21 +310,33 @@ public class GameScene: SKScene {
                     }
                 }
                 
-                let semaphore = DispatchGroup()
                 
-                semaphore.enter()
-                
-                DispatchQueue.main.async() {
-                    
-                    let output = currStateNode.getOutput()
-                    self.wordLabel.update(text: (self.wordLabel.text ?? "") + output)
+                print("OK1!")
+                let output = currStateNode.getOutput()
+                self.wordLabel.update(text: (self.wordLabel.text ?? "") + output)
+                print("OK2!")
+                if let lNode = nLineNode {
+                    let semaphore = DispatchGroup()
+                    semaphore.enter()
                     currStateNode.gotTouched(view: self.view!) { bool in
                         if(bool) {
-                            semaphore.leave()
+                            lNode.gotUsed(scene: self) {
+                                semaphore.leave()
+                                print("LEAVE 1")
+                            }
                         }
                     }
+                    semaphore.wait()
+                } else {
+                    print("ELSE")
+                    currStateNode.gotTouched(view: self.view!) { _ in
+                        print(completion)
+                        completion(bool)
+                    }
+                    return
                 }
-                semaphore.wait()
+                
+                print("Fim wait")
                 
                 // sets next state
                 guard let nextState = nState else { // if there is no next state, the line wont animate
@@ -334,18 +346,7 @@ public class GameScene: SKScene {
                     break
                 }
                 currentState = nextState
-                
-                guard let lNode = nLineNode else { print("WOW, something went very wrong!");break}
-                
-                let semaphore2 = DispatchGroup()
-                semaphore2.enter()
-                lNode.gotUsed(scene: self) {
-                    semaphore2.leave()
-                }
-                
-                
-                semaphore2.wait()
-                
+                print("Proximo")
             }
             
             completion(bool)

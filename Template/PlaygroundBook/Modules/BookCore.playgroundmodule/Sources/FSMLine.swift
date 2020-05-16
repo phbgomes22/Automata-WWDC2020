@@ -96,18 +96,18 @@ public class FSMLine: SKSpriteNode {
     
     public func gotUsed(scene: SKScene, completion: @escaping()->()) {
         
-        let action = SKAction.scaleX(by: 1.02, y: 1.02, duration: 0.2)
-        let seq = SKAction.sequence([action, action.reversed(), SKAction.wait(forDuration: 0.4)])
+        let action = SKAction.scaleX(by: 1.02, y: 1.02, duration: 0.3)
+        let seq = SKAction.sequence([action, action.reversed(), SKAction.wait(forDuration: 0.5)])
         
-        let fade = SKAction.fadeAlpha(by: 10.0, duration: 0.2)
+        let fade = SKAction.fadeAlpha(by: 10.0, duration: 0.4)
         let group = SKAction.group([seq, .sequence([fade, fade.reversed()])])
         
-        self.glowBody.run(group) {
+        self.glowBody.run(group)
+        self.body.run(seq) {
             completion()
         }
         
     }
-    
     
     private func setDraw(start: CGPoint, end: CGPoint, dx1: CGFloat, dy1: CGFloat, dx2: CGFloat, dy2: CGFloat, headSize: CGFloat) {
         let arrow = UIBezierPath()

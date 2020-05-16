@@ -12,10 +12,11 @@ public class GameScene: SKScene {
     public var lines : [FSMLine] = []
     
     public var isFirstTap: Bool = true
-    public var fsmString: String = "🐶🎱🤖🎱🤖" //🤖🎱🔥🎩🎩🐶
+    public var fsmString: String = "🐶🎱" //🤖🎱🔥🎩🎩🐶
     public var firstState: FSMLogic.StatesPG1 = FSMLogic.StatesPG1.third //FSMLogic.StatesPG1.first
     public var deltaY: CGFloat = -50.0
     public var expectedOutput = "BANANA"
+    public let backgroundSprite = SKSpriteNode()
     
     public var wordLabel: FSMOutput = FSMOutput(fontSize: 50)
     
@@ -34,14 +35,14 @@ public class GameScene: SKScene {
     }
     
     public func fireworks() {
-        
+        print("AAA")
         let sound = "winSound"
-        let playSound = SKAction.playSoundFileNamed(sound, waitForCompletion: true)
-        DispatchQueue.main.async {
-            self.run(playSound)
-
-          //  PlaygroundPage.current.assessmentStatus = .pass(message: " **Great!** When you're ready, go to the [**Next Page**](@next)!")
-        }
+        let playSound = SKAction.playSoundFileNamed(sound, waitForCompletion: false)
+        
+        self.run(playSound)
+        print("BBB")
+     //   PlaygroundPage.current.assessmentStatus = .pass(message: " **Great!** When you're ready, go to the [**Next Page**](@next)!")
+        
         DispatchQueue.global(qos: .userInteractive).async {
             
             var arrayFireworks = [CGPoint(x: -200.0, y: 300.0),
@@ -88,15 +89,14 @@ public class GameScene: SKScene {
     public func loseSound() {
         let sound = "loseSound"
         let playSound = SKAction.playSoundFileNamed(sound, waitForCompletion: true)
-        DispatchQueue.main.async {
-            self.run(playSound)
-        }
+        
+        self.run(playSound)
+        
     }
     
     public func setupBackground() {
-        let backgroundSprite = SKSpriteNode()
         backgroundSprite.texture = SKTexture(imageNamed: "t1.jpg")
-        backgroundSprite.alpha = 0.25
+        backgroundSprite.color = UIColor(hexString: "#DCD6CA").withAlphaComponent(0.25)
         backgroundSprite.colorBlendFactor = 1
         backgroundSprite.size = CGSize(width: 1400*1.5, height: 980*1.5)
         backgroundSprite.position = CGPoint(x: 0.0, y: -100.0)
@@ -238,8 +238,8 @@ public class GameScene: SKScene {
     }
     
     func startFSM() {
-        self.automateFSM(delay: 0) { (ended) in
-            print(ended)
+        self.automateFSM() { (ended) in
+          //  self.backgroundSprite.alpha = 1.0
             if(!ended) {
                 self.wordLabel.update(text: (self.wordLabel.text ?? "") + " 🙊?")
                 self.loseSound()
@@ -249,9 +249,9 @@ public class GameScene: SKScene {
                 self.loseSound()
             } else {
                 self.wordLabel.update(text: (self.wordLabel.text ?? "") + " 🐵!")
-                DispatchQueue.main.async {
-                    self.fireworks()
-                }
+                print("OK!")
+                self.fireworks()
+                
             }
         }
     }
@@ -266,9 +266,9 @@ public class GameScene: SKScene {
     }
     
     
-    public func automateFSM(delay: Int, completion: @escaping (_ ended: Bool) -> ()) {
+    public func automateFSM(completion: @escaping (_ ended: Bool) -> ()) {
         
-        DispatchQueue.global(qos: .userInteractive).asyncAfter(deadline: .now() + .seconds(delay)) {
+        DispatchQueue.global(qos: .userInteractive).async() {
             var bool = true
             
             var currentState = self.firstState
@@ -310,21 +310,33 @@ public class GameScene: SKScene {
                     }
                 }
                 
-                let semaphore = DispatchGroup()
                 
-                semaphore.enter()
-                
-                DispatchQueue.main.asyncAfter(deadline: .now()) {
-                    
-                    let output = currStateNode.getOutput()
-                    self.wordLabel.update(text: (self.wordLabel.text ?? "") + output)
+                print("OK1!")
+                let output = currStateNode.getOutput()
+                self.wordLabel.update(text: (self.wordLabel.text ?? "") + output)
+                print("OK2!")
+                if let lNode = nLineNode {
+                    let semaphore = DispatchGroup()
+                    semaphore.enter()
                     currStateNode.gotTouched(view: self.view!) { bool in
                         if(bool) {
-                            semaphore.leave()
+                            lNode.gotUsed(scene: self) {
+                                semaphore.leave()
+                                print("LEAVE 1")
+                            }
                         }
                     }
+                    semaphore.wait()
+                } else {
+                    print("ELSE")
+                    currStateNode.gotTouched(view: self.view!) { _ in
+                        print(completion)
+                        completion(bool)
+                    }
+                    return
                 }
-                semaphore.wait()
+                
+                print("Fim wait")
                 
                 // sets next state
                 guard let nextState = nState else { // if there is no next state, the line wont animate
@@ -334,19 +346,7 @@ public class GameScene: SKScene {
                     break
                 }
                 currentState = nextState
-                
-                guard let lNode = nLineNode else { print("WOW, something went very wrong!");break}
-                
-                let semaphore2 = DispatchGroup()
-                semaphore2.enter()
-                DispatchQueue.main.async {
-                    lNode.gotUsed(scene: self) {
-                        semaphore2.leave()
-                    }
-                }
-                
-                semaphore2.wait()
-                
+                print("Proximo")
             }
             
             completion(bool)

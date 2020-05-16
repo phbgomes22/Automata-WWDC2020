@@ -96,21 +96,16 @@ public class FSMLine: SKSpriteNode {
     
     public func gotUsed(scene: SKScene, completion: @escaping()->()) {
         
-        let action = SKAction.scaleX(by: 1.02, y: 1.02, duration: 0.2)
-        let seq = SKAction.sequence([action, action.reversed(), SKAction.wait(forDuration: 0.4)])
+        let action = SKAction.scaleX(by: 1.02, y: 1.02, duration: 0.3)
+        let seq = SKAction.sequence([action, action.reversed(), SKAction.wait(forDuration: 0.5)])
         
-        let fade = SKAction.fadeAlpha(by: 10.0, duration: 0.2)
+        let fade = SKAction.fadeAlpha(by: 10.0, duration: 0.4)
         let group = SKAction.group([seq, .sequence([fade, fade.reversed()])])
         
         self.glowBody.run(group)
         self.body.run(seq) {
             completion()
         }
-        
-        
-        let sound = Sound.lineNote
-        let playSound = SKAction.playSoundFileNamed(sound, waitForCompletion: true)
-        self.run(playSound)
         
     }
     
