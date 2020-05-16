@@ -12,10 +12,12 @@ import SpriteKit
 import UIKit
 import PlaygroundSupport
 import GameplayKit
+import AVFoundation
 
 
 public class GameScene3: SKScene {
     
+    public var backgroundPlayer: AVAudioPlayer!
     public var states : [FSMState] = []
     public var lines : [FSMLine] = []
     public var blackHoles : [FSMState] = []
@@ -87,7 +89,7 @@ public class GameScene3: SKScene {
         self.prepareSound()
         self.setParticles()
         self.setupBoard()
-        //self.setSound()
+    //    self.setSound()
         self.setupBackground()
         self.setEndNode()
         self.ballBase()
@@ -359,12 +361,20 @@ public class GameScene3: SKScene {
     
     public func setSound() {
         
-        let sound = "backgroundSoung.mp3"
-        let node = SKAudioNode(fileNamed: sound)
-        self.addChild(node)
-        node.run(.play())
+        let sound = "Thinking_About_It.mp3"
         
+        let path = Bundle.main.path(forResource: sound, ofType:nil)!
+        let url = URL(fileURLWithPath: path)
+        
+        do {
+            backgroundPlayer = try AVAudioPlayer(contentsOf: url)
+            backgroundPlayer.volume = 0.4
+            backgroundPlayer?.play()
+        } catch {
+            // couldn't load file :(
+        }
     }
+    
     
     public func moveCamera() {
         if let camera = self.scene!.camera {

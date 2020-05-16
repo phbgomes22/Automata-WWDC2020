@@ -12,7 +12,7 @@
  We move to the next State by getting the ball to hit its target. To do so, we need to launch it at the right time, while avoiding to collide with the dark Orbs ⚫️.
  
   * Experiment:
-  We can define what changes between phases by adding functions bellow!
+  We can define what changes between phases by adding functions bellow! After that, run the code to see the changes!
  
  
 */

@@ -6,16 +6,17 @@
 //
 #warning("DONT REMOVE LIVEVIEWCONTROLLER")
 import SpriteKit
-import BookCore
 import UIKit
 import GameplayKit
 import PlaygroundSupport
+import AVFoundation
 
 
 public class LiveView1: SKScene {
     
     private var states : [FSMState] = []
     private var lines : [FSMLine] = []
+    public var backgroundPlayer: AVAudioPlayer!
     
     private var isFirstTap: Bool = true
     private var deltaY: CGFloat = -50.0
@@ -28,7 +29,26 @@ public class LiveView1: SKScene {
         self.setParticles()
         self.setupBoard()
         self.setupBackground()
+        self.setSound()
     }
+    
+    public func setSound() {
+           
+       let sound = "Thinking_About_It.mp3"
+       
+       let path = Bundle.main.path(forResource: sound, ofType:nil)!
+       let url = URL(fileURLWithPath: path)
+
+       do {
+           backgroundPlayer = try AVAudioPlayer(contentsOf: url)
+           backgroundPlayer.volume = 0.4
+           backgroundPlayer?.play()
+           backgroundPlayer.numberOfLoops = -1
+       } catch {
+           // couldn't load file :(
+       }
+       
+   }
    
     private func setupBackground() {
         let backgroundSprite = SKSpriteNode()

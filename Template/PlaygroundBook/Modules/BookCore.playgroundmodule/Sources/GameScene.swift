@@ -4,7 +4,7 @@ import SpriteKit
 import UIKit
 import PlaygroundSupport
 import GameplayKit
-
+import AVFoundation
 
 public class GameScene: SKScene {
     
@@ -17,6 +17,7 @@ public class GameScene: SKScene {
     public var deltaY: CGFloat = -50.0
     public var expectedOutput = "BANANA"
     public let backgroundSprite = SKSpriteNode()
+    public var backgroundPlayer: AVAudioPlayer!
     
     public var wordLabel: FSMOutput = FSMOutput(fontSize: 50)
     
@@ -26,7 +27,7 @@ public class GameScene: SKScene {
         self.setParticles()
         self.setupBoard()
         self.setWordLabel()
-        //self.setSound()
+      //  self.setSound()
         self.setupBackground()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
@@ -111,10 +112,18 @@ public class GameScene: SKScene {
     
     public func setSound() {
         
-        let sound = "backgroundSoung.mp3"
-        let node = SKAudioNode(fileNamed: sound)
-        self.addChild(node)
-        node.run(.play())
+        let sound = "Thinking_About_It.mp3"
+        
+        let path = Bundle.main.path(forResource: sound, ofType:nil)!
+        let url = URL(fileURLWithPath: path)
+
+        do {
+            backgroundPlayer = try AVAudioPlayer(contentsOf: url)
+            backgroundPlayer.volume = 0.4
+            backgroundPlayer?.play()
+        } catch {
+            // couldn't load file :(
+        }
         
     }
     

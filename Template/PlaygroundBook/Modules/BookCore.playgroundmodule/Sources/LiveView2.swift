@@ -3,6 +3,7 @@ import SpriteKit
 import UIKit
 import GameplayKit
 import PlaygroundSupport
+import AVFoundation
 
 public class LiveView2: SKScene {
     
@@ -19,6 +20,7 @@ public class LiveView2: SKScene {
     public var backgroundSprite = SKSpriteNode()
     public var shapeNodeLeft = SKShapeNode()
     public var shapeNodeRight = SKShapeNode()
+    public var backgroundPlayer: AVAudioPlayer!
     
     // THIS WILL CHANGE
     public var numberOfMoves: Int = 1
@@ -31,7 +33,7 @@ public class LiveView2: SKScene {
         self.backgroundColor = UIColor(hexString: "#E4DED3")
         self.setParticles()
         self.setupBoard()
-        //self.setSound()
+        self.setSound()
         self.setupBackground()
         
        
@@ -57,10 +59,19 @@ public class LiveView2: SKScene {
     
     public func setSound() {
         
-        let sound = "backgroundSoung.mp3"
-        let node = SKAudioNode(fileNamed: sound)
-        self.addChild(node)
-        node.run(.play())
+        let sound = "Thinking_About_It.mp3"
+        
+        let path = Bundle.main.path(forResource: sound, ofType:nil)!
+        let url = URL(fileURLWithPath: path)
+        
+        do {
+            backgroundPlayer = try AVAudioPlayer(contentsOf: url)
+            backgroundPlayer.volume = 0.4
+            backgroundPlayer?.play()
+            backgroundPlayer.numberOfLoops = -1
+        } catch {
+            // couldn't load file :(
+        }
         
     }
     

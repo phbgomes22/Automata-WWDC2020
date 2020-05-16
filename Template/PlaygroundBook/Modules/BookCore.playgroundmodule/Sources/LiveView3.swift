@@ -10,10 +10,12 @@ import SpriteKit
 import UIKit
 import PlaygroundSupport
 import GameplayKit
+import AVFoundation
 
 
 public class LiveView3: SKScene {
     
+    public var backgroundPlayer: AVAudioPlayer!
     public var states : [FSMState] = []
     public var lines : [FSMLine] = []
     
@@ -47,7 +49,7 @@ public class LiveView3: SKScene {
         self.backgroundColor = UIColor(hexString: "#E4DED3")
         self.setParticles()
         self.setupBoard()
-        //self.setSound()
+        self.setSound()
         self.setupBackground()
         self.ballBase()
         self.setupBall()
@@ -146,12 +148,21 @@ public class LiveView3: SKScene {
     
     public func setSound() {
         
-        let sound = "backgroundSoung.mp3"
-        let node = SKAudioNode(fileNamed: sound)
-        self.addChild(node)
-        node.run(.play())
+        let sound = "Thinking_About_It.mp3"
         
+        let path = Bundle.main.path(forResource: sound, ofType:nil)!
+        let url = URL(fileURLWithPath: path)
+        
+        do {
+            backgroundPlayer = try AVAudioPlayer(contentsOf: url)
+            backgroundPlayer.volume = 0.4
+            backgroundPlayer?.play()
+            backgroundPlayer.numberOfLoops = -1
+        } catch {
+            // couldn't load file :(
+        }
     }
+    
     
     public func setParticles() {
         if let rp = SKEmitterNode(fileNamed: "ParticlePG1.sks") {

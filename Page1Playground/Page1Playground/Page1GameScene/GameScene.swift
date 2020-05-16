@@ -12,7 +12,7 @@ public class GameScene: SKScene {
     public var lines : [FSMLine] = []
     
     public var isFirstTap: Bool = true
-    public var fsmString: String = "🐶🎱🤖🎱🤖🎱" //🤖🎱🔥🎩🎩🐶
+    public var fsmString: String = "🐶🎱🤖" //🤖🎱🔥🎩🎩🐶
     public var firstState: FSMLogic.StatesPG1 = FSMLogic.StatesPG1.third //FSMLogic.StatesPG1.first
     public var deltaY: CGFloat = -50.0
     public var expectedOutput = "BANANA"

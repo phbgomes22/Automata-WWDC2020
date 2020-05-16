@@ -9,9 +9,11 @@ import SpriteKit
 import UIKit
 import GameplayKit
 import PlaygroundSupport
+import AVFoundation
 
 public class GameScene2: SKScene {
     
+    public var backgroundPlayer: AVAudioPlayer!
     public var states : [FSMLogic.StatesPG2 : FSMState] = [:]
     public var lines : [FSMLine] = []
     public var whiteLines: [FSMLine] = []
@@ -39,7 +41,7 @@ public class GameScene2: SKScene {
         self.backgroundColor = UIColor(hexString: "#E4DED3")
         self.setParticles()
         self.setupBoard()
-        //self.setSound()
+       // self.setSound()
         self.setupBackground()
         
         if numberOfMoves > 0 {
@@ -260,12 +262,20 @@ public class GameScene2: SKScene {
     
     public func setSound() {
         
-        let sound = "backgroundSoung.mp3"
-        let node = SKAudioNode(fileNamed: sound)
-        self.addChild(node)
-        node.run(.play())
+        let sound = "Thinking_About_It.mp3"
         
+        let path = Bundle.main.path(forResource: sound, ofType:nil)!
+        let url = URL(fileURLWithPath: path)
+        
+        do {
+            backgroundPlayer = try AVAudioPlayer(contentsOf: url)
+            backgroundPlayer.volume = 0.4
+            backgroundPlayer?.play()
+        } catch {
+            // couldn't load file :(
+        }
     }
+    
     
     public func setupBoard() {
         self.setupStates()
