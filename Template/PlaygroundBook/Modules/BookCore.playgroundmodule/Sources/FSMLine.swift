@@ -102,15 +102,9 @@ public class FSMLine: SKSpriteNode {
         let fade = SKAction.fadeAlpha(by: 10.0, duration: 0.2)
         let group = SKAction.group([seq, .sequence([fade, fade.reversed()])])
         
-        self.glowBody.run(group)
-        self.body.run(seq) {
+        self.glowBody.run(group) {
             completion()
         }
-        
-        
-        let sound = Sound.lineNote
-        let playSound = SKAction.playSoundFileNamed(sound, waitForCompletion: true)
-        self.run(playSound)
         
     }
     

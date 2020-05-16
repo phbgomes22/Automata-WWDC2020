@@ -339,11 +339,10 @@ public class GameScene: SKScene {
                 
                 let semaphore2 = DispatchGroup()
                 semaphore2.enter()
-                DispatchQueue.main.async {
-                    lNode.gotUsed(scene: self) {
-                        semaphore2.leave()
-                    }
+                lNode.gotUsed(scene: self) {
+                    semaphore2.leave()
                 }
+                
                 
                 semaphore2.wait()
                 

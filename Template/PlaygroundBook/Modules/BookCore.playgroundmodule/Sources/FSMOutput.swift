@@ -47,10 +47,8 @@ public class FSMOutput: SKLabelNode {
     }
     
     public func update(text: String) {
-        DispatchQueue.main.async {
-            self.text = text
-            self.updateBackground()
-        }
+        self.text = text
+        self.updateBackground()
     }
     
     public func updateBackground() {
