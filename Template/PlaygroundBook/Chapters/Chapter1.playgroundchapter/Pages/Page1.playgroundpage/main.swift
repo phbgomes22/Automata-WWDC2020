@@ -1,6 +1,6 @@
 /*:
 
- # Welcome to the Swift Machines 🤖!
+ # Welcome to Automata 🤖!
  
  
  "**Finite State Machines**" (FSM) is a daunting name. But don't be misled by it. They are are very fun to toy with, and are commonly used to model all sorts of behaviors.
@@ -8,7 +8,7 @@
  
   They work as such: starting from the initial **State**, the FSM will choose the next State it will **transition to** according to the **input** it receives.
  
- __States__ are usually represented by circles. They can have an output, that we will represent by the symbol on its side.
+ __States__ are usually represented by circles. They can have an output, that we will represent by the symbol on its side. A FSM can only be in one State at a time.
  
  ![State](smallerState.png)
  

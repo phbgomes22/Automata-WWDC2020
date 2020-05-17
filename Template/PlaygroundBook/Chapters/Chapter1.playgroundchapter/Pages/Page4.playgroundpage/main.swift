@@ -2,7 +2,7 @@
 
  # Credits 🤖!
  
- A special thanks to the artists whose work appeared in Swift Machines 🤖!
+ A special thanks to the artists whose work appeared in Automata 🤖!
  
  ### Game sounds
  
