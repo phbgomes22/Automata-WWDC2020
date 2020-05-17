@@ -41,12 +41,10 @@ public class GameScene2: SKScene {
         self.backgroundColor = UIColor(hexString: "#E4DED3")
         self.setParticles()
         self.setupBoard()
-       // self.setSound()
+        self.setSound()
         self.setupBackground()
+        self.drawDrafter()
         
-        if numberOfMoves > 0 {
-            self.draftArray(delay: 2)
-        }
     }
     
     public func drawDrafter() {
@@ -86,9 +84,15 @@ public class GameScene2: SKScene {
         
     }
     
-    public func draftArray(delay: Int) {
-        
-        drawDrafter()
+    public func draftArray() {
+
+        self.shapeNodeFull.alpha = 1.0
+        self.shapeNodeLeft.alpha = 0.3
+        self.shapeNodeRight.alpha = 0.3
+        currentMove = 0
+        for state in states {
+            state.value.alpha = 1.0
+        }
         
         let alphaHigher = SKAction.fadeAlpha(to: 1.0, duration: 0.1)
         let alphaLower = SKAction.fadeAlpha(to: 0.3, duration: 0.1)
@@ -98,7 +102,7 @@ public class GameScene2: SKScene {
         let playSound = SKAction.playSoundFileNamed(Sound.memorize, waitForCompletion: true)
         
         DispatchQueue.global(qos: .userInteractive).async() {
-            sleep(UInt32(delay))
+            sleep(1)
             for _ in 1...self.numberOfMoves {
                 let rand = Bool.random()
                 self.randomArrays.append(rand)
@@ -271,6 +275,7 @@ public class GameScene2: SKScene {
             backgroundPlayer = try AVAudioPlayer(contentsOf: url)
             backgroundPlayer.volume = 0.4
             backgroundPlayer?.play()
+            backgroundPlayer.numberOfLoops = -1
         } catch {
             // couldn't load file :(
         }

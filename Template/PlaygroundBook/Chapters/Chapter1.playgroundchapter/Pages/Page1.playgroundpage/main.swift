@@ -36,6 +36,30 @@ import UIKit
 import BookAPI
 import BookCore
 
+
+// *** LIVE VIEW CODE
+
+class MessageHandler: PlaygroundRemoteLiveViewProxyDelegate {
+
+    func remoteLiveViewProxy(
+        _ remoteLiveViewProxy: PlaygroundRemoteLiveViewProxy,
+        received message: PlaygroundValue
+    ) {
+        print("Received a message from the always-on live view", message)
+    }
+
+    func remoteLiveViewProxyConnectionClosed(_ remoteLiveViewProxy: PlaygroundRemoteLiveViewProxy) {}
+}
+
+guard let remoteView = PlaygroundPage.current.liveView as? PlaygroundRemoteLiveViewProxy else {
+    fatalError("Always-on live view not configured in this page's LiveView.swift.")
+}
+
+let handler = MessageHandler()
+remoteView.delegate = handler
+
+// *** LIVE VIEW CODE
+
 public var answer = ""
 
 /// Adds an emoji as an input to the FSM!
@@ -91,31 +115,12 @@ add(input: 🔥)
 
 // Load the SKScene from 'GameScene.sks'
 
-let sceneView = SKView(frame: CGRect(x:0 , y:0, width: 640, height: 880))
-if let scene = GameScene(fileNamed: "GameScene") {
-    // Set the scale mode to scale to fit the window
-    scene.scaleMode = .aspectFill
-    
-    // Present the scene
-    sceneView.presentScene(scene)
-
-    scene.fsmString = answer
-
-    scene.firstState = FSMLogic.StatesPG1.second
-
-    if chosenState == "A" {
-        scene.firstState = FSMLogic.StatesPG1.second
-    } else if chosenState == "B" {
-        scene.firstState = FSMLogic.StatesPG1.third
-    } else if chosenState == "N" {
-       scene.firstState = FSMLogic.StatesPG1.first
-    }
-   
-}
 
 
+// CODIGO FERRAZ
+remoteView.send(.array([.string(answer), .string(chosenState)]))
+// CODIGO FERRAZ
 
-PlaygroundPage.current.liveView = sceneView
 /*
 add(input: 🐶)
 add(input: 🎱)
@@ -124,7 +129,6 @@ add(input: 🎱)
 add(input: 🤖)
  
 
- PlaygroundPage.current.assessmentStatus = .pass(message: " **Great!** When you're ready, go to the [**Next Page**](@next)!")
  */
 
 //#-end-hidden-code

@@ -27,12 +27,8 @@ public class GameScene: SKScene {
         self.setParticles()
         self.setupBoard()
         self.setWordLabel()
-      //  self.setSound()
+        self.setSound()
         self.setupBackground()
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
-            self.startFSM()
-        }
     }
     
     public func fireworks() {
@@ -121,6 +117,7 @@ public class GameScene: SKScene {
             backgroundPlayer = try AVAudioPlayer(contentsOf: url)
             backgroundPlayer.volume = 0.4
             backgroundPlayer?.play()
+            backgroundPlayer.numberOfLoops = -1
         } catch {
             // couldn't load file :(
         }
@@ -247,6 +244,8 @@ public class GameScene: SKScene {
     }
     
     func startFSM() {
+        
+        self.wordLabel.clear()
         self.automateFSM() { (ended) in
           //  self.backgroundSprite.alpha = 1.0
             if(!ended) {

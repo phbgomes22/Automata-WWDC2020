@@ -182,21 +182,51 @@ public class LiveView1: SKScene {
 
 
 
-public class LiveView1Controller: UIViewController {
-
+public class LiveView1Controller: LiveViewController {
+    
+    var gameScene: GameScene!
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        let sceneView = SKView(frame: CGRect(x:0 , y:0, width: 640, height: 580))
-        if let scene = LiveView1(fileNamed: "LiveView1") {
+        let sceneView = SKView(frame: CGRect(x:0 , y:0, width: 640, height: 880))
+        if let scene = GameScene(fileNamed: "GameScene") {
             // Set the scale mode to scale to fit the window
             scene.scaleMode = .aspectFill
             
             // Present the scene
             sceneView.presentScene(scene)
-            
+
+            self.gameScene = scene
         }
+
         self.view = sceneView
+    }
+    
+    public override func receive(_ message: PlaygroundValue) {
+        
+        var flags = 0
+        if case let PlaygroundValue.array(array) = message {
+            if case let PlaygroundValue.string(answer) = array[0] {
+                self.gameScene.fsmString = answer
+                flags += 1
+            }
+            if case let PlaygroundValue.string(chosenState) = array[1] {
+                flags += 1
+                if chosenState == "A" {
+                    self.gameScene.firstState = FSMLogic.StatesPG1.second
+                } else if chosenState == "B" {
+                    self.gameScene.firstState = FSMLogic.StatesPG1.third
+                } else if chosenState == "N" {
+                   self.gameScene.firstState = FSMLogic.StatesPG1.first
+                }
+            }
+        }
+        
+        if flags == 2 {
+            self.gameScene.startFSM()
+        }
+
     }
 
 }

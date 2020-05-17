@@ -247,21 +247,36 @@ public class LiveView2: SKScene {
 }
 
 
-public class LiveView2Controller: UIViewController {
+public class LiveView2Controller: LiveViewController {
 
+    var gameScene2: GameScene2!
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        let sceneView = SKView(frame: CGRect(x:0 , y:0, width: 640, height: 580))
-        if let scene = LiveView2(fileNamed: "LiveView2") {
+        let sceneView = SKView(frame: CGRect(x:0 , y:0, width: 640, height: 880))
+        if let scene = GameScene2(fileNamed: "GameScene2") {
             // Set the scale mode to scale to fit the window
             scene.scaleMode = .aspectFill
             
+            self.gameScene2 = scene
             // Present the scene
             sceneView.presentScene(scene)
-            
         }
         self.view = sceneView
     }
 
+    
+    public override func receive(_ message: PlaygroundValue) {
+        
+        var flags = 0
+        if case let PlaygroundValue.integer(moves) = message {
+            self.gameScene2.numberOfMoves = moves
+            flags += 1
+        }
+        
+        if flags == 1 {
+            self.gameScene2.draftArray()
+        }
+        
+    }
 }

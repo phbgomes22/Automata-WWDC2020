@@ -123,8 +123,8 @@ public class FSMState: SKShapeNode {
         if(forceField) {
             let forceField = SKFieldNode.springField()
             forceField.categoryBitMask = 1
-            forceField.strength = 5
-            forceField.region = SKRegion(radius: Float(1.5*self.radius))
+            forceField.strength = 20
+            forceField.region = SKRegion(radius: Float(1.6*self.radius))
             forceField.falloff = -1.0
             self.addChild(forceField)
         }

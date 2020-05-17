@@ -25,6 +25,30 @@ import BookAPI
 import BookCore
 
 
+// *** LIVE VIEW CODE
+
+class MessageHandler: PlaygroundRemoteLiveViewProxyDelegate {
+
+    func remoteLiveViewProxy(
+        _ remoteLiveViewProxy: PlaygroundRemoteLiveViewProxy,
+        received message: PlaygroundValue
+    ) {
+        print("Received a message from the always-on live view", message)
+    }
+
+    func remoteLiveViewProxyConnectionClosed(_ remoteLiveViewProxy: PlaygroundRemoteLiveViewProxy) {}
+}
+
+guard let remoteView = PlaygroundPage.current.liveView as? PlaygroundRemoteLiveViewProxy else {
+    fatalError("Always-on live view not configured in this page's LiveView.swift.")
+}
+
+let handler = MessageHandler()
+remoteView.delegate = handler
+
+// *** LIVE VIEW CODE
+
+
 //#-end-hidden-code
 
 //#-code-completion(everything, hide)
@@ -42,20 +66,6 @@ var movesToMemorize: Int = /*#-editable-code number of moves*/4/*#-end-editable-
 
 //#-hidden-code
 // Load the SKScene from 'GameScene.sks'
-
-let sceneView = SKView(frame: CGRect(x:0 , y:0, width: 640, height: 880))
-if let scene = GameScene2(fileNamed: "GameScene2") {
-    // Set the scale mode to scale to fit the window
-    scene.scaleMode = .aspectFill
-    scene.numberOfMoves = movesToMemorize
-    // Present the scene
-    sceneView.presentScene(scene)
-   
-}
-
-
-
-PlaygroundPage.current.liveView = sceneView
-
+remoteView.send(.integer(movesToMemorize))
 
 //#-end-hidden-code

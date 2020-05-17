@@ -56,6 +56,12 @@ public class FSMOutput: SKLabelNode {
         print("B")
     }
     
+    public func clear() {
+        self.text = ""
+        self.widthSize = 30.0
+        background.path = UIBezierPath(roundedRect: CGRect(x: -(self.widthSize)/2.0 , y: -20, width: self.widthSize, height: sizeFont + 20), cornerRadius: 10.0).cgPath
+    }
+    
     
     public func updateBackground(text: String) {
         
