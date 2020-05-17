@@ -6,7 +6,7 @@
  
  **Memorize** the sequence of inputs given. They will be either purple 🟣 or white ⚪️. Then, the initial state will be chosen.
  
- After that, starting at the **initial state**, touch on **every State** you transition to until you go through all the input sequence.
+ After that, starting at the **initial state**, touch **every State** you transition to until you go through all the input sequence.
  If you touch all in the right order, you win 🏆!
  
  - Note:

@@ -1,9 +1,9 @@
 /*:
 
- # Welcome to Automata 🤖!
+ # Finite State Machines (FSM) 🤖!
  
  
- "**Finite State Machines**" (FSM) is a daunting name. But don't be misled by it. They are are very fun to toy with, and are commonly used to model all sorts of behaviors.
+ "**Finite State Machines**", what a daunting name! But don't be misled by it. FSM are are very fun to toy with, and are commonly used to model all sorts of behaviors.
  
  
   They work as such: starting from the initial **State**, the FSM will choose the next State it will **transition to** according to the **input** it receives.
