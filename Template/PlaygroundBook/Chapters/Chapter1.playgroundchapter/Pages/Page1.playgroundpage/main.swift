@@ -1,6 +1,6 @@
 /*:
 
- # Welcome to State Machine 🤖!
+ # Welcome to the Swift Machines 🤖!
  
  
  "**Finite State Machines**" (FSM) is a daunting name. But don't be misled by it. They are are very fun to toy with, and are commonly used to model all sorts of behaviors.

@@ -29,9 +29,6 @@ public class GameScene: SKScene {
         //self.setSound()
         self.setupBackground()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
-            self.startFSM()
-        }
     }
     
     public func fireworks() {
@@ -99,7 +96,7 @@ public class GameScene: SKScene {
         backgroundSprite.color = UIColor(hexString: "#DCD6CA").withAlphaComponent(0.25)
         backgroundSprite.colorBlendFactor = 1
         backgroundSprite.size = CGSize(width: 1400*1.5, height: 980*1.5)
-        backgroundSprite.position = CGPoint(x: 0.0, y: -100.0)
+        backgroundSprite.position = CGPoint(x: 0.0, y: -350.0)
         backgroundSprite.zPosition = -100
         backgroundSprite.name = "background"
         self.addChild(backgroundSprite)
@@ -136,89 +133,49 @@ public class GameScene: SKScene {
     public func setupStates() {
         
         let state1 = FSMState(
-                        side: 75,
-                        position: CGPoint(x: -160, y: -50 + deltaY),
+                        side: 80,
+                        position: CGPoint(x: -100, y: 0.0),
                         name: "state1",
-                        style: .page1)
+                        style: .page2)
         self.addChild(state1)
-        state1.setOutput(text: "N", labelPos: CGPoint(x: -48, y: -68), rotate: 0.0)
+        state1.setOutput(text: "S", labelPos: CGPoint(x: -50, y: -70), rotate: 0.0)
         states.append(state1)
         
         let state2 = FSMState(
-                        side: 75,
-                        position: CGPoint(x: -40, y: 210 + deltaY),
+                        side: 80,
+                        position: CGPoint(x: 100, y: 0.0),
                         name: "state2",
-                        style: .page1)
+                        style: .page2)
         self.addChild(state2)
-        state2.setOutput(text: "A", labelPos: CGPoint(x: 46, y: 46), rotate: .pi)
+        state2.setOutput(text: "M", labelPos: CGPoint(x: 60, y: -60), rotate: .pi/2)
         states.append(state2)
-        
-        let state3 = FSMState(
-                        side: 75,
-                        position: CGPoint(x: 160, y: 50 + deltaY),
-                        name: "state3",
-                        style: .page1)
-               
-        self.addChild(state3)
-        state3.setOutput(text: "B", labelPos: CGPoint(x: 26, y: -82), rotate: .pi/3)
-        states.append(state3)
+
     }
     
     public func setupLines() {
         let line1 = FSMLine(
-                        from: states[0].edgePosition(at: CGFloat.pi/1.3),
+                        from: states[0].edgePosition(at: 0.0),
                         to: states[1].edgePosition(at: CGFloat.pi, lambdaRadius: 1.4),
-                        dx: 1.2,
-                        dy: 0.5, name: "line1",
-                        style: .page1)
+                        name: "line1",
+                        style: .page2)
         self.addChild(line1)
-        line1.setLabel(at: CGPoint(x: -210.0, y: 90.0 + deltaY), text: "🤖")
+       // line1.setLabel(at: CGPoint(x: -10.0, y: 20.0), text: "🤖")
         lines.append(line1)
         
+        
         let line2 = FSMLine(
-                        from: states[0].edgePosition(at: -CGFloat.pi/8),
-                        to: states[2].edgePosition(at: CGFloat.pi*1.35, lambdaRadius: 1.4),
-                        dx: -0.3,
-                        dy: 2.5, name: "line2",
-                        style: .page1)
+            from: states[1].edgePosition(at: -CGFloat.pi*0.7),
+            to: states[0].edgePosition(at: -CGFloat.pi*0.3, lambdaRadius: 1.4),
+                        dx: 0.0, dy: 3.0,
+                        name: "line2",
+                        style: .page2)
         self.addChild(line2)
-        line2.setLabel(at: CGPoint(x: 40.0, y: -90.0 + deltaY), text: "🔥")
+        //line2.setLabel(at: CGPoint(x: -10.0, y: 20.0), text: "🤖")
         lines.append(line2)
         
         
-        let line3 = FSMLine(
-                        from: states[1].edgePosition(at: -CGFloat.pi/2.3),
-                        to: states[0].edgePosition(at: CGFloat.pi/4, lambdaRadius: 1.4),
-                        dx: 1.2,
-                        dy: -0.3, name: "line3",
-                        style: .page1)
-        self.addChild(line3)
-        line3.setLabel(at: CGPoint(x: -30.0, y: 40.0 + deltaY), text: "🎱")
-        lines.append(line3)
-        
-        
-        let line4 = FSMLine(
-                        from: states[2].edgePosition(at: CGFloat.pi*0.9),
-                        to: states[1].edgePosition(at: -CGFloat.pi/8, lambdaRadius: 1.4),
-                        dx: 0.6,
-                        dy: 0.52, name: "line4",
-                        style: .page1)
-        self.addChild(line4)
-        line4.setLabel(at: CGPoint(x: 90.0, y: 125.0 + deltaY), text: "🐶")
-        lines.append(line4)
-        
-        
-        let line5 = FSMLine(
-                        from: states[2].edgePosition(at: CGFloat.pi*0.6),
-                        to: states[2].edgePosition(at: CGFloat.pi*0.1, lambdaRadius: 1.4),
-                        dx1: 0.9,  dy1: 7.0,
-                        dx2: 1.8,  dy2: 4.2,
-                        headSize: 15, name: "line5",
-                        style: .page1)
-        self.addChild(line5)
-        line5.setLabel(at: CGPoint(x: 225.0, y: 130.0 + deltaY), text: "🎩")
-        lines.append(line5)
-        
+        let cameraACtion = SKAction.scale(by: 0.8, duration: 0.3)
+        self.scene!.camera!.run(cameraACtion)
     }
     
     public func setParticles() {

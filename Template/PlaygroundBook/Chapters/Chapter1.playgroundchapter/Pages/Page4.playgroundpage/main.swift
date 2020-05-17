@@ -2,7 +2,7 @@
 
  # Credits 🤖!
  
- A special thanks to the artists whose work appeared in State Machine 🤖!
+ A special thanks to the artists whose work appeared in Swift Machines 🤖!
  
  ### Game sounds
  

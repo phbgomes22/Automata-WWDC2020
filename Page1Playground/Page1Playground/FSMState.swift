@@ -34,7 +34,7 @@ public class FSMState: SKShapeNode {
     
     private var arrayColorsPG2: [UIColor] = [UIColor(hexString: "#512c96"),
                                           UIColor(hexString: "#3c6f9c"),
-                                          UIColor(hexString: "#dd6892"),
+                                          UIColor(hexString: "#fa744f"),
                                           UIColor(hexString: "#f9c6ba")]
     
     private var arrayColorsPG3: [UIColor] = [UIColor(hexString: "#211c76"),

@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>ImageReference</key>
+	<string>capaPlayground.png</string>
 	<key>Version</key>
 	<string>7.0</string>
 	<key>ContentIdentifier</key>
@@ -15,7 +17,7 @@
 	<key>SwiftVersion</key>
 	<string>$(SWIFT_VERSION)</string>
 	<key>Name</key>
-	<string>Teste</string>
+	<string>Swift Machines</string>
 	<key>Chapters</key>
 	<array>
 		<string>Chapter1.playgroundchapter</string>

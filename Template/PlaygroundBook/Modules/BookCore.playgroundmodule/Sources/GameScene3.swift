@@ -559,7 +559,7 @@ public class GameScene3: SKScene {
         let playSound = SKAction.playSoundFileNamed(sound, waitForCompletion: true)
         
         self.run(playSound)
-        PlaygroundPage.current.assessmentStatus = .pass(message: " **Great!!** Thanks for playing! Hope you've enjoyed 🤖**State Machine!**")
+        PlaygroundPage.current.assessmentStatus = .pass(message: " **Great!!** Thanks for playing! Hope you've enjoyed **Swift Machines** 🤖")
         
         DispatchQueue.global(qos: .userInteractive).async {
             
