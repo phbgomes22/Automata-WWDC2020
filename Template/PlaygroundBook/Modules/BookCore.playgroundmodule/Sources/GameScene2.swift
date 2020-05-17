@@ -463,7 +463,6 @@ public class GameScene2: SKScene {
                 var rightMove: FSMLogic.StatesPG2?
                 if isFirstTap {
                     rightMove = currentState
-                    isFirstTap = false
                 }
                 else {
                     // checks the state that should be touched
@@ -488,6 +487,7 @@ public class GameScene2: SKScene {
                     endGame()
                     return
                 }
+                isFirstTap = false
                 
                 if currentMove == numberOfMoves {
                     self.endGame()
@@ -503,6 +503,11 @@ public class GameScene2: SKScene {
             fireworks()
         } else {
             loseSound()
+            if isFirstTap {
+                PlaygroundPage.current.assessmentStatus = .fail(hints: ["Remember to start at the initial State! Run the code to try again 😃!"], solution: nil)
+            } else {
+                PlaygroundPage.current.assessmentStatus = .fail(hints: ["That was not the right State to touch now! Run the code to try again 😃!"], solution: nil)
+            }
             let rightLastState = states[currentState]!
             rightLastState.gotTouched(view: self.view!, completion: { (bool) in  })
             
