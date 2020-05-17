@@ -38,6 +38,7 @@ import BookCore
 
 public var answer = ""
 
+/// Adds an emoji as an input to the FSM!
 public func add(input: String) {
     answer += input
 }

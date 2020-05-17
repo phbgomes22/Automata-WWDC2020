@@ -33,10 +33,11 @@ let scene = GameScene3(fileNamed: "GameScene3")!
 scene.scaleMode = .aspectFill
 // Present the scene
 
+/// Stops the orbs movement!
 public func stopOrbs() {
     scene.stopOrbs()
 }
-
+/// Makes the ball circle its path faster!
 public func circleFaster() {
     if (scene.durationBallMove - 5.5 > 3.0) {
         scene.durationBallMove -= 5.5
@@ -45,6 +46,7 @@ public func circleFaster() {
     }
 }
 
+/// Makes the ball movement to its target slower!
 public func launchSlower() {
     if (scene.durationBallMove - 0.3 > 0.25) {
         scene.speedBallMovement -= 0.3
@@ -53,18 +55,22 @@ public func launchSlower() {
     }
 }
 
+/// Hides the arrow that points to the target!
 public func hideAim() {
     scene.isAimHidden = true
 }
 
 public var isBlinking: Bool = false
 
+/// Makes the target appear and dissappear!
 public func blinkTarget() {
     if(!isBlinking) {
         scene.blinkTarget()
         isBlinking = true
     }
 }
+
+/// Inverts the direction that the ball moves!
 public func invertDirection() {
     scene.ballClockwise.toggle()
 }

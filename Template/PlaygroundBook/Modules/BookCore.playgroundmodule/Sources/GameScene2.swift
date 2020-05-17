@@ -236,7 +236,7 @@ public class GameScene2: SKScene {
         let fadeIn = SKAction.fadeAlpha(to: 1.0, duration: 0.3)
         let fadeOut = SKAction.fadeAlpha(to: 0.0, duration: 0.6)
         
-        mask.run(.sequence([fadeIn, fadeOut])) {
+        mask.run(.sequence([fadeIn, .wait(forDuration: 0.5), fadeOut])) {
             cropNode.removeAllChildren()
             cropNode.removeFromParent()
         }
