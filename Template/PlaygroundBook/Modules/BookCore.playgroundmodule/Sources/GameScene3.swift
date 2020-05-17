@@ -56,6 +56,8 @@ public class GameScene3: SKScene {
     
     public var ballClockwise: Bool = true
     
+    public var isBallSetUp: Bool = false
+    
     public var backgroundSprite: SKSpriteNode!
     
     public var endNode: SKShapeNode!
@@ -86,7 +88,6 @@ public class GameScene3: SKScene {
     override public func didMove(to view: SKView) {
         
         self.backgroundColor = UIColor(hexString: "#E4DED3")
-        self.prepareSound()
         self.setParticles()
         self.setupBoard()
     //    self.setSound()
@@ -102,15 +103,6 @@ public class GameScene3: SKScene {
     }
     
     // ADD THIS TO OTHERS TOO
-    public func prepareSound() {
-
-        let audio = SKAudioNode(fileNamed: "7b-a1")
-        audio.autoplayLooped = false
-        self.addChild(audio)
-        audio.run(SKAction.changeVolume(to: 0.0, duration: 0.0)) {
-            audio.removeFromParent()
-        }
-    }
  
     
     public func setHoles() {
@@ -250,7 +242,6 @@ public class GameScene3: SKScene {
     public func setupBall() {
         
         // ball
-        
         let radius: CGFloat = 11.0
         ball = SKShapeNode(circleOfRadius: radius)
         ball.position = CGPoint(x: 0.0, y:  -220.0)
@@ -299,6 +290,7 @@ public class GameScene3: SKScene {
         }
         
         ball.run(SKAction.repeatForever(move), withKey: "horizontalMove")
+        self.isBallSetUp = true
         
     }
     
@@ -445,7 +437,8 @@ public class GameScene3: SKScene {
             
             isFirstTap = false
         }
-        
+        if !isBallSetUp {return}
+        isBallSetUp = false
         let dx = -(ball.position.x - 0.0)*speedBallMovement
         let dy = -(ball.position.y - 20.0)*speedBallMovement
         print(dx)
@@ -454,6 +447,10 @@ public class GameScene3: SKScene {
         let moveAction = SKAction.applyForce(CGVector(dx: dx, dy: dy), duration: 0.1)
         let scaleDown = SKAction.scale(by: 0.5, duration: TimeInterval(2/speedBallMovement))
         ball.removeAllActions()
+        
+        let sound = "ballthrow"
+        let playSound = SKAction.playSoundFileNamed(sound, waitForCompletion: true)
+        self.run(playSound)
         ball.run(SKAction.group([moveAction, scaleDown])) {
             self.ball.removeFromParent()
             self.setupBall()

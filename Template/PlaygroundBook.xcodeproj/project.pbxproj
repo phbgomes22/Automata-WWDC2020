@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		42013CB724718E6E008C4EC7 /* ballthrow.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 42013CB624718E6E008C4EC7 /* ballthrow.mp3 */; };
 		4247AF0E2469D461004F7A1E /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 4247AF0C2469D461004F7A1E /* GameScene.sks */; };
 		4247AF1C2469D4A5004F7A1E /* Firework.sks in Resources */ = {isa = PBXBuildFile; fileRef = 4247AF0F2469D4A5004F7A1E /* Firework.sks */; };
 		4247AF1D2469D4A5004F7A1E /* 7b-a1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4247AF112469D4A5004F7A1E /* 7b-a1.wav */; };
@@ -167,6 +168,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		42013CB624718E6E008C4EC7 /* ballthrow.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ballthrow.mp3; sourceTree = "<group>"; };
 		4247AF0C2469D461004F7A1E /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 		4247AF0F2469D4A5004F7A1E /* Firework.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Firework.sks; sourceTree = "<group>"; };
 		4247AF112469D4A5004F7A1E /* 7b-a1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "7b-a1.wav"; sourceTree = "<group>"; };
@@ -493,6 +495,7 @@
 				5E086DCC2051DDAE004D8D25 /* LiveView.storyboard */,
 				5E551EC42371FC3F00784365 /* Assets.xcassets */,
 				42B5FD8A24703092009FE88B /* LiveView3.sks */,
+				42013CB624718E6E008C4EC7 /* ballthrow.mp3 */,
 				42F3C9AF2470606C00FBBEDC /* smallerState.png */,
 				42F3C9BD2470A58700FBBEDC /* LiveView4.sks */,
 			);
@@ -664,6 +667,7 @@
 				4247AF232469D4A5004F7A1E /* 3b-e1.wav in Resources */,
 				4295AC94246D9A1F002E7B95 /* GameScene3.sks in Resources */,
 				42B019BD2469B2D500A46158 /* LiveView1.sks in Resources */,
+				42013CB724718E6E008C4EC7 /* ballthrow.mp3 in Resources */,
 				4247AF1C2469D4A5004F7A1E /* Firework.sks in Resources */,
 				5EF2F97C2054B6E400191409 /* ManifestPlist.strings in Resources */,
 				4247AF1E2469D4A5004F7A1E /* 4b-f1.wav in Resources */,
