@@ -69,10 +69,8 @@ public class LiveView1: SKScene {
     }
     
     private func setupBoard() {
-        DispatchQueue.main.async() {
-            self.setupStates()
-            self.setupLines()
-        }
+        self.setupStates()
+        self.setupLines()
     }
     
     private func setupStates() {
