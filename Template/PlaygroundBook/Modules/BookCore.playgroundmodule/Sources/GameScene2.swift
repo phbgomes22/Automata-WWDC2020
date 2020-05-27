@@ -93,6 +93,9 @@ public class GameScene2: SKScene {
         for state in states {
             state.value.alpha = 1.0
         }
+        isFirstTap = true
+        isGameLost = false
+        self.randomArrays.removeAll()
         
         let alphaHigher = SKAction.fadeAlpha(to: 1.0, duration: 0.1)
         let alphaLower = SKAction.fadeAlpha(to: 0.3, duration: 0.1)

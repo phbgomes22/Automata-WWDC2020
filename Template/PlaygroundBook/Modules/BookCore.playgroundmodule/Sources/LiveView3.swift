@@ -35,6 +35,8 @@ public class LiveView3: SKScene {
     
     public var ballClockwise: Bool = true
     
+    public var isBallSetUp: Bool = false
+    
     public var backgroundSprite: SKSpriteNode!
     
     // MARK: - Functions
@@ -127,6 +129,7 @@ public class LiveView3: SKScene {
         
         ball.run(SKAction.repeatForever(move), withKey: "horizontalMove")
         
+        self.isBallSetUp = true
     }
     
     public func setupBackground() {
@@ -182,7 +185,9 @@ public class LiveView3: SKScene {
     
     
     public func touchDown(atPoint pos : CGPoint) {
-       
+
+        if !isBallSetUp {return}
+        isBallSetUp = false
         let dx = -(ball.position.x - 0.0)*speedBallMovement
         let dy = -(ball.position.y - 20.0)*speedBallMovement
         print(dx)
