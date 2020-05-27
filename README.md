@@ -1,6 +1,6 @@
 ## Automata -  WWDC 2020 Submission
 
-![Automata](capaPlayground.png)
+![Automata](capaPlayground.png  =250x)
 
 This reposotory stores the project I submitted for the WWDC 2020 Swift Student Challenge. 
 
