@@ -7,23 +7,83 @@
 //
 
 import SpriteKit
+import UIKit
+//import PlaygroundSupport
+import GameplayKit
 
 // MARK: - FSMState
 
 
 public class FSMState: SKShapeNode {
     
-    public var radius: CGFloat = 0.0
-    private var widthLine: CGFloat = 0.0
-    private var fillGradient = CAGradientLayer()
-    private var strokeGradient = CAGradientLayer()
-    private var maskStrokeLayer = CAShapeLayer()
-    private var isAnimating = false
+    public enum Style {
+        case page1
+        case page2
+        case page3
+        case normal
+    }
     
-    public init(color: UIColor = UIColor.white, side: CGFloat = 50.0, position: CGPoint, name: String) {
+    private var style: Style = .normal
+    
+    private var label: SKLabelNode = SKLabelNode()
+    public var radius: CGFloat = 0.0
+    private var arrayColorsPG1: [UIColor] = [UIColor(hexString: "#511845"),
+                                          UIColor(hexString: "#900c3f"),
+                                          UIColor(hexString: "#c70039"),
+                                          UIColor(hexString: "#ff5733")]
+    
+    private var arrayColorsPG2: [UIColor] = [UIColor(hexString: "#512c96"),
+                                          UIColor(hexString: "#3c6f9c"),
+                                          UIColor(hexString: "#fa744f"),
+                                          UIColor(hexString: "#f9c6ba")]
+    
+    private var arrayColorsPG3: [UIColor] = [UIColor(hexString: "#211c76"),
+                                             UIColor(hexString: "#210c66"),
+                                             UIColor(hexString: "#110046"),
+                                             UIColor(hexString: "#010026")]
+    
+    public var holder: SKShapeNode = SKShapeNode()
+    private var holderPos: CGPoint = .zero
+    
+    private var arcs: [SKShapeNode] = []
+    
+    public init(side: CGFloat = 50.0, position: CGPoint, name: String, style: Style) {
         super.init()
-        self.setDraw(color: color, side: side, position: position)
         self.name = name
+        self.radius = CGFloat(side/2.0)
+        self.position = position
+        self.path = UIBezierPath(ovalIn: CGRect(x: -side/2.0, y: -side/2.0, width: side, height: side)).cgPath
+        self.style = style
+        
+        setup(side: side)
+    }
+    
+    private func setup(side: CGFloat) {
+        
+        var mult: CGFloat = 1.0
+        var count: CGFloat = 0.0
+        var arrayColors: [UIColor] = []
+        switch self.style {
+        case .page1:
+            arrayColors = arrayColorsPG1
+        case .normal:
+            arrayColors = [UIColor(hexString: "#888888")]
+            self.alpha = 0.7
+        case .page2:
+            arrayColors = arrayColorsPG2
+        case .page3:
+            arrayColors = arrayColorsPG3
+            mult = 0.3
+        }
+        for retroColor in arrayColors {
+            self.setDraw(color: retroColor, side: side - count, position: position)
+            count += side*mult/CGFloat(arrayColors.count)
+        }
+        if self.style == .page3 {
+            self.setGlow(size: side/5, color: arrayColorsPG3[0], at: self.arcs[0].path!)
+            self.setGlow(size: side/4.5, color: arrayColorsPG3[3], at: self.arcs[3].path!)
+        }
+        
     }
     
     public override init() {
@@ -35,114 +95,152 @@ public class FSMState: SKShapeNode {
         fatalError("init(coder:) has not been implemented")
     }
     
+    public func rotate(center: CGPoint, clockwise: Bool, angleStart: CGFloat = 0.0, speed: CGFloat) {
+        let path = UIBezierPath()
+        
+        let dx = self.position.x - center.x
+        let dy = self.position.y - center.y
+        let radius = sqrt(dx*dx + dy*dy)
+        
+        path.addArc(withCenter: CGPoint(x: center.x, y: center.y), radius: radius, startAngle: 0.0, endAngle: .pi, clockwise: clockwise)
+        path.addArc(withCenter: CGPoint(x: center.x, y: center.y), radius: radius, startAngle: .pi, endAngle: 0.0, clockwise: clockwise)
+        
+        path.apply(CGAffineTransform(rotationAngle: angleStart))
+        let movement = SKAction.follow(path.cgPath, asOffset: false, orientToPath: false, speed: radius*1)
+               
+        self.run(.repeatForever(movement))
+    }
+    
+    
+    public func setPhysicsBody(forceField: Bool) {
+        self.physicsBody = SKPhysicsBody(circleOfRadius: self.radius)
+        self.physicsBody?.categoryBitMask = 1
+        self.physicsBody?.contactTestBitMask = 0
+        self.physicsBody?.collisionBitMask = 0
+        self.physicsBody?.affectedByGravity = false
+        self.physicsBody?.fieldBitMask = 0
+        
+        if(forceField) {
+            let forceField = SKFieldNode.springField()
+            forceField.categoryBitMask = 1
+            forceField.strength = 5
+            forceField.region = SKRegion(radius: Float(1.5*self.radius))
+            forceField.falloff = -1.0
+            self.addChild(forceField)
+        }
+    }
+    
+    private func setHolder() {
+        
+        let lambda: CGFloat = 1.35
+        let holderPath = UIBezierPath()
+        
+        holderPath.addArc(withCenter: CGPoint(x: 0.0, y: 0.0), radius: self.radius*lambda, startAngle: .pi*1.1, endAngle:  -.pi*0.45, clockwise: false)
+        
+        let newCenter = CGPoint(x: -self.radius*1.25, y: -self.radius*1.5)
+        self.holderPos = newCenter
+        holderPath.addArc(withCenter: newCenter, radius: self.radius*0.7, startAngle: .pi*0.0, endAngle:  .pi/2, clockwise: false)
+        
+        holderPath.close()
+        holder.path = holderPath.cgPath
+        switch self.style {
+        case .page1, .page2, .page3:
+            holder.strokeColor = UIColor(hexString: "#DFD8CD")
+            holder.fillColor = UIColor.white
+        case .normal:
+            holder.strokeColor = UIColor(hexString: "#DFD8CD")
+            holder.fillColor = UIColor.white
+        }
+        holder.lineWidth = 6
+        self.addChild(holder)
+        holder.zPosition = -1
+        
+        self.addChild(label)
+    }
+    
+    public func getOutput() -> String {
+        return self.label.text ?? ""
+    }
+    
+    public func setOutput(text: String, labelPos: CGPoint, rotate: CGFloat, size: CGFloat = 30.0) {
+        
+        self.setHolder()
+        
+        self.label.text = text
+        self.label.fontName = "Futura-Bold"
+        self.label.fontColor = UIColor(hexString: "#333333")
+        self.label.fontSize = size
+                
+        let skaction = SKAction.rotate(byAngle: rotate, duration: 0.0)
+        holder.run(skaction)
+        self.label.position = labelPos
+    }
     
     private func setDraw(color: UIColor, side: CGFloat, position: CGPoint) {
         let side = side
-        self.radius = CGFloat(side/2.0)
+        let arc = SKShapeNode()
         
         let path = UIBezierPath(ovalIn: CGRect(x: -side/2.0, y: -side/2.0, width: side, height: side))
-        self.path = path.cgPath
-        self.position = position
-        self.strokeColor = UIColor(hexString: "#AAAAAA")
-        self.lineWidth = 3
-        self.widthLine = side/10
+        arc.path = path.cgPath
+        arc.strokeColor = color
+        arc.lineWidth = side/10
+        switch style {
+        case .normal:
+            break
+        default:
+            arc.fillColor = color
+        }
         
+        arcs.append(arc)
+        self.addChild(arc)
     }
     
-    public func setGradient(view: SKView, scene: SKScene) {
-        strokeGradient = draweCurve(path: UIBezierPath(ovalIn: CGRect(x: -self.radius + 4, y: -self.radius + 4, width: 2*(self.radius - 4), height: 2*(self.radius - 4))).cgPath, view: view, scene: scene)
-        
-        // HEAD --
-        
-        fillGradient.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: view.bounds.height)
-        fillGradient.colors = CAGradientLayer.pg1Colors
-        fillGradient.startPoint = CAGradientLayer.pg1StartPoint
-        fillGradient.endPoint = CAGradientLayer.pg1EndPoint
-        fillGradient.contentsScale = CGFloat(view.contentScaleFactor)
-        
-        let shapeMask = CAShapeLayer()
-        let uiPos = scene.convertPoint(toView: self.position)
-        print(uiPos)
-        print(" - - - - -")
-        shapeMask.position = uiPos
-        shapeMask.path = self.path!
-        fillGradient.mask = shapeMask
-        view.layer.insertSublayer(fillGradient, at: 0)
-        fillGradient.opacity = 0.0
-    }
     
-    public func gotTouched(view: SKView) {
-        if(isAnimating) {return}
-        //        // fill animation
-        let gradientChangeAnimation = CABasicAnimation(keyPath: #keyPath(CAGradientLayer.opacity))
-        gradientChangeAnimation.duration = 0.15
-        gradientChangeAnimation.toValue = 1.0
-        gradientChangeAnimation.fromValue = 0.0
-        gradientChangeAnimation.timingFunction = CAMediaTimingFunction.init(name: .easeOut)
-        gradientChangeAnimation.autoreverses = true
-        fillGradient.add(gradientChangeAnimation, forKey: "opacityFill")
-        
-        
-        let strokeSize = CABasicAnimation(keyPath: #keyPath(CAShapeLayer.lineWidth))
-        strokeSize.duration = 0.15
-        strokeSize.toValue = self.widthLine*0.2
-        strokeSize.fromValue = self.widthLine
-        strokeSize.timingFunction = CAMediaTimingFunction.init(name: .easeOut)
-        strokeSize.autoreverses = true
-        maskStrokeLayer.add(strokeSize, forKey: "opacityFill")
+    private func setGlow(size: CGFloat, color: UIColor, at path: CGPath) {
 
-        let originalTransform = view.transform
-        let scaled = originalTransform.scaledBy(x: 1.005, y: 1.01)
+        let glowBody: SKShapeNode = SKShapeNode()
+        
+        glowBody.path = path
+        glowBody.strokeColor = color.withAlphaComponent(0.8)
+        glowBody.glowWidth = size
+        glowBody.zPosition = -1
+        addChild(glowBody)
+    }
 
-        UIView.animate(withDuration: 0.3, delay: 0.0, options: [.curveEaseOut, .autoreverse], animations: {
-            view.transform = scaled
-            self.isAnimating = true
-        }, completion: { (_) in
-            view.transform = originalTransform
-            self.isAnimating = false
-        })
+    
+    
+    public func gotTouched(view: SKView, completion: @escaping(Bool)->() ) {
+      
+        var count:CGFloat = 1.0
+        for arc in arcs {
+            let scaleAction = SKAction.scale(by: 1.0 + 0.15*count, duration: 0.3)
+            let seqScale = SKAction.sequence([scaleAction, scaleAction.reversed()])
+            arc.run(seqScale)
+            count += 1.0
+        }
+        
+        let sound = Sound.randomSound()
+        let actionSound = SKAction.playSoundFileNamed(sound, waitForCompletion: false)
+        self.run(actionSound)
+        
+        // move camera
+        
+        if let camera = self.scene!.camera {
+            let scale = SKAction.scaleX(by: 1.01, y: 1.01, duration: 0.4)
+            let move = SKAction.moveBy(x: 3.0, y: -2.0, duration: 0.4)
+            let scaleAction = SKAction.sequence([scale, scale.reversed(), .wait(forDuration: 0.5)])
+            let moveAction = SKAction.sequence([move, move.reversed(), .wait(forDuration: 0.5)])
+            let groupCamera = SKAction.group([scaleAction, moveAction])
+            
+            camera.run(groupCamera) {
+                  completion(true)
+               }
+        } else {
+            print("NO CAMERA")
+        }
     }
     
-    
-    private func draweCurve(path: CGPath, view: SKView, scene: SKScene) -> CAGradientLayer {
-        // ------- 1 --------
-        let curveLayer = CAShapeLayer()
-        curveLayer.contentsScale = CGFloat(view.transform.scale)
-        curveLayer.frame = CGRect(origin: .zero, size: CGSize(width: view.bounds.width, height: view.bounds.height))
-        // ------- 2 --------
-        // close the path on its self
-        let gl = addGradientLayer(to: curveLayer, path: path, at: view.convert(self.position, from: scene), view: view)
-        
-        view.layer.addSublayer(curveLayer)
-        return gl
-    }
-    
-    private func addGradientLayer(to layer: CALayer, path: CGPath, at pos: CGPoint, view: SKView) -> CAGradientLayer {
-        // ------- 3 --------
-        maskStrokeLayer = CAShapeLayer()
-        maskStrokeLayer.contentsScale = CGFloat(view.transform.scale)
-        // ------- 4 --------
-        maskStrokeLayer.strokeColor = UIColor.white.cgColor
-        maskStrokeLayer.path = path
-        maskStrokeLayer.fillColor = UIColor.clear.cgColor
-        maskStrokeLayer.position = pos
-        maskStrokeLayer.lineWidth = self.widthLine
-        
-        // ------- 5 --------
-        let gradientLayer = CAGradientLayer()
-        // ------- 6 --------
-        gradientLayer.mask = maskStrokeLayer
-        gradientLayer.frame = layer.frame
-        gradientLayer.contentsScale = UIScreen.main.scale
-        
-        gradientLayer.colors = CAGradientLayer.pg1Colors
-        gradientLayer.startPoint = CAGradientLayer.pg1StartPoint
-        gradientLayer.endPoint = CAGradientLayer.pg1EndPoint
-        // ------- 8 --------
-        layer.addSublayer(gradientLayer)
-        return gradientLayer
-    }
-    
+
     public func edgePosition(at angle: CGFloat, lambdaRadius: CGFloat = 1.0) -> CGPoint {
         
         let newX = self.position.x + (radius*lambdaRadius)*cos(angle)
@@ -150,5 +248,12 @@ public class FSMState: SKShapeNode {
         
         return CGPoint(x: newX, y: newY)
     }
+    
+    private func internalEdge(at angle: CGFloat, lambdaRadius: CGFloat = 1.0) -> CGPoint {
+        
+        let newX = (radius*lambdaRadius)*cos(angle)
+        let newY = (radius*lambdaRadius)*sin(angle)
+        
+        return CGPoint(x: newX, y: newY)
+    }
 }
-

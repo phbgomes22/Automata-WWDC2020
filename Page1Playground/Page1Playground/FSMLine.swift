@@ -7,73 +7,115 @@
 //
 
 import SpriteKit
-
+import UIKit
+//import PlaygroundSupport
+import GameplayKit
 
 // MARK: - FSMLine
 
 public class FSMLine: SKSpriteNode {
-
-    private var body: SKShapeNode = SKShapeNode()
-    private var label: SKLabelNode = SKLabelNode()
-    private var bodyVertices: [CGPoint] = []
     
-    private var gradientMaskBody: CAShapeLayer = CAShapeLayer()
-    private var curveLayerBody: CAShapeLayer = CAShapeLayer()
+    public enum Style {
+        case page1
+        case normal
+        case page2
+    }
+    
+    private var style: Style = .normal
+    public var body: SKShapeNode = SKShapeNode()
+    private var label: SKLabelNode = SKLabelNode()
+    public var glowBody: SKShapeNode = SKShapeNode()
+    private var labelSpriteNode = SKSpriteNode()
+    private var controlPos = CGPoint()
+    private var colorLabel: SKShapeNode!
     
     private var headSize: CGFloat = 0.0
     
-    public init(from point1: CGPoint, to point2: CGPoint, dx: CGFloat, dy: CGFloat, headSize: CGFloat = 20.0, name: String) {
+    public init(from point1: CGPoint, to point2: CGPoint, dx: CGFloat, dy: CGFloat, headSize: CGFloat = 20.0, name: String, style: Style) {
         super.init(texture: nil, color: .clear, size: .zero)
         self.headSize = headSize
         self.name = name
+        self.style = style
         self.setDraw(start: point1, end: point2, dx: dx, dy: dy)
+        self.setGlow()
     }
     
+    public init(from point1: CGPoint, to point2: CGPoint, headSize: CGFloat = 20.0, name: String, style: Style) {
+           super.init(texture: nil, color: .clear, size: .zero)
+           self.headSize = headSize
+           self.name = name
+           self.style = style
+           self.setDraw(start: point1, end: point2)
+           self.setGlow()
+       }
     
-    public init(from point1: CGPoint, to point2: CGPoint, dx1: CGFloat, dy1: CGFloat, dx2: CGFloat, dy2: CGFloat, headSize: CGFloat, name: String) {
+    
+    public init(from point1: CGPoint, to point2: CGPoint, dx1: CGFloat, dy1: CGFloat, dx2: CGFloat, dy2: CGFloat, headSize: CGFloat, name: String, style: Style) {
         super.init(texture: nil, color: .clear, size: .zero)
         self.headSize = headSize
         self.name = name
+        self.style = style
         self.setDraw(start: point1, end: point2, dx1: dx1, dy1: dy1, dx2: dx2, dy2: dy2, headSize: headSize)
+        setGlow()
     }
 
     public required init?(coder aDecoder: NSCoder) {
        fatalError("init(coder:) has not been implemented")
     }
     
-    public func setLabel(at pos: CGPoint, text: String) {
-        self.label.text = text
+    public func setLabel(at pos: CGPoint, text: String, fontSize: CGFloat = 40) {
         
-        self.addChild(label)
-        self.label.position = pos
+        self.label.fontSize = fontSize
+        
+        var spriteImage = emojiToImage(text: text, size: fontSize)
+        if self.style == .normal {
+            if let image = spriteImage.noir {
+                spriteImage = image
+            }// else
+        }// else
+        
+        self.labelSpriteNode.size = CGSize(width: fontSize, height: fontSize)
+        self.labelSpriteNode.texture = SKTexture.init(image: spriteImage)
+        self.labelSpriteNode.color = .clear
+        self.addChild(labelSpriteNode)
+        self.labelSpriteNode.position = CGPoint(x: pos.x, y:  pos.y + fontSize/2)
+        self.labelSpriteNode.zPosition = 10.0
+        
     }
     
-    public func gotUsed(scene: SKScene) {
+    public func setColor(at pos: CGPoint, fontSize: CGFloat = 30, color: UIColor) {
         
-        let animation = CABasicAnimation(keyPath: "lineWidth")
-        animation.duration = 0.15
-        
-       // let pathsUI2 = createBodyUI(view: scene.view!, scene: scene)
-        animation.toValue = 12
-        animation.autoreverses = true
-     //   animation.toValue = pathsUI2.full.cgPath
-        animation.timingFunction = CAMediaTimingFunction.init(name: .easeIn)
-        
-        // The next two line preserves the final shape of animation,
-        // if you remove it the shape will return to the original shape after the animation finished
-        animation.fillMode = .forwards
-        animation.isRemovedOnCompletion = true
-        
-        curveLayerBody.add(animation, forKey: "moving\(self.name!)")
-        gradientMaskBody.add(animation, forKey: "moving\(self.name!)")
-    
+        colorLabel = SKShapeNode(circleOfRadius: (fontSize)/2)
+        colorLabel.fillColor = color
+        colorLabel.position = CGPoint(x: pos.x, y:  pos.y + (fontSize)/2 )
+        colorLabel.lineWidth = 3.5
+        colorLabel.strokeColor = self.body.strokeColor.withAlphaComponent(0.15)
+        self.addChild(colorLabel)
     }
+    
+    
+    public func gotUsed(scene: SKScene, completion: @escaping()->()) {
+        
+        let action = SKAction.scaleX(by: 1.02, y: 1.02, duration: 0.3)
+        let seq = SKAction.sequence([action, action.reversed(), SKAction.wait(forDuration: 0.5)])
+        
+        let fade = SKAction.fadeAlpha(by: 10.0, duration: 0.4)
+        let group = SKAction.group([seq, .sequence([fade, fade.reversed()])])
+        
+        self.glowBody.run(group)
+        self.body.run(seq) {
+            completion()
+        }
+        
+    }
+    
     
     private func setDraw(start: CGPoint, end: CGPoint, dx1: CGFloat, dy1: CGFloat, dx2: CGFloat, dy2: CGFloat, headSize: CGFloat) {
         let arrow = UIBezierPath()
         
         let ctrlPoint1 = CGPoint(x: start.x*dx1, y: end.y*dy1)
         let ctrlPoint2 = CGPoint(x: start.x*dx2, y: end.y*dy2)
+        self.controlPos = ctrlPoint1
         
         arrow.move(to: start)
         arrow.addCurve(to: end, controlPoint1: ctrlPoint1, controlPoint2: ctrlPoint2)
@@ -82,12 +124,39 @@ public class FSMLine: SKSpriteNode {
         arrow.addCurve(to:start, controlPoint1: ctrlPoint2, controlPoint2: ctrlPoint1)
         arrow.close()
         
-        bodyVertices = [start, end, ctrlPoint1, ctrlPoint2]
         self.body.path = arrow.cgPath
-        self.body.strokeColor = UIColor(hexString: "#AAAAAA")
-        self.body.fillColor = UIColor(hexString: "#AAAAAA")
         self.body.lineWidth = 3.0
         self.addChild(body)
+        
+        colorNode()
+    }
+    
+    private func colorNode() {
+        
+        switch self.style {
+        case.normal:
+            self.body.strokeColor = UIColor(hexString: "#888888")
+            self.body.fillColor = UIColor(hexString: "#888888")
+        case .page1:
+            self.body.strokeColor = UIColor(hexString: "#511845")
+            self.body.fillColor = UIColor(hexString: "#511845")
+        case .page2:
+            self.body.strokeColor = UIColor(hexString: "#512c96")
+            self.body.fillColor = UIColor(hexString: "#512c96")
+        }
+        
+    }
+    
+    private func setGlow() {
+        self.glowBody.path = self.body.path
+        if self.style == .normal {
+            self.glowBody.strokeColor = UIColor(hexString: "#777777").withAlphaComponent(0.12)
+        }else {
+            self.glowBody.strokeColor = UIColor(hexString: "#511845").withAlphaComponent(0.08)
+        }
+        self.glowBody.glowWidth = 7.0
+        self.glowBody.zPosition = -1
+        self.addChild(glowBody)
     }
 
     private func setDraw(start: CGPoint, end: CGPoint, dx: CGFloat, dy: CGFloat) {
@@ -95,100 +164,40 @@ public class FSMLine: SKSpriteNode {
         let bodyPath = UIBezierPath()
         
         let ctrlPoint = CGPoint(x: start.x*dx, y: end.y*dy )
+        self.controlPos = ctrlPoint
         bodyPath.addArrowBody(start: start, end: end, controlPoint: ctrlPoint)
         bodyPath.addArrowHead(end: end, controlPoint: ctrlPoint, pointerLineLength: self.headSize + 1, arrowAngle: CGFloat.pi/8)
         bodyPath.addArrowBody(start: end, end: start, controlPoint: ctrlPoint)
         bodyPath.close()
-        bodyVertices = [start, end, ctrlPoint]
         self.body.path = bodyPath.cgPath
-        self.body.strokeColor = UIColor(hexString: "#AAAAAA")
-        self.body.fillColor = UIColor(hexString: "#AAAAAA")
         self.body.lineWidth = 3.0
         self.addChild(body)
         
+        colorNode()
     }
     
-    private func createBodyUI(view: SKView, scene: SKScene) -> (oneWay: UIBezierPath, full: UIBezierPath) {
+    private func setDraw(start: CGPoint, end: CGPoint) {
         
-        let vertices = self.bodyVertices
-        let path = UIBezierPath()
-        let pathFull = UIBezierPath()
+        let bodyPath = UIBezierPath()
+        bodyPath.move(to: start)
+        bodyPath.addLine(to: end)
+        bodyPath.addArrowHead(end: end, controlPoint: start, pointerLineLength: self.headSize + 1, arrowAngle: CGFloat.pi/8)
+        bodyPath.addLine(to: start)
+        bodyPath.close()
+        self.body.path = bodyPath.cgPath
+        self.body.lineWidth = 3.0
+        self.addChild(body)
         
-        let firstPos = view.convert(vertices[0], from: scene)
-        let secondPos = view.convert(vertices[1], from: scene)
-        let thirdPos = view.convert(vertices[2], from: scene)
-        
-        if vertices.count == 3 {
-            path.addArrowBody(start: firstPos, end: secondPos, controlPoint: thirdPos)
-            path.addArrowHead(end: secondPos, controlPoint: thirdPos, pointerLineLength: self.headSize, arrowAngle: CGFloat.pi/8)
-            
-            pathFull.addArrowBody(start: firstPos, end: secondPos, controlPoint: thirdPos)
-            pathFull.addArrowHead(end: secondPos, controlPoint: thirdPos, pointerLineLength: self.headSize, arrowAngle: CGFloat.pi/8)
-            pathFull.addArrowBody(start: secondPos, end: firstPos, controlPoint: thirdPos)
-        } else {
-            let fourthPos = view.convert(vertices[3], from: scene)
-            path.addArrowBody(start: firstPos, end: secondPos, controlPoint: fourthPos)
-            path.addArrowHead(end: secondPos, controlPoint: fourthPos, pointerLineLength: self.headSize, arrowAngle: CGFloat.pi/8)
-            
-            pathFull.move(to: firstPos)
-            pathFull.addCurve(to: secondPos, controlPoint1: thirdPos, controlPoint2: fourthPos)
-            pathFull.addArrowHead(end: secondPos, controlPoint: fourthPos, pointerLineLength: self.headSize, arrowAngle: CGFloat.pi/8)
-            pathFull.addCurve(to: firstPos, controlPoint1: fourthPos, controlPoint2: thirdPos)
-            
-        }
-        
-        return (oneWay: path, full: pathFull)
+        colorNode()
     }
     
-    public func addGradient(view: SKView, scene: SKScene) {
+    var scaleLabel: SKAction = SKAction.sequence([ SKAction.scale(by: 1.3, duration: 0.3),  SKAction.scale(by: 1.3, duration: 0.2).reversed()])
+    
+    public func animateLabel() {
         
-        // BODY --
-        
-        let pathsUI2 = createBodyUI(view: view, scene: scene)
-        
-        draweCurve(path: pathsUI2.oneWay, fullPath: pathsUI2.full,  view: view)
-        
+        colorLabel?.run(scaleLabel)
     }
     
     
-    private func draweCurve(path: UIBezierPath, fullPath: UIBezierPath, view: SKView) {
-        // ------- 1 --------
-        curveLayerBody = CAShapeLayer()
-        curveLayerBody.contentsScale = UIScreen.main.scale
-        curveLayerBody.frame = CGRect(origin: .zero, size: CGSize(width: view.bounds.width, height: view.bounds.height))
-        curveLayerBody.fillColor = UIColor.clear.cgColor
-        curveLayerBody.strokeColor = UIColor.clear.cgColor
-        curveLayerBody.lineWidth = 4
-        curveLayerBody.path = fullPath.cgPath
-        
-        // ------- 2 --------
-        // close the path on its self
-        addGradientLayer(to: curveLayerBody, path: fullPath)
-        
-        view.layer.addSublayer(curveLayerBody)
-    }
-
-    private func addGradientLayer(to layer: CALayer, path: UIBezierPath) {
-        // ------- 3 --------
-        gradientMaskBody = CAShapeLayer()
-        gradientMaskBody.contentsScale = UIScreen.main.scale
-        // ------- 4 --------
-        gradientMaskBody.strokeColor = UIColor.white.cgColor
-        gradientMaskBody.path = path.cgPath
-        gradientMaskBody.lineWidth = 5
-
-        // ------- 5 --------
-        let gradientLayer = CAGradientLayer()
-        // ------- 6 --------
-        gradientLayer.mask = gradientMaskBody
-        gradientLayer.frame = layer.frame
-        gradientLayer.contentsScale = UIScreen.main.scale
-        
-        gradientLayer.colors = CAGradientLayer.pg1Colors
-        gradientLayer.startPoint = CAGradientLayer.pg1StartPoint
-        gradientLayer.endPoint = CAGradientLayer.pg1EndPoint
-        
-        layer.addSublayer(gradientLayer)
-        
-    }
 }
+
