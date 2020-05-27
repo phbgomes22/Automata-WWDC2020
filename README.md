@@ -1,12 +1,7 @@
 ## Automata -  WWDC 2020 Submission
 
 <p align="center">
-    <img width="400" height="300" src="capaPlayground.png">
-</p>
-
-
-<p align="center">
-    <img width="460" height="340" src="capaPlayground.png">
+    <img width="200" height="150" src="capaPlayground.png">
 </p>
 
 This reposotory stores the project I submitted for the WWDC 2020 Swift Student Challenge. 
